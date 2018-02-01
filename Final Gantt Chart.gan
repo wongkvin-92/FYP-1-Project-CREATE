@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2016-08-01" view-index="0" gantt-divider-location="1248" resource-divider-location="300" version="2.8.5" locale="en_US">
+    <description/>
+    <view zooming-state="default:11" id="gantt-chart">
+        <field id="tpd3" name="Name" width="565" order="0"/>
+        <field id="tpd4" name="Begin date" width="312" order="1"/>
+        <field id="tpd5" name="End date" width="350" order="2"/>
+        <option id="taskLabelRight" value="name"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="209" order="0"/>
+        <field id="1" name="Default role" width="85" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="0" mon="0" tue="0" wed="0" thu="0" fri="0" sat="0"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="1 Draft Project Outline" color="#8cb6ce" meeting="false" start="2018-01-16" duration="1" complete="0" expand="true"/>
+        <task id="2" name="2 Establish Project Plan" color="#8cb6ce" meeting="false" start="2018-01-17" duration="9" complete="0" expand="true">
+            <task id="5" name="2.1 Finalizing Scope" color="#8cb6ce" meeting="false" start="2018-01-17" duration="2" complete="0" expand="true"/>
+            <task id="10" name="2.2 Determine User requirement" color="#8cb6ce" meeting="false" start="2018-01-19" duration="2" complete="0" expand="true"/>
+            <task id="7" name="2.3 Create Project Scheduling" meeting="false" start="2018-01-21" duration="2" complete="0" expand="true">
+                <task id="8" name="2.3.1 Draw Gantt Chart" color="#8cb6ce" meeting="false" start="2018-01-21" duration="2" complete="0" expand="true"/>
+            </task>
+            <task id="9" name="2.4 Choose System Development Methodology" color="#8cb6ce" meeting="false" start="2018-01-23" duration="1" complete="0" expand="true"/>
+            <task id="11" name="2.5 Prepare Technical Description of Proposed System" meeting="false" start="2018-01-24" duration="2" complete="0" expand="true">
+                <task id="12" name="2.5.1 Select the Development Platforms" color="#8cb6ce" meeting="false" start="2018-01-24" duration="1" complete="0" expand="true"/>
+                <task id="13" name="2.5.2 Establishing Risk Management Plan" color="#8cb6ce" meeting="false" start="2018-01-25" duration="1" complete="0" expand="true"/>
+                <task id="14" name="2.5.3 Find out the Project Resource Requirements and Estimated Cost" color="#8cb6ce" meeting="false" start="2018-01-25" duration="1" complete="0" expand="true"/>
+            </task>
+            <task id="143" name="2.6 Project Plan Approved" color="#8cb6ce" meeting="true" start="2018-01-26" duration="0" complete="0" expand="true"/>
+        </task>
+        <task id="16" name="3 Write out Literature Review" color="#8cb6ce" meeting="false" start="2018-01-26" duration="21" complete="0" expand="true"/>
+        <task id="145" name="3.1 Literature Review Submitted" color="#8cb6ce" meeting="true" start="2018-02-15" duration="0" complete="0" expand="true"/>
+        <task id="18" name="4 Requirement Gathering" meeting="false" start="2018-02-16" duration="1" complete="0" expand="true">
+            <task id="19" name="4.1 Find Out Functional &amp; Non-Funtional requirements" color="#8cb6ce" meeting="false" start="2018-02-16" duration="1" complete="0" expand="true"/>
+            <task id="20" name="4.2 Modelling of Requirements" meeting="false" start="2018-02-16" duration="1" complete="0" expand="true">
+                <task id="21" name="4.2.1 Draw Use Case Diagram" meeting="false" start="2018-02-16" duration="1" complete="0" expand="true"/>
+                <task id="22" name="4.2.2 Structure the Analysis Diagram" meeting="false" start="2018-02-16" duration="1" complete="0" expand="true"/>
+            </task>
+        </task>
+        <task id="23" name="5 Developing Iteration 1" color="#000000" meeting="false" start="2018-02-17" duration="27" complete="0" expand="true">
+            <task id="24" name="5.1 Determine Template of UX of Web Application for Admin" color="#8cb6ce" meeting="false" start="2018-02-17" duration="3" complete="0" expand="true"/>
+            <task id="27" name="5.2 Design Database Structure of Admin Account" color="#8cb6ce" meeting="false" start="2018-02-19" duration="2" complete="0" expand="true"/>
+            <task id="28" name="5.3 Implement coding and unit testing" meeting="false" start="2018-02-21" duration="4" complete="0" expand="true">
+                <task id="29" name="5.3.1 Coding and Unit Testing of Registration of Admin Account" color="#8cb6ce" meeting="false" start="2018-02-21" duration="3" complete="0" expand="true"/>
+                <task id="30" name="5.3.2 Coding and Unit Testing of Login" color="#8cb6ce" meeting="false" start="2018-02-23" duration="2" complete="0" expand="true"/>
+            </task>
+            <task id="31" name="5.4 Establish Integration Testing" color="#000000" meeting="false" start="2018-03-02" duration="6" complete="0" expand="true">
+                <task id="32" name="5.4.1 Conduct Integration Testing of Registration of User Account Page and Login Page" meeting="false" start="2018-03-02" duration="3" complete="0" expand="true"/>
+                <task id="33" name="5.4.2 Conduct Integration Testing of Login and Admin Login Page" meeting="false" start="2018-03-05" duration="3" complete="0" expand="true"/>
+            </task>
+            <task id="34" name="5.5 Establish System Testing" meeting="false" start="2018-03-08" duration="5" complete="0" expand="true">
+                <task id="35" name="5.5.1 Conduct System Testing of Registration of User Account" meeting="false" start="2018-03-08" duration="2" complete="0" expand="true"/>
+                <task id="36" name="5.5.2 Conduct System Testing of Login" color="#8cb6ce" meeting="false" start="2018-03-10" duration="3" complete="0" expand="true"/>
+            </task>
+            <task id="37" name="5.6 Update Gantt Chart" color="#8cb6ce" meeting="false" start="2018-03-13" duration="3" complete="0" expand="true"/>
+        </task>
+        <task id="38" name="6 Conduct Interim Presentation" color="#8cb6ce" meeting="true" start="2018-03-14" duration="0" complete="0" expand="true"/>
+        <task id="51" name="7 Developing Iteration 2" color="#8cb6ce" meeting="false" start="2018-03-01" duration="37" complete="0" expand="true">
+            <task id="54" name="7.1 Determine Template of UX of Web Application for Admin" color="#8cb6ce" meeting="false" start="2018-03-17" duration="3" complete="0" expand="true"/>
+            <task id="146" name="7.2 Design Database Structure for Class Schedule Approve and Report" meeting="false" start="2018-03-01" duration="1" complete="0" expand="true"/>
+            <task id="57" name="7.3 Implement Coding and Unit Testing" color="#8cb6ce" meeting="false" start="2018-03-20" duration="6" complete="0" expand="true">
+                <task id="60" name="7.3.1 Coding and Unit Testing of Approving the Class Rescheduling" color="#8cb6ce" meeting="false" start="2018-03-20" duration="3" complete="0" expand="true"/>
+                <task id="61" name="7.3.2 Coding and Unit Testing of Generating Report" color="#8cb6ce" meeting="false" start="2018-03-23" duration="3" complete="0" expand="true"/>
+            </task>
+            <task id="62" name="7.3 Establish Integration Testing" color="#000000" meeting="false" start="2018-03-26" duration="6" complete="0" expand="true">
+                <task id="63" name="7.3.1 Conduct Integration Testing of Applying Class CancellationConduct Integration testing of  Approving the Class Rescheduling and Admin Homepage" color="#8cb6ce" meeting="false" start="2018-03-26" duration="3" complete="0" expand="true"/>
+                <task id="64" name="7.3.2 Conduct Integration testing of Generating Report and Admin Homepage" color="#8cb6ce" meeting="false" start="2018-03-29" duration="3" complete="0" expand="true"/>
+            </task>
+            <task id="65" name="7.4 Establish System Testing" meeting="false" start="2018-04-01" duration="6" complete="0" expand="true">
+                <task id="66" name="7.4.1 Conduct System testing of Approving the Class Rescheduling" color="#8cb6ce" meeting="false" start="2018-04-01" duration="3" complete="0" expand="true"/>
+                <task id="67" name="7.4.2 Conduct System testing of Generating Report" color="#8cb6ce" meeting="false" start="2018-04-04" duration="3" complete="0" expand="true"/>
+            </task>
+        </task>
+        <task id="87" name="8 Conduct FInal Presentation FYP  1" color="#8cb6ce" meeting="false" start="2018-04-13" duration="1" complete="0" expand="true"/>
+        <task id="86" name="9 Create Final Report FYP 1" meeting="false" start="2018-04-16" duration="1" complete="0" expand="true"/>
+        <task id="50" name="10 Developing Iteration 3" color="#8cb6ce" meeting="false" start="2018-08-27" duration="415" complete="0" expand="true">
+            <task id="89" name="10.1 Determine Template of UX of Mobile Application for Lecturer" color="#8cb6ce" meeting="false" start="2018-08-27" duration="4" complete="0" expand="true"/>
+            <task id="147" name="10.2 Design Database Structure for Lecturer Account and Class Cancellation" color="#8cb6ce" meeting="false" start="2018-08-31" duration="2" complete="0" expand="true"/>
+            <task id="91" name="10.3 Implement Coding and Unit Testing" color="#8cb6ce" meeting="false" start="2018-09-01" duration="16" complete="0" expand="true">
+                <task id="93" name="10.3.1 Coding and unit testing of Registration of Lecturer Account" color="#8cb6ce" meeting="false" start="2018-09-01" duration="5" complete="0" expand="true"/>
+                <task id="94" name="10.3.2 Coding and unit testing of Login of Lecturer Account" color="#8cb6ce" meeting="false" start="2018-09-04" duration="4" complete="0" expand="true"/>
+                <task id="95" name="10.3.3 Coding and Unit testing for Applying Class Cancellation" color="#8cb6ce" meeting="false" start="2018-09-07" duration="7" complete="0" expand="true"/>
+                <task id="148" name="10.3.4 Coding and Unit testing for Applying Class Rescheduling" meeting="false" start="2018-09-13" duration="4" complete="0" expand="true"/>
+            </task>
+            <task id="103" name="10.4 Establish Integration Testing" color="#8cb6ce" meeting="false" start="2018-09-16" duration="14" complete="0" expand="true">
+                <task id="104" name="10.4.1 Conduct Integration testing of Registration of Lecturer Account and Login Page" color="#8cb6ce" meeting="false" start="2018-09-16" duration="6" complete="0" expand="true"/>
+                <task id="105" name="10.4.2 Conduct Integration testing of Login of Lecturer Account and Lecturer Homepage" color="#8cb6ce" meeting="false" start="2018-09-22" duration="4" complete="0" expand="true"/>
+                <task id="106" name="10.4.3 Conduct integration testing of Class Cancellation page and Class Rescheduling page" color="#8cb6ce" meeting="false" start="2018-09-25" duration="5" complete="0" expand="true"/>
+            </task>
+            <task id="112" name="10.5 Establish System Testing" meeting="false" start="2018-09-29" duration="382" complete="0" expand="true">
+                <task id="113" name="10.5.1 Conduct system testing of Registration of Lecturer Account" color="#8cb6ce" meeting="false" start="2018-09-29" duration="5" complete="0" expand="true"/>
+                <task id="114" name="10.5.2 Conduct system testing of  Login of Lecturer Account" color="#8cb6ce" meeting="false" start="2018-10-03" duration="5" complete="0" expand="true"/>
+                <task id="115" name="10.5.3 Conduct system testing for Applying Class Cancellation" color="#8cb6ce" meeting="false" start="2018-10-07" duration="6" complete="0" expand="true"/>
+                <task id="149" name="10.5.4 Conduct system testing for Applying Class Rescheduling" meeting="false" start="2018-10-12" duration="369" complete="0" expand="true"/>
+            </task>
+        </task>
+        <task id="119" name="11 Interim Presentation" color="#8cb6ce" meeting="false" start="2018-10-16" duration="1" complete="0" expand="true"/>
+        <task id="120" name="12 Developing Iteration 4" meeting="false" start="2018-10-17" duration="45" complete="0" expand="true">
+            <task id="121" name="12.1 Determine the UI template for the Mobile Application for Lecturer &amp; Student" color="#8cb6ce" meeting="false" start="2018-10-17" duration="4" complete="0" expand="true"/>
+            <task id="150" name="12.2 Design Database Structure for Class Venue, Student Account &amp; Notification" meeting="false" start="2018-10-20" duration="5" complete="0" expand="true"/>
+            <task id="122" name="12.3 Implement Coding and Unit Testing" meeting="false" start="2018-10-24" duration="16" complete="0" expand="true">
+                <task id="125" name="12.3.1 Conduct coding and unit testing for Changing Class Venue" color="#8cb6ce" meeting="false" start="2018-10-24" duration="6" complete="0" expand="true"/>
+                <task id="126" name="12.3.2 Conduct coding and unit testing for Receiving Notification" color="#8cb6ce" meeting="false" start="2018-10-29" duration="6" complete="0" expand="true"/>
+                <task id="133" name="12.3.3 Conduct coding and unit testing for Checking Class Status" meeting="false" start="2018-11-03" duration="6" complete="0" expand="true"/>
+            </task>
+            <task id="123" name="12.4 Establish Integration Testing" meeting="false" start="2018-11-08" duration="16" complete="0" expand="true">
+                <task id="127" name="12.4.1 Conduct integration testing for Changing Class Venue Page and Lecturer Homepage" color="#8cb6ce" meeting="false" start="2018-11-08" duration="6" complete="0" expand="true"/>
+                <task id="128" name="12.4.2 Conduct integration testing for Receiving Notification for Class Cancellation and Class Cancellation page" color="#8cb6ce" meeting="false" start="2018-11-13" duration="6" complete="0" expand="true"/>
+                <task id="151" name="12.4.3 Conduct integration testing for Receiving Notification for Class Rescheduling and Class Rescheduling page" meeting="false" start="2018-11-18" duration="5" complete="0" expand="true"/>
+                <task id="152" name="12.4.4 Conduct integration testing for Receiving Notification for Class Venue Changes and Class Venue Changes page" meeting="false" start="2018-11-20" duration="4" complete="0" expand="true"/>
+            </task>
+            <task id="124" name="12.5 Establish System Testing" meeting="false" start="2018-11-23" duration="8" complete="0" expand="true">
+                <task id="129" name="12.5.1 Conduct system testing for Changing Class Venue" color="#8cb6ce" meeting="false" start="2018-11-23" duration="4" complete="0" expand="true"/>
+                <task id="130" name="12.5.2 Conduct system testing for Receiving Notification" color="#8cb6ce" meeting="false" start="2018-11-24" duration="4" complete="0" expand="true"/>
+                <task id="153" name="12.5.3 Conduct system testing for Checking Class Status" meeting="false" start="2018-11-27" duration="4" complete="0" expand="true"/>
+            </task>
+        </task>
+        <task id="131" name="13 Final Presentation FYP 2" meeting="false" start="2018-11-29" duration="1" complete="0" expand="true"/>
+        <task id="132" name="14 Final Report FYP 2" meeting="false" start="2018-12-01" duration="1" complete="0" expand="true"/>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
