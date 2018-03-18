@@ -101,5 +101,31 @@
 
     }
 
+      /**
+       * Returns all rooms
+       **/
+      public function listRooms(){
+          $roomDA = new RoomDA($this->con);
+
+          $list = $roomDA->getAllRooms();
+          $this->returnObject($list);
+      }
+
+      /**
+       * Add a new Room
+       **/
+      public function addRoom($name, $capacity){
+          $roomDA = new RoomDA($this->con);
+          $room = new Room();
+          $room->setName($name);
+          $room->setCapacity($capacity);
+
+          try{
+              $roomDA->save($room);
+              $this->sendMsg("Successfully Created!");
+          }catch(\Exception $ex){
+              throw new \Exception("Failed to create a new room, the room already exists.");
+          }
+      }
   }
 ?>

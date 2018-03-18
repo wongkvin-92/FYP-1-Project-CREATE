@@ -55,6 +55,16 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
     $admin->approveClass($r->id);
   });
 
+  //Room routes
+  $klein->respond('GET', $root.'/rooms/', function($r) use ($admin){
+    $admin->listRooms();
+  });
+  $klein->respond('POST', $root.'/rooms/', function($r) use ($admin){      
+      $name = getPost('name');
+      $capacity = getPost('capacity');
+      $admin->addRoom($name, $capacity);
+  });
+  
 }
 
 $klein->onHttpError(function(){
