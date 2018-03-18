@@ -272,43 +272,202 @@
     </table>
       </div>
     </div>
+    <!-- Dashboard Content Panel (Home)-->
+    <div class="dashboard-content__panel " data-panel-id="subject">
+      <header id="main-header" class="bg-success text-white">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+                <h1 id="header-title">Item Lister</h1>
+            </div>
+            <div class="col-md-6 align-self-center">
+                <input type="text" class="form-control" id="filter" placeholder="Search Items...">
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="container">
+       <div id="main" class="card card-body">
+        <h2 class="title">Add Items</h2>
+        <form id="addForm" class="form-inline mb-3">
+          <input type="text" class="form-control mr-2" id="item">
+          <input type="submit" class="btn btn-dark" value="Submit">
+        </form>
+        <h2 class="title">Items</h2>
+        <ul id="items" class="list-group">
+          <li class="list-group-item">Item 1 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+          <li class="list-group-item">Item 2 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+          <li class="list-group-item">Item 3 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+          <li class="list-group-item">Item 4 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+        </ul>
+       </div>
+      </div>
+    </div>
     <!-- Dashboard Content Panel (Element)-->
-    <div class="dashboard-content__panel" data-panel-id="notifications">
-      <div class="dashboard-header">
-        <!-- Search (Element)-->
-        <div class="dashboard-header__search">
-          <input type="search" placeholder="Search..."/>
-        </div>
-        <!-- New (Element)-->
-        <div class="dashboard-header__new"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_new_plan.svg"/></div>
-      </div>
-      <div class="dashboard-list">
-        <!-- Dasboard List Item (Element)-->
-        <div class="dashboard-list__item" data-item-id="kulon_progo">
-          <!-- Title (Element)-->
-          <h2>Team holiday Trip to The Jewel of Java, Kulon Progo</h2>
-          <!-- Date (Element)--><span>15 May - 23 May 2016</span>
-          <!-- Avatar (Element)-->
-          <div class="dashboard-list__avatar"><img src="http://placehold.it/31/95BFBF/FFF" data-avatar-id="0"/></div>
-        </div>
-        <!-- Dasboard List Item (Element)-->
-        <div class="dashboard-list__item dashboard-list__item--active" data-item-id="bromo">
-          <!-- Title (Element)-->
-          <h2>Investors Meetup - Bromo</h2>
-          <!-- Date (Element)--><span>15 May - 23 May 2016</span>
-          <!-- Avatar (Element)-->
-          <div class="dashboard-list__avatar"><img src="http://placehold.it/31/95BFBF/FFF" data-avatar-id="0"/></div>
-          <!-- Avatar (Element)-->
-          <div class="dashboard-list__avatar"><img src="http://placehold.it/31/95BFBF/FFF" data-avatar-id="1"/></div>
-        </div>
-      </div>
+    <div class="dashboard-content__panel" data-panel-id="add_room">
+      <div class="dashboard-list report-content">
+        <table id="add_room_report" class="display responsive nowrap" cellspacing="0" width="100%" height="60vh">
+        <thead>
+            <tr>
+                <th>Lecturer</th>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Cancellation Date</th>
+                <th>Rescheduling Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>Winson</td>
+                <td>BMC 308</td>
+                <td>Mobile Development</td>
+                <td>2018/01/15</td>
+                <td>2018/02/25</td>
+                <td>Completed</td>
+            </tr>
+            <tr>
+                <td>Anita</td>
+                <td>BIT 200</td>
+                <td>IT & Entrepreneurship</td>
+                <td>2018/01/18</td>
+                <td>2018/02/18</td>
+                <td>Completed</td>
+            </tr>
+            <tr>
+                <td>Fong</td>
+                <td>BIT 210</td>
+                <td>Web Programming</td>
+                <td>2018/02/01</td>
+                <td>2018/02/15</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Seetha</td>
+                <td>BIT 216</td>
+                <td>Software Engineering Principles</td>
+                <td>2018/02/12</td>
+                <td>2018/04/25</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Kok</td>
+                <td>BIT 208</td>
+                <td>Data Structures</td>
+                <td>2018/02/06</td>
+                <td>2018/02/20</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Dewi</td>
+                <td>BIT 103</td>
+                <td>Introduction to Databases</td>
+                <td>2018/01/25</td>
+                <td>2018/03/25</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Dewi</td>
+                <td>BGM 101</td>
+                <td>Multimedia Authoring and Development</td>
+                <td>2018/01/20</td>
+                <td>2018/03/01</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Dewi</td>
+                <td>BIT 103</td>
+                <td>Introduction to Databases</td>
+                <td>2018/02/25</td>
+                <td>2018/03/25</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Fong</td>
+                <td>BIT 306</td>
+                <td>Web Technologies</td>
+                <td>2018/01/28</td>
+                <td>2018/02/20</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Anita</td>
+                <td>BIT 200</td>
+                <td>IT & Entrepreneurship</td>
+                <td>2018/03/01</td>
+                <td>2018/04/01</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Anita</td>
+                <td>BIT 200</td>
+                <td>IT & Entrepreneurship</td>
+                <td>2018/02/12</td>
+                <td>2018/04/25</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Winson</td>
+                <td>BMC 308</td>
+                <td>Mobile Development</td>
+                <td>2018/01/10</td>
+                <td>2018/02/15</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Fong</td>
+                <td>BIT 210</td>
+                <td>Web Programming</td>
+                <td>2018/02/05</td>
+                <td>2018/03/12</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Anita</td>
+                <td>BIT 310</td>
+                <td>Business Development Plan</td>
+                <td>2018/02/02</td>
+                <td>2018/03/10</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Anita</td>
+                <td>BIT 200</td>
+                <td>IT & Entrepreneurship</td>
+                <td>2018/02/12</td>
+                <td>2018/04/25</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Winson</td>
+                <td>BMC 308</td>
+                <td>Mobile Development</td>
+                <td>2018/01/10</td>
+                <td>2018/02/15</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Fong</td>
+                <td>BIT 210</td>
+                <td>Web Programming</td>
+                <td>2018/02/05</td>
+                <td>2018/03/12</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>Anita</td>
+                <td>BIT 310</td>
+                <td>Business Development Plan</td>
+                <td>2018/02/02</td>
+                <td>2018/03/10</td>
+                <td>Pending</td>
+            </tr>
+        </tbody>
+      </table>
     </div>
-    <!-- Dashboard Content Panel (Element)
-          settings
-    <div class="dashboard-content__panel" data-panel-id="settings">
-      <p>Settings</p>
-    </div>
-    -->
+  </div>
   </div>
 </div>
 </div>
