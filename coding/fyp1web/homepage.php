@@ -307,23 +307,48 @@
       </div>
           </div>
     -->
-    <div id="subjects" class="panel panel-default panel-table subject_view">
+    <div id="subjects" class="panel panel-default panel-table subject_view table-responsive">
       <div class="panel-heading">
                 <div class="row">
                   <div class="col col-xs-6">
-                    <h3 class="panel-title">Panel Heading</h3>
+                    <h3 class="panel-title">Subject</h3>
+                    <br/>
+                    <table >
+                      <td class="code">
+                        <input type="hidden" id="id-field" />
+                        <input type="text" id="code-field" placeholder="Code" />
+                      </td>
+                      <td class="name">
+
+                        <input type="text" id="name-field" placeholder="Name" />
+                      </td>
+                      <td class="date">
+                        <input type="date" id="date-field" placeholder="Date" />
+                      </td>
+                      <td class="time">
+                        <input type="time" id="time-field" placeholder="Time" />
+                      </td>
+                      <td class="add">
+                        <button id="add-btn">Add</button>
+                        <button id="edit-btn">Edit</button>
+                      </td>
+                    </table>
                   </div>
+                  <!--
                   <div class="col col-xs-6 text-right">
                     <button type="button" class="btn btn-sm btn-primary btn-create">Create New</button>
                   </div>
+                -->
                 </div>
               </div>
-      <table class="table-responsive table  table-hover">
+      <table class="table  table-hover">
         <thead>
           <tr>
-            <th class="sort" data-sort="name">Name</th>
-            <th class="sort" data-sort="age">Age</th>
-            <th class="sort" data-sort="city">City</th>
+            <th class="sort" data-sort="name">Code</th>
+            <th class="sort" data-sort="code">Name</th>
+            <th class="sort" data-sort="date">Date</th>
+            <th class="sort" data-sort="time">Time</th>
+            <th> actions </th>
             <th colspan="2">
               <input type="text" class="search" placeholder="Search contact" />
             </th>
@@ -332,54 +357,40 @@
         <tbody class="list">
           <tr>
             <td class="id" style="display:none;">1</td>
-            <td class="name">Jonny</td>
-            <td class="age">27</td>
-            <td class="city">Stockholm</td>
+            <td class="code">BIT200</td>
+            <td class="name">IEntre</td>
+            <td class="date">2018-03-08</td>
+            <td class="time">19:00:00</td>
             <td class="edit"><button class="edit-item-btn">Edit</button></td>
             <td class="remove"><button class="remove-item-btn">Remove</button></td>
           </tr>
           <tr>
-            <td class="id" style="display:none;">2</td>
-            <td class="name">Jonas</td>
-            <td class="age">-132</td>
-            <td class="city">Berlin</td>
+            <td class="code">BIT208</td>
+            <td class="name">Data Struct</td>
+            <td class="date">2018-03-08</td>
+            <td class="time">19:00:00</td>
             <td class="edit"><button class="edit-item-btn">Edit</button></td>
             <td class="remove"><button class="remove-item-btn">Remove</button></td>
           </tr>
           <tr>
-            <td class="id" style="display:none;">3</td>
-            <td class="name">Gustaf</td>
-            <td class="age">-23</td>
-            <td class="city">Sundsvall</td>
+            <td class="code">BIT216</td>
+            <td class="name">Software Engrg</td>
+            <td class="date">2018-03-08</td>
+            <td class="time">19:00:00</td>
             <td class="edit"><button class="edit-item-btn">Edit</button></td>
             <td class="remove"><button class="remove-item-btn">Remove</button></td>
           </tr>
           <tr>
-            <td class="id" style="display:none;">4</td>
-            <td class="name">Fredrik</td>
-            <td class="age">26</td>
-            <td class="city">Goteborg</td>
+            <td class="code">BIT210</td>
+            <td class="name">Web Prog</td>
+            <td class="date">2018-03-08</td>
+            <td class="time">19:00:00</td>
             <td class="edit"><button class="edit-item-btn">Edit</button></td>
             <td class="remove"><button class="remove-item-btn">Remove</button></td>
           </tr>
         </tbody>
       </table>
-      <table>
-        <td class="name">
-          <input type="hidden" id="id-field" />
-          <input type="text" id="name-field" placeholder="Name" />
-        </td>
-        <td class="age">
-          <input type="text" id="age-field" placeholder="Age" />
-        </td>
-        <td class="city">
-          <input type="text" id="city-field" placeholder="City" />
-        </td>
-        <td class="add">
-          <button id="add-btn">Add</button>
-          <button id="edit-btn">Edit</button>
-        </td>
-      </table>
+
 
     </div>
 

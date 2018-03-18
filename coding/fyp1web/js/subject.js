@@ -68,16 +68,17 @@ function filterItems(e){
 }*/
 
 var options = {
-  valueNames: [ 'id', 'name', 'age', 'city' ]
+  valueNames: [ 'id', 'code', 'name',  'date', 'time' ]
 };
 
 // Init list
 var contactList = new List('subjects', options);
 
 var idField = $('#id-field'),
+    codeField = $('#code-field'),
     nameField = $('#name-field'),
-    ageField = $('#age-field'),
-    cityField = $('#city-field'),
+    dateField = $('#date-field'),
+    timeField = $('#time-field'),
     addBtn = $('#add-btn'),
     editBtn = $('#edit-btn').hide(),
     removeBtns = $('.remove-item-btn'),
@@ -89,9 +90,10 @@ refreshCallbacks();
 addBtn.click(function() {
   contactList.add({
     id: Math.floor(Math.random()*110000),
+    code: codeField.val(),
     name: nameField.val(),
-    age: ageField.val(),
-    city: cityField.val()
+    date: dateField.val(),
+    time: timeField.val()
   });
   clearFields();
   refreshCallbacks();
@@ -100,10 +102,11 @@ addBtn.click(function() {
 editBtn.click(function() {
   var item = contactList.get('id', idField.val())[0];
   item.values({
-    id:idField.val(),
+    id:   idField.val(),
+    code: codeField.val(),
     name: nameField.val(),
-    age: ageField.val(),
-    city: cityField.val()
+    date: dateField.val(),
+    time: timeField.val()
   });
   clearFields();
   editBtn.hide();
@@ -124,9 +127,10 @@ function refreshCallbacks() {
     var itemId = $(this).closest('tr').find('.id').text();
     var itemValues = contactList.get('id', itemId)[0].values();
     idField.val(itemValues.id);
+    codeField.val(itemValues.code);
     nameField.val(itemValues.name);
-    ageField.val(itemValues.age);
-    cityField.val(itemValues.city);
+    dateField.val(itemValues.date);
+    timeField.val(itemValues.time);
 
     editBtn.show();
     addBtn.hide();
@@ -134,7 +138,8 @@ function refreshCallbacks() {
 }
 
 function clearFields() {
+  codeField.val('');
   nameField.val('');
-  ageField.val('');
-  cityField.val('');
+  dateField.val('');
+  timeField.val('');
 }
