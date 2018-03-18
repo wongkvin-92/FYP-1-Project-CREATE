@@ -173,6 +173,18 @@
           $this->sendMsg("Successfully Created!");
 
       }
+
+      public function listLecturers(){
+          $lecturerDA = new LecturerDA($this->con);
+          $in = $lecturerDA->findAll();
+          $out = [];
+          foreach($in as $v){
+              $o['lecturerID'] = $v->getId();
+              $o['lecturerName'] = $v->getName();
+              $out[] = $o;
+          }
+          $this->returnObject($out);          
+      }
       
   }
 ?>

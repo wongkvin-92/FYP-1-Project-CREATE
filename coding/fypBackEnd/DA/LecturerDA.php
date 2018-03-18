@@ -1,11 +1,11 @@
 <?php
 
-  class LecturerDA {
-    private $con;
+  class LecturerDA extends DataAccessObject {
     public function __construct($con){
-      if($con == null)
-        throw new \Exception("LecturerDA: No connection received");
-      $this->con = $con;
+        //if($con == null)
+        //throw new \Exception("LecturerDA: No connection received");
+        //$this->con = $con;
+        parent::__construct($con, "Lecturer");
     }
 
     //returns the user by email

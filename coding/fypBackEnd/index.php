@@ -70,6 +70,12 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
     $admin->listLessons();
   });
 
+  //Lecturer related routes
+  $klein->respond('GET', $root.'/lecturers/', function($r) use ($admin){
+    $admin->listLecturers();
+  });
+
+
     //Lesson related routes
   $klein->respond('GET', $root.'/subjects/', function($r) use ($admin){
     $admin->listSubjects();
