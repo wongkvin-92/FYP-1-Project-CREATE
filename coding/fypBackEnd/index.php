@@ -64,6 +64,25 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
       $capacity = getPost('capacity');
       $admin->addRoom($name, $capacity);
   });
+
+  //Lesson related routes
+  $klein->respond('GET', $root.'/lessons/', function($r) use ($admin){
+    $admin->listLessons();
+  });
+
+    //Lesson related routes
+  $klein->respond('GET', $root.'/subjects/', function($r) use ($admin){
+    $admin->listSubjects();
+  });
+  $klein->respond('POST', $root.'/subjects/', function($r) use ($admin, $con){      
+      $name = getPost('name');
+      $lecturerID = getPost('lecturer');
+      $code = getPost('code');
+      $lectDA = new LecturerDA($con);
+      $lecturer = $lectDA->fetchLecturerById($lecturerID);
+      $admin->addSubject($code, $name, $lecturer);
+  });
+
   
 }
 

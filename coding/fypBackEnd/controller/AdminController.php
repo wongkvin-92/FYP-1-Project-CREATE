@@ -127,5 +127,39 @@
               throw new \Exception("Failed to create a new room, the room already exists.");
           }
       }
+
+      /**
+       * Returns all Lessons
+       * for testing purpose
+       **/
+      public function listLessons(){
+          $classDA = new ClassLessonDA($this->con);
+
+          $list = $classDA->findAll();
+          $this->returnObject($list);
+      }
+
+      /**
+       * Returns all Lessons
+       * for testing purpose
+       **/
+      public function listSubjects(){
+          $subjectDA = new SubjectDA($this->con);
+
+          $list = $subjectDA->findAll();
+          $this->returnObject($list);
+      }
+
+      public function addSubject($id, $name, Lecturer $lecturer){
+          $subjectDA = new SubjectDA($this->con);
+          $subject = new Subject();
+          $subject->subjectID = $id;
+          $subject->lecturerID = $lecturer->lecturerID;
+          
+          $subjectDA->save($subject);
+          $this->sendMsg("Successfully Created!");
+
+      }
+      
   }
 ?>
