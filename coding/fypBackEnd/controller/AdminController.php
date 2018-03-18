@@ -147,7 +147,20 @@
           $subjectDA = new SubjectDA($this->con);
 
           $list = $subjectDA->findAll();
-          $this->returnObject($list);
+          $arr = [];
+          foreach($list as $k => $v){
+              $lda = new LecturerDA($this->con);
+              $lecturer = $lda->fetchLecturerById($v->lecturerID);
+              $v->setLecturer($lecturer);
+
+              $o['subjectID'] = $v->subjectID;
+              $o['subjectName'] = $v->getSubName();
+              $o['lecturerID'] = $v->getLecturer()->getId();
+              $o['lecturerName'] = $v->getLecturer()->getName();              
+
+              $arr[] = $o;
+          }
+          $this->returnObject($arr);
       }
 
       public function addSubject($id, $name, Lecturer $lecturer){
