@@ -86,6 +86,7 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
       $code = getPost('code');
       $lectDA = new LecturerDA($con);
       $lecturer = $lectDA->fetchLecturerById($lecturerID);
+      
       if($lecturer == null)
       {
           throw new \Exception("Lecturer not found!");

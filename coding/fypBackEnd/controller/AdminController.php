@@ -168,6 +168,7 @@
           $subject = new Subject();
           $subject->subjectID = $id;
           $subject->lecturerID = $lecturer->lecturerID;
+          $subject->subjectName = $name;
           
           $subjectDA->save($subject);
           $this->sendMsg("Successfully Created!");
