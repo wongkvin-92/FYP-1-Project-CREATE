@@ -14,7 +14,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800'>
+
     <link rel="stylesheet" href="css/homepage.css">
+
 
 
 
@@ -34,16 +36,15 @@
       <ul>
         <!-- Item:Selected (Element:Modifier)        -->
         <li class="dashboard-nav__item dashboard-nav__item--selected"><a href="home"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_my_trip.svg"/>Home</a></li>
-        <!-- Item (Element)-->
-        <li class="dashboard-nav__item "><a href="my_trip"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_home.svg"/>Class Replacement</a></li>
-
-        <!-- Item (Element)-->
+        <!-- Class Replacement (Element)-->
+        <li class="dashboard-nav__item "><a href="class_replacement"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_home.svg"/>Class Replacement</a></li>
+        <!-- Report (Element)-->
         <li class="dashboard-nav__item"><a href="report"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Report</a></li>
-        <!-- Item (Element)
+        <!-- Subject (Element)-->
+        <li class="dashboard-nav__item"><a href="subject"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Subject</a></li>
 
-        <li class="dashboard-nav__item"><a href="notifications"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_notifications.svg"/>Notifications</a></li> -->
-        <!-- Setting Item (Element)
-        <li class="dashboard-nav__item"><a href="settings"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_settings.svg"/>Settings</a></li> -->
+        <!-- Add Rooms (Element)-->
+        <li class="dashboard-nav__item"><a href="add_room"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_settings.svg"/>Add Rooms</a></li>
       </ul>
     </div>
   </div>
@@ -54,14 +55,7 @@
     <!-- Dashboard Content Panel (Element)-->
     <div class="dashboard-content__panel dashboard-content__panel--active" data-panel-id="home">
       <div id="userTitle">
-
       </div>
-      <!--
-      <span style="text-align:left;">
-        <h2 >John Doe</h2>
-        <p >john.doe@somedomain.com</p>
-      </span>
-      -->
       <div class="cardsLayout">
       <ul class="flex cards">
         <li>
@@ -86,7 +80,7 @@
     </div>
 
     <!-- Dashboard Content Panel (Home)-->
-    <div class="dashboard-content__panel " data-panel-id="my_trip">
+    <div class="dashboard-content__panel " data-panel-id="class_replacement">
       <div class="dashboard-header">
         <!-- Search (Element)-->
         <div class="dashboard-header__search">
@@ -274,35 +268,124 @@
     </div>
     <!-- Dashboard Content Panel (Home)-->
     <div class="dashboard-content__panel " data-panel-id="subject">
+      <div class="dashboard-list">
+
+        <!--
+          <div class="subject_view">
       <header id="main-header" class="bg-success text-white">
         <div class="container">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <h1 id="header-title">Item Lister</h1>
             </div>
-            <div class="col-md-6 align-self-center">
+            <div class="col-md-3 align-self-center">
                 <input type="text" class="form-control" id="filter" placeholder="Search Items...">
             </div>
           </div>
         </div>
       </header>
+      <br/>
       <div class="container">
+          <div class="col-md-8 ">
        <div id="main" class="card card-body">
         <h2 class="title">Add Items</h2>
-        <form id="addForm" class="form-inline mb-3">
-          <input type="text" class="form-control mr-2" id="item">
+        <br/>
+        <form id="addForm" class="form-inline">
+          <input type="text" class="form-control" id="item">
           <input type="submit" class="btn btn-dark" value="Submit">
         </form>
+        <br/>
         <h2 class="title">Items</h2>
         <ul id="items" class="list-group">
-          <li class="list-group-item">Item 1 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
-          <li class="list-group-item">Item 2 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
-          <li class="list-group-item">Item 3 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
-          <li class="list-group-item">Item 4 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+          <li class="list-group-item">Item 1 <button class="btn btn-primary btn-sm float-right edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><button class="btn btn-danger btn-sm float-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></li>
+          <li class="list-group-item">Item 2 <button class="btn btn-primary btn-sm float-right edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><button class="btn btn-danger btn-sm float-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></li>
+          <li class="list-group-item">Item 3 <button class="btn btn-primary btn-sm float-right edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><button class="btn btn-danger btn-sm float-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></li>
+          <li class="list-group-item">Item 4 <button class="btn btn-primary btn-sm float-right edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><button class="btn btn-danger btn-sm float-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></li>
         </ul>
        </div>
       </div>
+      </div>
+          </div>
+    -->
+    <div id="subjects" class="panel panel-default panel-table subject_view">
+      <div class="panel-heading">
+                <div class="row">
+                  <div class="col col-xs-6">
+                    <h3 class="panel-title">Panel Heading</h3>
+                  </div>
+                  <div class="col col-xs-6 text-right">
+                    <button type="button" class="btn btn-sm btn-primary btn-create">Create New</button>
+                  </div>
+                </div>
+              </div>
+      <table class="table-responsive table  table-hover">
+        <thead>
+          <tr>
+            <th class="sort" data-sort="name">Name</th>
+            <th class="sort" data-sort="age">Age</th>
+            <th class="sort" data-sort="city">City</th>
+            <th colspan="2">
+              <input type="text" class="search" placeholder="Search contact" />
+            </th>
+          </tr>
+        </thead>
+        <tbody class="list">
+          <tr>
+            <td class="id" style="display:none;">1</td>
+            <td class="name">Jonny</td>
+            <td class="age">27</td>
+            <td class="city">Stockholm</td>
+            <td class="edit"><button class="edit-item-btn">Edit</button></td>
+            <td class="remove"><button class="remove-item-btn">Remove</button></td>
+          </tr>
+          <tr>
+            <td class="id" style="display:none;">2</td>
+            <td class="name">Jonas</td>
+            <td class="age">-132</td>
+            <td class="city">Berlin</td>
+            <td class="edit"><button class="edit-item-btn">Edit</button></td>
+            <td class="remove"><button class="remove-item-btn">Remove</button></td>
+          </tr>
+          <tr>
+            <td class="id" style="display:none;">3</td>
+            <td class="name">Gustaf</td>
+            <td class="age">-23</td>
+            <td class="city">Sundsvall</td>
+            <td class="edit"><button class="edit-item-btn">Edit</button></td>
+            <td class="remove"><button class="remove-item-btn">Remove</button></td>
+          </tr>
+          <tr>
+            <td class="id" style="display:none;">4</td>
+            <td class="name">Fredrik</td>
+            <td class="age">26</td>
+            <td class="city">Goteborg</td>
+            <td class="edit"><button class="edit-item-btn">Edit</button></td>
+            <td class="remove"><button class="remove-item-btn">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <td class="name">
+          <input type="hidden" id="id-field" />
+          <input type="text" id="name-field" placeholder="Name" />
+        </td>
+        <td class="age">
+          <input type="text" id="age-field" placeholder="Age" />
+        </td>
+        <td class="city">
+          <input type="text" id="city-field" placeholder="City" />
+        </td>
+        <td class="add">
+          <button id="add-btn">Add</button>
+          <button id="edit-btn">Edit</button>
+        </td>
+      </table>
+
     </div>
+
+  </div>
+
+  </div>
     <!-- Dashboard Content Panel (Element)-->
     <div class="dashboard-content__panel" data-panel-id="add_room">
       <div class="dashboard-list report-content">
@@ -476,8 +559,20 @@
 
   <script  src="js/homepage.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() {
-      $('#report-table').DataTable( {
+  $(document).ready(function() {
+    $('#report-table').DataTable( {
+
+      dom: 'Bfrtip',
+
+      buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+
+      } );
+
+
+
+      $('#add_room_report').DataTable( {
 
         dom: 'Bfrtip',
 
@@ -498,7 +593,8 @@
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js'></script>
 
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+  <script src='js/subject.js'></script>
 </body>
 
 </html>
