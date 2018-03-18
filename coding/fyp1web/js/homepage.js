@@ -80,7 +80,7 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id){
   var replacementCard = `<div class="content-layout" id="approval-request-`+id+`">
 
 
-  <h3 style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-danger btn-sm pull-right delete">X</button></h3>
+  <h3 style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-danger btn-sm pull-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></h3>
   <div style="position:relative; z-index:9999; top:-10px;">
     <h3><span class="left">Code:</span> <span class="right" id="subjectCode"></span></h3>
     <h5><span class="left">Subject:</span> <span class="right" id="subjectName"></span></h5>

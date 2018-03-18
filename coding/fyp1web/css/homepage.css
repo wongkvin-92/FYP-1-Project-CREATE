@@ -146,6 +146,16 @@ body {
   text-align: center;
 }
 
+#add_room_report tr{
+  color: black;
+}
+
+.subject_view{
+  padding: 20px;
+  font-size: 12px;
+  color:black;
+}
+
 .dashboard-header {
   display: -webkit-box;
   display: -ms-flexbox;
