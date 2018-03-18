@@ -1,3 +1,4 @@
+var backEndUrl = '/fypBackEnd';
 $('#btnLogin').on('click', function(){
   var email = $('#email').val();
   var pass = $('#pass').val();
@@ -6,7 +7,7 @@ $('#btnLogin').on('click', function(){
   }
 
   $.ajax({
-   url: '/learningPHP/admin/login/',
+   url: backEndUrl+'/admin/login/',
    method: 'POST',
    data: {
     email: email,

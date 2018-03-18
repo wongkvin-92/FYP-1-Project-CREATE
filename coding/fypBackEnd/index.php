@@ -8,7 +8,7 @@ $klein = new \Klein\Klein();
 
 $admin  = new AdminController($con);
 
-$root = "/learningPHP";
+$root = "/fypBackEnd";
 
 session_start();
 

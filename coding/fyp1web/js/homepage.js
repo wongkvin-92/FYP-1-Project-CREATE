@@ -1,5 +1,7 @@
+var backEndUrl = '/fypBackEnd';
+
 $.ajax({
-  url: '/learningPHP/admin/',
+  url: backEndUrl+'/admin/',
   method: 'GET',
   dataType:'json',
   success: function(reply){
@@ -10,7 +12,7 @@ $.ajax({
 
 $("#btnLogout").on("click", function(){
     $.ajax({
-      url: '/learningPHP/admin/logout/',
+      url: backEndUrl+'/admin/logout/',
       method: 'GET',
       dataType:'json',
       success: function(reply){
@@ -42,7 +44,7 @@ $("#btnLogout").on("click", function(){
 
 
 $.ajax({
-  url: 'http://127.0.0.1/learningPHP/classes/pending/',
+  url: backEndUrl+'/classes/pending/',
   method: 'GET',
   dataType: 'json',
   success: function(d){
@@ -62,7 +64,7 @@ function removeClass(id){
 
 function approveClass(id){
   $.ajax({
-      url : "/learningPHP/classes/"+id+"/approve/",
+      url : backEndUrl+"/classes/"+id+"/approve/",
       method : "GET",
       dataType : "json",
       success : function(r) {
