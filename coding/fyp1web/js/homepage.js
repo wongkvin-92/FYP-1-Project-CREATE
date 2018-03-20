@@ -9,7 +9,6 @@ $.ajax({
 }
 });
 
-
 $("#btnLogout").on("click", function(){
     $.ajax({
       url: backEndUrl+'/admin/logout/',
@@ -280,8 +279,7 @@ if (items.length > 6)
 else
   $('.pagination-button').show();
 //var l = (items.length > 6)? 6 : items.length;
-/* This part is just for the demo,
-not actually part of the plugin */
+
 $('.content-layout').paginate(6);
 }
 

@@ -307,7 +307,7 @@
       </div>
           </div>
     -->
-    <div id="subjects" class="panel panel-default panel-table subject_view table-responsive">
+    <div id="subjects" class="panel panel-primary panel-table subject_view table-responsive" style="border:none;">
       <div class="panel-heading">
                 <div class="row">
                   <div class="col col-xs-6">
@@ -316,21 +316,23 @@
                     <table >
                       <td class="code">
                         <input type="hidden" id="id-field" />
-                        <input type="text" id="code-field" placeholder="Code" />
-                      </td>
-                      <td class="name">
 
-                        <input type="text" id="name-field" placeholder="Name" />
+                        <input type="text" id="code-field" placeholder="Code" />
+
                       </td>
-                      <td class="date">
-                        <input type="date" id="date-field" placeholder="Date" />
+                      <td class="name"  >
+
+                        <input type="text" id="name-field" placeholder="Name" style="margin-left:10px;"/>
                       </td>
-                      <td class="time">
-                        <input type="time" id="time-field" placeholder="Time" />
+                      <td class="lecturer">
+                        <select  id="lecturer-field" style="margin-left:10px;">
+
+                          <option value="" >Lecturer</option>
+                        </select>
                       </td>
-                      <td class="add">
-                        <button id="add-btn">Add</button>
-                        <button id="edit-btn">Edit</button>
+                      <td class="add" style="margin-left:10px;">
+                        <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
+                        <button class="btn btn-default btn-sm" id="edit-btn" style="margin-left:10px;">Edit</button>
                       </td>
                     </table>
                   </div>
@@ -344,50 +346,17 @@
       <table class="table  table-hover">
         <thead>
           <tr>
-            <th class="sort" data-sort="name">Code</th>
-            <th class="sort" data-sort="code">Name</th>
-            <th class="sort" data-sort="date">Date</th>
-            <th class="sort" data-sort="time">Time</th>
+            <th class="sort" data-sort="code">Code</th>
+            <th class="sort" data-sort="name">Subj Name</th>
+            <th class="sort" data-sort="lecturer">Lecturer Name</th>
             <th> actions </th>
             <th colspan="2">
-              <input type="text" class="search" placeholder="Search contact" />
+              <input class="search" placeholder="Search contact" />
             </th>
           </tr>
         </thead>
-        <tbody class="list">
-          <tr>
-            <td class="id" style="display:none;">1</td>
-            <td class="code">BIT200</td>
-            <td class="name">IEntre</td>
-            <td class="date">2018-03-08</td>
-            <td class="time">19:00:00</td>
-            <td class="edit"><button class="edit-item-btn">Edit</button></td>
-            <td class="remove"><button class="remove-item-btn">Remove</button></td>
-          </tr>
-          <tr>
-            <td class="code">BIT208</td>
-            <td class="name">Data Struct</td>
-            <td class="date">2018-03-08</td>
-            <td class="time">19:00:00</td>
-            <td class="edit"><button class="edit-item-btn">Edit</button></td>
-            <td class="remove"><button class="remove-item-btn">Remove</button></td>
-          </tr>
-          <tr>
-            <td class="code">BIT216</td>
-            <td class="name">Software Engrg</td>
-            <td class="date">2018-03-08</td>
-            <td class="time">19:00:00</td>
-            <td class="edit"><button class="edit-item-btn">Edit</button></td>
-            <td class="remove"><button class="remove-item-btn">Remove</button></td>
-          </tr>
-          <tr>
-            <td class="code">BIT210</td>
-            <td class="name">Web Prog</td>
-            <td class="date">2018-03-08</td>
-            <td class="time">19:00:00</td>
-            <td class="edit"><button class="edit-item-btn">Edit</button></td>
-            <td class="remove"><button class="remove-item-btn">Remove</button></td>
-          </tr>
+        <tbody class="list" id="subjectData">
+
         </tbody>
       </table>
 
@@ -603,8 +572,7 @@
   <script  src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js'></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+  
   <script src='js/subject.js'></script>
 </body>
 
