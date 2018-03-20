@@ -146,7 +146,7 @@ function clearFields() {
 function displayNewSubj(id, code, name, lecturer){
   var newSubjRow =
   `<tr class="listContent" id="subject-`+id+`">
-        <td class="id" style="display:none;">`+id+`</td>
+        <td class="id" >`+id+`</td>
         <td class="code">`+code+`</td>
         <td class="name">`+name+`</td>
         <td class="lecturer">`+lecturer+`</td>
@@ -284,13 +284,13 @@ var listPaginate = function(){
         // handle click events on the buttons
         $(document).on('click', '.lPage-button', function(e) {
             // get current page from active button
-            var currentPage = parseInt($('.lPage-button.active').text(), 11),
+            var currentPage = parseInt($('.lPage-button.active').text(), 10),
                 newPage = currentPage,
                 totalPages = lPaginate.totalPages(items, perPage),
                 target = $(e.target);
 
             // get numbered page
-            newPage = parseInt(target.text(), 11);
+            newPage = parseInt(target.text(), 10);
             if (target.text() == '«') newPage = 1;
             if (target.text() == '»') newPage = totalPages;
 
@@ -301,11 +301,11 @@ var listPaginate = function(){
     };
 
 })(jQuery);
-if (items.length > 10)
+if (items.length > 9)
   $('.lPage-button').hide();
 else
   $('.lPage-button').show();
 //var l = (items.length > 6)? 6 : items.length;
 
-$('.listContent').lPaginate(10);
+$('.listContent').lPaginate(9);
 }
