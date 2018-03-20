@@ -146,7 +146,7 @@ function clearFields() {
 function displayNewSubj(id, code, name, lecturer){
   var newSubjRow =
   `<tr class="listContent" id="subject-`+id+`">
-        <td class="id" >`+id+`</td>
+        <td class="id" style="display:none;">`+id+`</td>
         <td class="code">`+code+`</td>
         <td class="name">`+name+`</td>
         <td class="lecturer">`+lecturer+`</td>
@@ -301,11 +301,11 @@ var listPaginate = function(){
     };
 
 })(jQuery);
-if (items.length > 9)
+if (items.length > 8)
   $('.lPage-button').hide();
 else
   $('.lPage-button').show();
 //var l = (items.length > 6)? 6 : items.length;
 
-$('.listContent').lPaginate(9);
+$('.listContent').lPaginate(8);
 }
