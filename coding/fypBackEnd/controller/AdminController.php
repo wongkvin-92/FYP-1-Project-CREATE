@@ -183,7 +183,9 @@
         }
         else
           throw new Exception("Error! Failed to delete subject!");
+      }
 
+      public function updateSubject($id, $name, Lecturer $lecturer){
 
       }
 

@@ -15,6 +15,7 @@
       return $result->fetch_object('User');
     }
 
+
   }
 
  ?>

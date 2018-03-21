@@ -118,9 +118,15 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
       $admin->addSubject($code, $name, $lecturer);
   });
 
-  $klein->respond('DELETE', $root.'/subjects/[a:id]/', function($r) use ($admin){
+  $klein->respond('', $root.'/subjects/[a:id]/', function($r) use ($admin){
     $admin->deleteSubject($r->id);
   });
+
+
+  $klein->respond('PATCH', $root.'/subjects/[a:id]/', function($r) use ($admin){
+    print("Todo");
+  });
+
 
 }
 
