@@ -14,6 +14,11 @@ class ClassLessonDA extends DataAccessObject{
         return  $this->getListByAttribute('id', $fk);
     }
 
+    public function getClassById($id){
+        $this->con->query("SELECT * FROM class_lesson WHERE classID = '{$id}';");
+        return $result->fetch_object('ClassLesson');
+    }
+
 }
 
 ?>

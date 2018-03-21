@@ -17,5 +17,9 @@ class ClassLesson{
         return $this->roomID;
     }
 
+    public function setNewDateTime($date, $time){
+        $this->dateTime = date('Y-m-d H:i:s', strtotime("$date $time"));
+    }
+
 }
 ?>

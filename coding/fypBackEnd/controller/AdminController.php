@@ -41,8 +41,6 @@
       $this->returnObject($this->getAdmin());
     }
 
-
-
     public function checkLoginState(){
       if (isset($_SESSION['credentials'])
           && $_SESSION['credentials']['type'] == 'admin'
@@ -100,6 +98,36 @@
       }
 
     }
+
+      public function addClass($subjectId, $roomId, $date, $time, $duration, $type){
+          $da = new ClassLessonDA($this->con);
+          $subjectDA = new SubjectDA($this->con);
+          $roomDA = new RoomDA($this->con);
+
+          
+          $room = $roomDA->getRoomById($roomId);
+          $subject = $subjectDA->fetchSubjectById($subjectId);
+          if($room == false || $subject == false){
+              throw new \Exception("Invalid request received! Room or Subject cannot be found.");
+              return;
+          }
+          
+          
+          $lesson = new ClassLesson();
+          $lesson->setSubject($subjectId);
+          $lesson->setRoom($roomId);
+          $lesson->setDateTime($date, $time);
+          $lesson->setDuration($duration);
+          $lesson->setType($type);
+
+          try{
+              $da->save($lesson);
+              $roomDA->save($room);
+              $this->sendMsg("Lesson successfully created!");
+          }catch(\Exception $ex){
+              throw new \Exception("Failed to create a new lesson");
+          }          
+      }
 
       /**
        * Returns all rooms

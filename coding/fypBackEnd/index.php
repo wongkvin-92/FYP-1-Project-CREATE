@@ -93,14 +93,28 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
   $klein->respond('GET', $root.'/lessons/', function($r) use ($admin){
     $admin->listLessons();
   });
+  $klein->respond('POST', $root.'/lessons/', function($r) use ($admin){
 
+      $sid = getPost('subjectID');
+      $rid = getPost('roomID');
+      $date = getPost('date');
+      $time = getPost('time');      
+      $duration = getPost('duration');      
+      $type = getPost('type');      
+
+      $admin->addClass($sid, $rid, $date, $time, $duration, $type);
+  });
+
+  
   //Lecturer related routes
   $klein->respond('GET', $root.'/lecturers/', function($r) use ($admin){
     $admin->listLecturers();
   });
 
 
-    //Lesson related routes
+
+
+    //Subject related routes
   $klein->respond('GET', $root.'/subjects/', function($r) use ($admin){
     $admin->listSubjects();
   });
