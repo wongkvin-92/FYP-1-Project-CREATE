@@ -164,7 +164,30 @@
           $classDA = new ClassLessonDA($this->con);
 
           $list = $classDA->findAll();
-          $this->returnObject($list);
+
+          $in = $list;
+          $out = [];
+          foreach($in as $v){
+              $roomda = new RoomDA($this->con);
+              $room = $roomda->getRoomById($v->roomID);
+              $sda = new SubjectDA($this->con);
+              $subject = $sda->fetchSubjectById($v->subjectID);
+              
+              $lda = new LecturerDA($this->con);              
+              $lecturer = $lda->fetchLecturerById($subject->getSubId());
+              
+              $o['venue'] = $room->getName();
+              $o['type'] = $v->type;
+              $o['dateTime'] = $v->getDateTime();
+              $o['lecturer'] = $lecturer->getName();
+              $o['subject'] = $subject->getSubName();
+              
+              $o['lecturerName'] = $v->getName();
+              $out[] = $o;
+          }
+
+          
+          $this->returnObject($out);
       }
 
       /**
