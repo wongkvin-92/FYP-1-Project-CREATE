@@ -3,15 +3,7 @@ var backEndUrl='/fypBackEnd';
 
 var subjectList= [];
 
-function insertData(data){
-  $('#subjectData').html("");
-  for(var i=0; i< data.length; i++){
-    var item  = data[i];
-    displayNewSubj(i, item.subjectID,  item.subjectName, item.lecturerName);
 
-  }
-
-}
 
 $.ajax({
   url: backEndUrl+'/subjects/',
@@ -43,6 +35,14 @@ $.ajax({
 });
 
 
+function insertData(data){
+  $('#subjectData').html("");
+  for(var i=0; i< data.length; i++){
+    var item  = data[i];
+    displayNewSubj(i, item.subjectID,  item.subjectName, item.lecturerName);
+
+  }
+}
 
 var idField = $('#id-field'),
     codeField = $('#code-field'),
@@ -53,19 +53,6 @@ var idField = $('#id-field'),
     removeBtns = $('.remove-item-btn'),
     editBtns = $('.edit-item-btn');
 
-// Sets callbacks to the buttons in the list
-//refreshCallbacks();
-/*
-addBtn.click(function() {
-  contactList.add({
-    id: subjectList.length+1,
-    code: codeField.val(),
-    name: nameField.val(),
-    lecturer: lecturerField.val()
-  });
-  clearFields();
-  refreshCallbacks();
-});*/
 
 addBtn.click(function(){
   var data = {

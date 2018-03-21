@@ -43,6 +43,8 @@
         <li class="dashboard-nav__item"><a href="report"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Report</a></li>
         <!-- Subject (Element)-->
         <li class="dashboard-nav__item"><a href="subject"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Subject</a></li>
+        <!-- Subject (Element)-->
+        <li class="dashboard-nav__item"><a href="lesson"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Lesson</a></li>
       </ul>
     </div>
   </div>
@@ -264,7 +266,7 @@
     </table>
       </div>
     </div>
-    <!-- Dashboard Content Panel (Home)-->
+    <!-- Dashboard Content Panel (subject)-->
     <div class="dashboard-content__panel " data-panel-id="subject">
       <div class="dashboard-list">
         <div id="subjects" class="panel panel-primary panel-table subject_view table-responsive" style="border:none;">
@@ -296,7 +298,7 @@
               </div>
             </div>
           </div>
-          <table class="table  table-hover subjListTb " data-show-header="true" data-pagination="true"
+          <table class="table  table-hover subjListTb "  data-show-header="true" data-pagination="true"
                data-id-field="name"
                data-page-list="[5, 10, 25, 50, 100, ALL]"
                data-page-size="5" id="subjTable" width="100%">
@@ -307,7 +309,8 @@
                    <th>Lecturer Name</th>
                    <th>Venue</th>
                    <th>Type</th>
-                   <th colspan="1">Date Time</th>
+                   <th>Date </th>
+                   <th>Time </th>
                    <th colspan="2"> actions </th>
                  </tr>
                </thead>
@@ -317,6 +320,72 @@
            </div>
          </div>
        </div>
+       <!-- Dashboard Content Panel (subject)-->
+       <div class="dashboard-content__panel " data-panel-id="lesson">
+         <div class="dashboard-list">
+           <div id="lessons" class="panel panel-primary panel-table subject_view table-responsive" style="border:none; ">
+             <div class="panel-heading">
+               <div class="row">
+                 <div class="col col-xs-6">
+                   <h3 class="panel-title">Lessons</h3>
+                   <br/>
+                   <table >
+                     <td class="venue">
+                       <select  id="venue-field" style="margin-left:10px;">
+                         <option value="" >Venue</option>
+                       </select>
+                     </td>
+                     <td class="type">
+                       <select  id="type-field" style="margin-left:10px;">
+                         <option value="lecturer" >lecturer</option>
+                         <option value="tutorial" >tutorial</option>
+                       </select>
+                     </td>
+                     <td class="date">
+                       <input type="date" id="date-field" style="margin-left:10px;"/>
+                     </td>
+                     <td class="time">
+                       <input type="time" id="time-field" style="margin-left:10px;"/>
+                     </td>
+                     <td class="duration">
+                       <input type="text" id="duration-field" placeholder="Duration" style="margin-left:10px;"/>
+                     </td>
+                     <td class="subject">
+                       <select  id="subject-field" style="margin-left:10px;">
+                         <option value="" ></option>
+                       </select>
+                     </td>
+
+                     <td class="add" style="margin-left:10px;">
+                       <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
+                     </td>
+                     <td colspan="2" >
+                       <input  style="margin-left:50px;" class="search" placeholder="Search contact" />
+                     </td>
+                   </table>
+                 </div>
+               </div>
+             </div>
+             <table class="table  table-hover subjListTb " data-show-header="true" data-pagination="true"
+                  data-id-field="name"
+                  data-page-list="[5, 10, 25, 50, 100, ALL]"
+                  data-page-size="5"  width="100%">
+                  <thead>
+                    <tr>
+                      <th >Venue</th>
+                      <th>Type</th>
+                      <th colspan="1">Date Time</th>
+                      <th>Duration</th>
+                      <th>Subject</th>
+                      <th colspan="2"> actions </th>
+                    </tr>
+                  </thead>
+                  <tbody  id="lessonTable">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
      </div>
    </div>
  </div>
@@ -350,6 +419,7 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js'></script>
 
   <script src='js/subject.js'></script>
+  <script src='js/lesson.js'></script>
 </body>
 
 </html>

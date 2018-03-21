@@ -104,15 +104,18 @@
           $subjectDA = new SubjectDA($this->con);
           $roomDA = new RoomDA($this->con);
 
-          
+
           $room = $roomDA->getRoomById($roomId);
           $subject = $subjectDA->fetchSubjectById($subjectId);
-          if($room == false || $subject == false){
-              throw new \Exception("Invalid request received! Room or Subject cannot be found.");
+          if($room == false ){
+              throw new \Exception("Invalid request received! Room cannot be found.");
               return;
+          }else if($subject == false){
+            throw new \Exception("Invalid request received! Subject cannot be found.");
+            return;
           }
-          
-          
+
+
           $lesson = new ClassLesson();
           $lesson->setSubject($subjectId);
           $lesson->setRoom($roomId);
@@ -122,11 +125,10 @@
 
           try{
               $da->save($lesson);
-              $roomDA->save($room);
               $this->sendMsg("Lesson successfully created!");
           }catch(\Exception $ex){
               throw new \Exception("Failed to create a new lesson");
-          }          
+          }
       }
 
       /**
