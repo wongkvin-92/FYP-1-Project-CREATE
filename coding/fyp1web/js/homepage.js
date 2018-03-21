@@ -1,4 +1,5 @@
 var backEndUrl = '/fypBackEnd';
+var checkEditing = false;
 
 $.ajax({
   url: backEndUrl+'/admin/',
@@ -47,7 +48,11 @@ $.ajax({
   method: 'GET',
   dataType: 'json',
   success: function(d){
-    items = d;
+    //items = d;
+    for(var i = 0; i < d.length; i++){
+      var item = d[i];
+      items[item.id] = item;
+    }
     addData(items);
   }
 });
@@ -79,13 +84,13 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id){
   var replacementCard = `<div class="content-layout" id="approval-request-`+id+`">
 
 
-  <h3 style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-danger btn-sm pull-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></h3>
+  <h3 style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-default btn-sm pull-right btnEdit" onClick="editBtnClicked(`+id+`)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></h3>
   <div style="position:relative; z-index:9999; top:-10px;">
     <h3><span class="left">Code:</span> <span class="right" id="subjectCode"></span></h3>
     <h5><span class="left">Subject:</span> <span class="right" id="subjectName"></span></h5>
     <h5><span class="left">Lecturer:</span> <span class="right" id="lecturer"></span></h5>
-    <p><span class="left">Re-Date:</span> <span class="right" id="reDate"></span></p>
-    <p><span class="left">Re-Time:</span> <span class="right" id="reTime"></span></p>
+    <p><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
+    <p><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
     <p><span class="left">Duration:</span> <span class="right" id="duration"></span></p>
     <p><span class="left">Venue:</span> <span class="right"><input type="text" name="venue" placeholder="Class Venue" id="venue"   required/ size="14"></span></p>
     <div class="btn-style">
@@ -120,7 +125,6 @@ function addData(itemArray){
    paginate();
 }
 
-
 function findData(items, query){
   var result = [];
   items.forEach( (el) => {
@@ -129,6 +133,71 @@ function findData(items, query){
     }
   });
   return result;
+}
+
+
+
+var editBtnClicked = function(id) {
+/*
+  console.log(this);
+    var el = $(this).parent().parent()[0];
+  console.log(el);
+  */
+  var item = items[id];
+var subjectBox = $('#approval-request-'+id);
+
+  var subjCard = `
+  <h3 style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-default btn-sm pull-right btnSave" onClick="goBackViewMode(`+id+`)"><i class="fa fa-close" aria-hidden="true"></i></i></button></h3>
+  <div style="position:relative; z-index:9999; top:-10px;">
+    <h3 ><span class="left">Code:</span> <span class="right" id="subjectCode">`+item.subjectCode+`</span></h3>
+    <h5 ><span class="left">Subject:</span> <span class="right" id="subjectName">`+item.subjectName+`</span></h5>
+    <h5 ><span class="left">Lecturer:</span> <span class="right" id="lecturer">`+item.lecturer+`</span></h5>
+    <p ><span class="left">Re-Date:</span> <span class="right date" id="reDate"><input id="newDate" type="date" name="datechanged" value="`+item.reDate+`" /></span></p>
+    <p ><span class="left">Re-Time:</span> <span class="right time" id="reTime"><input id="newTime" type="time" name="timechanged" value="`+item.reTime+`" /></span></p>
+    <p ><span class="left">Duration:</span> <span class="right" id="duration">asdsad</span></p>
+    <p><span class="left">Venue:</span> <span class="right"><input type="text" name="venue" placeholder="Class Venue" id="venue"   required/ size="14"></span></p>
+    <div class="btn-style">
+      <!--<p><a class="btn btn-primary venueBtn" role="button">Check Venue &raquo;</a></p>-->
+      <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="saveBtn(`+id+`)">Save &raquo;</a></p>
+    </div>
+   </div>`;
+   if(!checkEditing){
+      subjectBox.html(subjCard);
+      checkEditing = true;
+    }
+
+ };
+
+var saveRecheduling = function(id,date, time){
+
+$.ajax({
+ "async": true,
+ "crossDomain": true,
+ "url": backEndUrl + "/requests/rescheduling/"+id+"/",
+ "method": "PATCH",
+ "processData": false,
+ "dataType": "json",
+ "data": "{\n\t\"date\": \""+date+"\",\n\t\"time\": \""+time+"\"\n}",
+ "success": function(response){
+   items[id].reDate = date;
+   items[id].reTime = time;
+   goBackViewMode(id);
+   alert(response.msg);
+ }
+});
+}
+
+function goBackViewMode(id){
+  checkEditing = false;
+  var subjCard = newReCard(items[id]);
+  var subjectBox = $('#approval-request-'+id);
+   subjectBox.replaceWith(subjCard);
+}
+
+var saveBtn = function(id){
+  var date = $('#newDate').val(),
+      time = $('#newTime').val();
+  saveRecheduling(id,date, time);
 }
 
 //pagination

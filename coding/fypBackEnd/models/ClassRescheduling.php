@@ -29,6 +29,10 @@ class ClassRescheduling{
    public function getNewDateTime(){
      return $this->newDateTime;
    }
+   public function setNewDateTime($date, $time){
+     $this->newDateTime = date('Y-m-d H:i:s', strtotime("$date $time"));
+   }
+
    public function getStatus(){
      return $this->status;
    }
@@ -44,7 +48,7 @@ class ClassRescheduling{
    public function approve(){
       $this->status = "approved";
    }
-
+   // there is no disapproval
    public function disapprove(){
      $this->status = "disapproved";
    }

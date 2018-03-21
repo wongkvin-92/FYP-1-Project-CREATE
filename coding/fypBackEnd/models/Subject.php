@@ -1,10 +1,11 @@
 <?php
 class Subject{
     public $subjectID, $lecturerID , $subjectName, $date, $time;
-    
+
     private $lecturer;
     private $classList;
 
+    //only lecturer field can be amended
     public function setLecturer($l){
         $this->lecturer = $l;
     }
@@ -20,14 +21,13 @@ class Subject{
         return $this->subjectName;
     }
 
-    /**
+    /*
     public function getDate(){
         return $this->date;
     }
     public function getTime(){
         return $this->time;
         }**/
-    
 
 }
 

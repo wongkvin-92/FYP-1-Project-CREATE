@@ -156,7 +156,7 @@
               $o['subjectID'] = $v->subjectID;
               $o['subjectName'] = $v->getSubName();
               $o['lecturerID'] = $v->getLecturer()->getId();
-              $o['lecturerName'] = $v->getLecturer()->getName();              
+              $o['lecturerName'] = $v->getLecturer()->getName();
 
               $arr[] = $o;
           }
@@ -169,11 +169,32 @@
           $subject->subjectID = $id;
           $subject->lecturerID = $lecturer->lecturerID;
           $subject->subjectName = $name;
-          
+
           $subjectDA->save($subject);
           $this->sendMsg("Successfully Created!");
 
       }
+
+      public function deleteSubject($id){
+        $subjectDA = new SubjectDA($this->con);
+
+        if ($subjectDA->remove($id) == true){
+          $this->sendMsg("Successfully Deleted!");
+        }
+        else
+          throw new Exception("Error! Failed to delete subject!");
+
+
+      }
+
+      public function updateClassScheduling($id, $date, $time){
+        $rescheduleDA = new ClassReschedulingDA($this->con);
+        $record = $rescheduleDA->getApprovalRequest($id);
+        $record->setNewDateTime($date, $time);
+        $rescheduleDA->save($record);
+        $this->sendMsg("Successfully Updated!");
+      }
+
 
       public function listLecturers(){
           $lecturerDA = new LecturerDA($this->con);
@@ -184,8 +205,8 @@
               $o['lecturerName'] = $v->getName();
               $out[] = $o;
           }
-          $this->returnObject($out);          
+          $this->returnObject($out);
       }
-      
+
   }
 ?>

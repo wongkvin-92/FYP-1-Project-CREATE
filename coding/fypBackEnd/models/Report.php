@@ -1,5 +1,5 @@
 <?php
   class Reports{
-    public $lecturerID, $subjectID, 
+    public $lecturerID, $subjectID, $
   }
 ?>

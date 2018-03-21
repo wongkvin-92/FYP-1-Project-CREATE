@@ -13,8 +13,14 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css'>
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800'>
+
     <link rel="stylesheet" href="css/homepage.css">
+
+
+
+
 </head>
 
 <body>
@@ -37,9 +43,6 @@
         <li class="dashboard-nav__item"><a href="report"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Report</a></li>
         <!-- Subject (Element)-->
         <li class="dashboard-nav__item"><a href="subject"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Subject</a></li>
-
-        <!-- Add Rooms (Element)-->
-        <li class="dashboard-nav__item"><a href="add_room"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_settings.svg"/>Add Rooms</a></li>
       </ul>
     </div>
   </div>
@@ -264,271 +267,59 @@
     <!-- Dashboard Content Panel (Home)-->
     <div class="dashboard-content__panel " data-panel-id="subject">
       <div class="dashboard-list">
-
-        <!--
-          <div class="subject_view">
-      <header id="main-header" class="bg-success text-white">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-5">
-                <h1 id="header-title">Item Lister</h1>
-            </div>
-            <div class="col-md-3 align-self-center">
-                <input type="text" class="form-control" id="filter" placeholder="Search Items...">
-            </div>
-          </div>
-        </div>
-      </header>
-      <br/>
-      <div class="container">
-          <div class="col-md-8 ">
-       <div id="main" class="card card-body">
-        <h2 class="title">Add Items</h2>
-        <br/>
-        <form id="addForm" class="form-inline">
-          <input type="text" class="form-control" id="item">
-          <input type="submit" class="btn btn-dark" value="Submit">
-        </form>
-        <br/>
-        <h2 class="title">Items</h2>
-        <ul id="items" class="list-group">
-          <li class="list-group-item">Item 1 <button class="btn btn-primary btn-sm float-right edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><button class="btn btn-danger btn-sm float-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></li>
-          <li class="list-group-item">Item 2 <button class="btn btn-primary btn-sm float-right edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><button class="btn btn-danger btn-sm float-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></li>
-          <li class="list-group-item">Item 3 <button class="btn btn-primary btn-sm float-right edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><button class="btn btn-danger btn-sm float-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></li>
-          <li class="list-group-item">Item 4 <button class="btn btn-primary btn-sm float-right edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><button class="btn btn-danger btn-sm float-right delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button></li>
-        </ul>
-       </div>
-      </div>
-      </div>
-          </div>
-    -->
-    <div id="subjects" class="panel panel-primary panel-table subject_view table-responsive" style="border:none;">
-      <div class="panel-heading">
-                <div class="row">
-                  <div class="col col-xs-6">
-                    <h3 class="panel-title">Subject</h3>
-                    <br/>
-                    <table >
-                      <td class="code">
-                        <input type="hidden" id="id-field" />
-
-                        <input type="text" id="code-field" placeholder="Code" />
-
-                      </td>
-                      <td class="name"  >
-
-                        <input type="text" id="name-field" placeholder="Name" style="margin-left:10px;"/>
-                      </td>
-                      <td class="lecturer">
-                        <select  id="lecturer-field" style="margin-left:10px;">
-
-                          <option value="" >Lecturer</option>
-                        </select>
-                      </td>
-                      <td class="add" style="margin-left:10px;">
-                        <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
-                        <button class="btn btn-default btn-sm" id="edit-btn" style="margin-left:10px;">Edit</button>
-                      </td>
-                    </table>
-                  </div>
-                  <!--
-                  <div class="col col-xs-6 text-right">
-                    <button type="button" class="btn btn-sm btn-primary btn-create">Create New</button>
-                  </div>
-                -->
-                </div>
+        <div id="subjects" class="panel panel-primary panel-table subject_view table-responsive" style="border:none;">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col col-xs-6">
+                <h3 class="panel-title">Subject</h3>
+                <br/>
+                <table >
+                  <td class="code">
+                    <input type="hidden" id="id-field" />
+                    <input type="text" id="code-field" placeholder="Code" />
+                  </td>
+                  <td class="name">
+                    <input type="text" id="name-field" placeholder="Name" style="margin-left:10px;"/>
+                  </td>
+                  <td class="lecturer">
+                    <select  id="lecturer-field" style="margin-left:10px;">
+                      <option value="" >Lecturer</option>
+                    </select>
+                  </td>
+                  <td class="add" style="margin-left:10px;">
+                    <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
+                  </td>
+                  <td colspan="2" >
+                    <input  style="margin-left:50px;" class="search" placeholder="Search contact" />
+                  </td>
+                </table>
               </div>
-      <table class="table  table-hover">
-        <thead>
-          <tr>
-            <th class="sort" data-sort="code">Code</th>
-            <th class="sort" data-sort="name">Subj Name</th>
-            <th class="sort" data-sort="lecturer">Lecturer Name</th>
-            <th> actions </th>
-            <th colspan="2">
-              <input class="search" placeholder="Search contact" />
-            </th>
-          </tr>
-        </thead>
-        <tbody class="list" id="subjectData">
-
-        </tbody>
-      </table>
-
-
-    </div>
-
-  </div>
-
-  </div>
-    <!-- Dashboard Content Panel (Element)-->
-    <div class="dashboard-content__panel" data-panel-id="add_room">
-      <div class="dashboard-list report-content">
-        <table id="add_room_report" class="display responsive nowrap" cellspacing="0" width="100%" height="60vh">
-        <thead>
-            <tr>
-                <th>Lecturer</th>
-                <th>Subject Code</th>
-                <th>Subject Name</th>
-                <th>Cancellation Date</th>
-                <th>Rescheduling Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tfoot>
-        </tfoot>
-        <tbody>
-            <tr>
-                <td>Winson</td>
-                <td>BMC 308</td>
-                <td>Mobile Development</td>
-                <td>2018/01/15</td>
-                <td>2018/02/25</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td>Anita</td>
-                <td>BIT 200</td>
-                <td>IT & Entrepreneurship</td>
-                <td>2018/01/18</td>
-                <td>2018/02/18</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td>Fong</td>
-                <td>BIT 210</td>
-                <td>Web Programming</td>
-                <td>2018/02/01</td>
-                <td>2018/02/15</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Seetha</td>
-                <td>BIT 216</td>
-                <td>Software Engineering Principles</td>
-                <td>2018/02/12</td>
-                <td>2018/04/25</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Kok</td>
-                <td>BIT 208</td>
-                <td>Data Structures</td>
-                <td>2018/02/06</td>
-                <td>2018/02/20</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Dewi</td>
-                <td>BIT 103</td>
-                <td>Introduction to Databases</td>
-                <td>2018/01/25</td>
-                <td>2018/03/25</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Dewi</td>
-                <td>BGM 101</td>
-                <td>Multimedia Authoring and Development</td>
-                <td>2018/01/20</td>
-                <td>2018/03/01</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Dewi</td>
-                <td>BIT 103</td>
-                <td>Introduction to Databases</td>
-                <td>2018/02/25</td>
-                <td>2018/03/25</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Fong</td>
-                <td>BIT 306</td>
-                <td>Web Technologies</td>
-                <td>2018/01/28</td>
-                <td>2018/02/20</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Anita</td>
-                <td>BIT 200</td>
-                <td>IT & Entrepreneurship</td>
-                <td>2018/03/01</td>
-                <td>2018/04/01</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Anita</td>
-                <td>BIT 200</td>
-                <td>IT & Entrepreneurship</td>
-                <td>2018/02/12</td>
-                <td>2018/04/25</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Winson</td>
-                <td>BMC 308</td>
-                <td>Mobile Development</td>
-                <td>2018/01/10</td>
-                <td>2018/02/15</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Fong</td>
-                <td>BIT 210</td>
-                <td>Web Programming</td>
-                <td>2018/02/05</td>
-                <td>2018/03/12</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Anita</td>
-                <td>BIT 310</td>
-                <td>Business Development Plan</td>
-                <td>2018/02/02</td>
-                <td>2018/03/10</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Anita</td>
-                <td>BIT 200</td>
-                <td>IT & Entrepreneurship</td>
-                <td>2018/02/12</td>
-                <td>2018/04/25</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Winson</td>
-                <td>BMC 308</td>
-                <td>Mobile Development</td>
-                <td>2018/01/10</td>
-                <td>2018/02/15</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Fong</td>
-                <td>BIT 210</td>
-                <td>Web Programming</td>
-                <td>2018/02/05</td>
-                <td>2018/03/12</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Anita</td>
-                <td>BIT 310</td>
-                <td>Business Development Plan</td>
-                <td>2018/02/02</td>
-                <td>2018/03/10</td>
-                <td>Pending</td>
-            </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  </div>
-</div>
-</div>
+            </div>
+          </div>
+          <table class="table  table-hover subjListTb " data-show-header="true" data-pagination="true"
+               data-id-field="name"
+               data-page-list="[5, 10, 25, 50, 100, ALL]"
+               data-page-size="5" id="subjTable" width="100%">
+               <thead>
+                 <tr>
+                   <th >Code</th>
+                   <th>Subj Name</th>
+                   <th>Lecturer Name</th>
+                   <th>Venue</th>
+                   <th>Type</th>
+                   <th colspan="1">Date Time</th>
+                   <th colspan="2"> actions </th>
+                 </tr>
+               </thead>
+               <tbody  id="subjectData">
+               </tbody>
+             </table>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
 
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
@@ -545,17 +336,6 @@
 
       } );
 
-
-
-      $('#add_room_report').DataTable( {
-
-        dom: 'Bfrtip',
-
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-          ]
-
-        } );
       } );
   </script>
   <script  src='https://code.jquery.com/jquery-1.12.4.js'></script>
@@ -567,6 +347,7 @@
   <script  src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js'></script>
 
   <script src='js/subject.js'></script>
 </body>

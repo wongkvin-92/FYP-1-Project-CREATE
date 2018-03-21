@@ -10,7 +10,7 @@ function insertData(data){
     displayNewSubj(i, item.subjectID,  item.subjectName, item.lecturerName);
 
   }
-   listPaginate();
+
 }
 
 $.ajax({
@@ -54,7 +54,7 @@ var idField = $('#id-field'),
     editBtns = $('.edit-item-btn');
 
 // Sets callbacks to the buttons in the list
-refreshCallbacks();
+//refreshCallbacks();
 /*
 addBtn.click(function() {
   contactList.add({
@@ -100,6 +100,7 @@ addBtn.click(function(){
   console.log(data);
 });
 
+/*
 editBtn.click(function() {
   var item = contactList.get('id', idField.val())[0];
   item.values({
@@ -112,7 +113,8 @@ editBtn.click(function() {
   editBtn.show();
   addBtn.hide();
 });
-
+*/
+/*
 function refreshCallbacks() {
   // Needed to add new buttons to jQuery-extended object
   removeBtns = $(removeBtns.selector);
@@ -141,23 +143,187 @@ function clearFields() {
   nameField.val('');
   lecturerField.val('');
 }
+*/
+
+
 
 
 function displayNewSubj(id, code, name, lecturer){
   var newSubjRow =
   `<tr class="listContent" id="subject-`+id+`">
-        <td class="id" style="display:none;">`+id+`</td>
-        <td class="code">`+code+`</td>
-        <td class="name">`+name+`</td>
-        <td class="lecturer">`+lecturer+`</td>
+        <td class="id"  style="display:none;">`+id+`</td>
+        <td class="code" data-field="code">`+code+`</td>
+        <td class="name"  data-field="name">`+name+`</td>
+        <td class="lecturer"  data-field="lecturer">`+lecturer+`</td>
+        <td class="venue"  data-field="venue"></td>
+        <td class="type"  data-field="type"></td>
+        <td class="datetime"  data-field="datetime"></td>
         <td class="edit"><button class="btn btn-default btn-sm edit-item-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
         <td class="remove"><button class="btn btn-danger btn-sm remove-item-btn"><i class="fa fa-trash-o" aria-hidden="true"></button></td>
-      </tr>`;
+
+      </tr>
+
+      `;
       $('#subjectData').append($(newSubjRow));
 
 }
 
+/*
+$(function () {
+    $('#subjTable').bootstrapTable({
+      newSubjRow:newSubjRow;
+    });
+});*/
 
+var isEditing = false,
+    tempNameValue = "",
+    tempDataValue = "",
+    tempVenueValue = "",
+    tempTypeValue = "",
+    tempDateTimeValue = "";
+
+// Handles live/dynamic element events, i.e. for newly created edit buttons
+$(document).on('click', '.edit-item-btn', function() {
+   var parentRow = $(this).closest('tr'),
+       tableBody = parentRow.closest('tbody'),
+       tdName = parentRow.children('td.code'),
+       tdData = parentRow.children('td.name'),
+       tdVenue = parentRow.children('td.venue'),
+       tdType = parentRow.children('td.type'),
+       tdDateTime = parentRow.children('td.datetime');
+
+   if(isEditing) {
+      var nameInput = tableBody.find('input[name="code"]'),
+          dataInput = tableBody.find('input[name="name"]'),
+          venueSelect = tableBody.find('select[name="venue"]'),
+          typeSelect = tableBody.find('select[name="type"]'),
+          dateTimeInput = tableBody.find('input[name="datetime"]'),
+          tdNameInput = nameInput.closest('td'),
+          tdDataInput = dataInput.closest('td'),
+          tdVenueSelect = venueSelect.closest('td'),
+          tdTypeSelect = typeSelect.closest('td'),
+          tdDateTimeInput = dateTimeInput.closest('td'),
+          currentEdit = tdNameInput.parent().find('td.edit');
+
+      if($(this).is(currentEdit)) {
+         // Save new values as static html
+         var tdNameValue = nameInput.prop('value'),
+             tdDataValue = dataInput.prop('value'),
+             tdVenueValue = venueSelect.prop('value'),
+             tdTypeValue = typeSelect.prop('value'),
+             tdDateTimeValue = dateTimeInput.prop('value');
+
+         tdNameInput.empty();
+         tdDataInput.empty();
+         tdVenueSelect.empty();
+         tdTypeSelect.empty();
+         tdDateTimeInput.empty();
+
+         tdNameInput.html(tdNameValue);
+         tdDataInput.html(tdDataValue);
+         tdVenueSelect.html(tdVenueValue);
+         tdTypeSelect.html(tdTypeValue);
+         tdDateTimeInput.html(tdDateTimeValue);
+      }
+      else {
+         // Restore previous html values
+        tdNameInput.empty();
+        tdDataInput.empty();
+        tdVenueSelect.empty();
+        tdTypeSelect.empty();
+        tdDateTimeInput.empty();
+
+         tdNameInput.html(tempNameValue);
+         tdDataInput.html(tempDataValue);
+         tdVenueSelect.html(tempVenueValue);
+         tdTypeSelect.html(tempTypeValue);
+         tdDateTimeInput.html(tempDateTimeValue);
+      }
+      // Display static row
+      currentEdit.html('<td class="edit"><button class="btn btn-default btn-sm edit-item-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>');
+      isEditing = false;
+   }
+   else {
+      // Display editable input row
+      isEditing = true;
+      $(this).html('<i class="fa fa-floppy-o" aria-hidden="true"></i>');
+
+      var tdNameValue = tdName.html(),
+          tdDataValue = tdData.html(),
+          tdVenueValue = tdVenue.html(),
+          tdTypeValue = tdType.html(),
+          tdDateTimeValue = tdDateTime.html();
+
+      // Save current html values for canceling an edit
+      tempNameValue = tdNameValue;
+      tempDataValue = tdDataValue;
+      tempVenueValue = tdVenueValue;
+      tempTypeValue = tdTypeValue;
+      tempDateTimeValue = tdDateTimeValue;
+
+      // Remove existing html values
+      tdName.empty();
+      tdData.empty();
+      tdVenue.empty();
+      tdType.empty();
+      tdDateTime.empty();
+
+      // Create input forms
+      tdName.html('<input type="text" name="code" value="' + tdNameValue + '">');
+      tdData.html('<input type="text" name="name" value="' + tdDataValue + '">');
+      tdVenue.html(`<select name="venue" value="' + tdVenueValue + '">
+                    <option value="sr2.6">sr2.6</option><option value="sr2.8">sr2.8
+                    </option></select>`);
+      tdType.html(`<select name="type" value="' + tdTypeValue + '">
+                    <option value="lecture">Lecture</option><option value="tutorial">Tutorial
+                    </option></select>`);
+      tdDateTime.html('<input type="datetime-local" name="datetime" value="' + tdDateTimeValue + '">');
+   }
+});
+
+// Handles live/dynamic element events, i.e. for newly created trash buttons
+$(document).on('click', '.remove-item-btn', function() {
+   // Turn off editing if row is current input
+  if(isEditing) {
+  }else{
+       var key = $(this).parent().parent().children('.code').html();
+
+       var el = this;
+       var deleteRow = function(){
+
+            var parentRow = $(el).closest('tr'),
+                tableBody = parentRow.closest('tbody'),
+                tdInput = tableBody.find('input').closest('td'),
+                currentEdit = tdInput.parent().find('td.edit'),
+                thisEdit = parentRow.find('td.edit');
+
+            if(thisEdit.is(thisEdit)) {
+               isEditing = false;
+            }
+
+            // Remove selected row from table
+            $(el).closest('tr').remove();
+         }
+
+       $.ajax({
+           "url": backEndUrl+ "/subjects/"+key+"/",
+           "method": "DELETE",
+           "dataType" : "json",
+           "success" : function(response){
+              deleteRow();
+              alert(response.msg);
+           }
+
+       });
+
+  }
+
+
+});
+
+
+
+/*
 //pagination
 var listPaginate = function(){
 (function($){
@@ -284,13 +450,13 @@ var listPaginate = function(){
         // handle click events on the buttons
         $(document).on('click', '.lPage-button', function(e) {
             // get current page from active button
-            var currentPage = parseInt($('.lPage-button.active').text(), 10),
+            var currentPage = parseInt($('.lPage-button.active').text(), 11),
                 newPage = currentPage,
                 totalPages = lPaginate.totalPages(items, perPage),
                 target = $(e.target);
 
             // get numbered page
-            newPage = parseInt(target.text(), 10);
+            newPage = parseInt(target.text(), 11);
             if (target.text() == '«') newPage = 1;
             if (target.text() == '»') newPage = totalPages;
 
@@ -301,11 +467,11 @@ var listPaginate = function(){
     };
 
 })(jQuery);
-if (items.length > 8)
+if (items.length > 10)
   $('.lPage-button').hide();
 else
   $('.lPage-button').show();
 //var l = (items.length > 6)? 6 : items.length;
 
-$('.listContent').lPaginate(8);
-}
+$('.listContent').lPaginate(10);
+} */
