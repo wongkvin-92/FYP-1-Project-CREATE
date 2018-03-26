@@ -16,7 +16,9 @@ class ClassLesson{
     public function getRoomID(){
         return $this->roomID;
     }
-
+    public function getDuration(){
+      return $this->duration;
+    }
     public function setSubject($subjectID){
       $this->subjectID = $subjectID;
     }

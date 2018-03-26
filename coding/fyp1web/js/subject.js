@@ -3,20 +3,6 @@ var backEndUrl='/fypBackEnd';
 
 var subjectList= [];
 
-
-
-$.ajax({
-  url: backEndUrl+'/subjects/',
-  method: 'GET',
-  dataType:'json',
-  success: function(reply){
-    insertData(reply);
-    subjectData = reply;
-
-  }
-
-});
-
 //reply.lecturerName = json object
 $.ajax({
   url: backEndUrl+'/lecturers/',
@@ -34,16 +20,6 @@ $.ajax({
   }
 });
 
-
-function insertData(data){
-  $('#subjectData').html("");
-  for(var i=0; i< data.length; i++){
-    var item  = data[i];
-    displayNewSubj(i, item.subjectID,  item.subjectName, item.lecturerName);
-
-  }
-}
-
 var idField = $('#id-field'),
     codeField = $('#code-field'),
     nameField = $('#name-field'),
@@ -52,6 +28,9 @@ var idField = $('#id-field'),
     editBtn = $('#edit-btn').hide(),
     removeBtns = $('.remove-item-btn'),
     editBtns = $('.edit-item-btn');
+
+
+
 
 
 addBtn.click(function(){
@@ -83,57 +62,27 @@ addBtn.click(function(){
       alert(reply.msg);
     }
   });
-
   console.log(data);
 });
 
-/*
-editBtn.click(function() {
-  var item = contactList.get('id', idField.val())[0];
-  item.values({
-    id:   idField.val(),
-    code: codeField.val(),
-    name: $('#name-field').val(),
-    lecturer: $('#lecturer-field').val()
-  });
-  clearFields();
-  editBtn.show();
-  addBtn.hide();
+$.ajax({
+  url: backEndUrl+'/subjects/',
+  method: 'GET',
+  dataType:'json',
+  success: function(reply){
+    insertData(reply);
+    subjectData = reply;
+  }
 });
-*/
-/*
-function refreshCallbacks() {
-  // Needed to add new buttons to jQuery-extended object
-  removeBtns = $(removeBtns.selector);
-  editBtns = $(editBtns.selector);
 
-  removeBtns.click(function() {
-    var itemId = $(this).closest('tr').find('.id').text();
-    contactList.remove('id', itemId);
-  });
+function insertData(data){
+  $('#subjectData').html("");
+  for(var i=0; i< data.length; i++){
+    var item  = data[i];
+    displayNewSubj(i, item.subjectID,  item.subjectName, item.lecturerName);
 
-  editBtns.click(function() {
-    var itemId = $(this).closest('tr').find('.id').text();
-    var itemValues = contactList.get('id', itemId)[0].values();
-    idField.val(itemValues.id);
-    codeField.val(itemValues.code);
-    nameField.val(itemValues.name);
-    lecturerField.val(itemValues.lecturer);
-
-    editBtn.show();
-    addBtn.hide();
-  });
+  }
 }
-
-function clearFields() {
-  codeField.val('');
-  nameField.val('');
-  lecturerField.val('');
-}
-*/
-
-
-
 
 function displayNewSubj(id, code, name, lecturer){
   var newSubjRow =
@@ -142,9 +91,7 @@ function displayNewSubj(id, code, name, lecturer){
         <td class="code" data-field="code">`+code+`</td>
         <td class="name"  data-field="name">`+name+`</td>
         <td class="lecturer"  data-field="lecturer">`+lecturer+`</td>
-        <td class="venue"  data-field="venue"></td>
-        <td class="type"  data-field="type"></td>
-        <td class="datetime"  data-field="datetime"></td>
+
         <td class="edit"><button class="btn btn-default btn-sm edit-item-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
         <td class="remove"><button class="btn btn-danger btn-sm remove-item-btn"><i class="fa fa-trash-o" aria-hidden="true"></button></td>
 
@@ -154,13 +101,6 @@ function displayNewSubj(id, code, name, lecturer){
       $('#subjectData').append($(newSubjRow));
 
 }
-
-/*
-$(function () {
-    $('#subjTable').bootstrapTable({
-      newSubjRow:newSubjRow;
-    });
-});*/
 
 var isEditing = false,
     tempNameValue = "",
@@ -258,13 +198,7 @@ $(document).on('click', '.edit-item-btn', function() {
       // Create input forms
       tdName.html('<input type="text" name="code" value="' + tdNameValue + '">');
       tdData.html('<input type="text" name="name" value="' + tdDataValue + '">');
-      tdVenue.html(`<select name="venue" value="' + tdVenueValue + '">
-                    <option value="sr2.6">sr2.6</option><option value="sr2.8">sr2.8
-                    </option></select>`);
-      tdType.html(`<select name="type" value="' + tdTypeValue + '">
-                    <option value="lecture">Lecture</option><option value="tutorial">Tutorial
-                    </option></select>`);
-      tdDateTime.html('<input type="datetime-local" name="datetime" value="' + tdDateTimeValue + '">');
+      tdVenue.html('<select name="venue" value=""> <option value="' + tdVenueValue + '"> ' + tdVenueValue + ' </option></select>');
    }
 });
 
@@ -300,12 +234,8 @@ $(document).on('click', '.remove-item-btn', function() {
               deleteRow();
               alert(response.msg);
            }
-
        });
-
   }
-
-
 });
 
 

@@ -98,14 +98,14 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
       $sid = getPost('subjectID');
       $rid = getPost('roomID');
       $date = getPost('date');
-      $time = getPost('time');      
-      $duration = getPost('duration');      
-      $type = getPost('type');      
+      $time = getPost('time');
+      $duration = getPost('duration');
+      $type = getPost('type');
 
       $admin->addClass($sid, $rid, $date, $time, $duration, $type);
   });
 
-  
+
   //Lecturer related routes
   $klein->respond('GET', $root.'/lecturers/', function($r) use ($admin){
     $admin->listLecturers();
@@ -132,7 +132,7 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
       $admin->addSubject($code, $name, $lecturer);
   });
 
-  $klein->respond('', $root.'/subjects/[a:id]/', function($r) use ($admin){
+  $klein->respond('DELETE', $root.'/subjects/[a:id]/', function($r) use ($admin){
     $admin->deleteSubject($r->id);
   });
 

@@ -291,9 +291,6 @@
                   <td class="add" style="margin-left:10px;">
                     <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
                   </td>
-                  <td colspan="2" >
-                    <input  style="margin-left:50px;" class="search" placeholder="Search contact" />
-                  </td>
                 </table>
               </div>
             </div>
@@ -304,13 +301,13 @@
                data-page-size="5" id="subjTable" width="100%">
                <thead>
                  <tr>
+                   <div class="pull-right searchBar">
+                     <input  class="search" placeholder="Search contact" />
+                   </div>
+                 <tr>
                    <th >Code</th>
                    <th>Subj Name</th>
                    <th>Lecturer Name</th>
-                   <th>Venue</th>
-                   <th>Type</th>
-                   <th>Date </th>
-                   <th>Time </th>
                    <th colspan="2"> actions </th>
                  </tr>
                </thead>
@@ -320,10 +317,10 @@
            </div>
          </div>
        </div>
-       <!-- Dashboard Content Panel (subject)-->
+       <!-- Dashboard Content Panel (lesson)-->
        <div class="dashboard-content__panel " data-panel-id="lesson">
          <div class="dashboard-list">
-           <div id="lessons" class="panel panel-primary panel-table subject_view table-responsive" style="border:none; ">
+           <div id="lessons" class="panel panel-primary panel-table list_view table-responsive" style="border:none; ">
              <div class="panel-heading">
                <div class="row">
                  <div class="col col-xs-6">
@@ -359,9 +356,7 @@
                      <td class="add" style="margin-left:10px;">
                        <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
                      </td>
-                     <td colspan="2" >
-                       <input  style="margin-left:50px;" class="search" placeholder="Search contact" />
-                     </td>
+
                    </table>
                  </div>
                </div>
@@ -372,8 +367,15 @@
                   data-page-size="5"  width="100%">
                   <thead>
                     <tr>
+                      <div class="pull-right searchBar">
+
+                        <input  class="search" placeholder="Search contact" />
+                      </div>
+                    </tr>
+                    <tr>
                       <th >Venue</th>
                       <th>Type</th>
+                      <th>Lecturer</th>
                       <th colspan="1">Date Time</th>
                       <th>Duration</th>
                       <th>Subject</th>
@@ -417,7 +419,7 @@
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js'></script>
-
+  <script src='js/classRescheduling.js'></script>
   <script src='js/subject.js'></script>
   <script src='js/lesson.js'></script>
 </body>

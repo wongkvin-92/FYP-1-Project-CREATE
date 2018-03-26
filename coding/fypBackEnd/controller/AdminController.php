@@ -174,21 +174,23 @@
               $room = $roomda->getRoomById($v->roomID);
               $sda = new SubjectDA($this->con);
               $subject = $sda->fetchSubjectById($v->subjectID);
-              
-              $lda = new LecturerDA($this->con);              
-              $lecturer = $lda->fetchLecturerById($subject->getSubId());
-              
+
+              $lda = new LecturerDA($this->con);
+              $lecturer = $lda->fetchLecturerById($subject->lecturerID);
+
               $o['venue'] = $room->getName();
               $o['type'] = $v->type;
-              $o['dateTime'] = $v->getDateTime();
+              //$o['dateTime'] = $v->getDateTime();
+              $o['date'] = '12331231';
+              $o['time'] = "12321";
+              $o['duration']= $v->getDuration();
               $o['lecturer'] = $lecturer->getName();
               $o['subject'] = $subject->getSubName();
-              
-              $o['lecturerName'] = $v->getName();
+
               $out[] = $o;
           }
 
-          
+
           $this->returnObject($out);
       }
 
