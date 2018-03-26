@@ -175,7 +175,7 @@ function goBackViewMode(id){
   checkEditing = false;
   var subjCard = newReCard(items[id]);
   var subjectBox = $('#approval-request-'+id);
-   subjectBox.replaceWith(subjCard);
+  subjectBox.html(subjCard.html());
 }
 
 var saveBtn = function(id){
