@@ -24,7 +24,7 @@ body {
   border-radius: 0.4375rem;
   -webkit-box-shadow: 0 15px 40px rgba(0,0,0,.5);
   box-shadow: 0 15px 40px rgba(0,0,0,.5);
-  margin: 30px auto;
+  margin: 20px auto;
 }
 
 /* Safari 6.1+ */
@@ -246,7 +246,6 @@ body {
   margin-left: 10px;
   width:250px;
   height:220px;
-
 }
 .content-layout .delete{
   position: relative;
@@ -376,6 +375,11 @@ border-radius: 0 18px 18px 0;
 
 .btnSubmit:hover {
 	background: #4682B4;
+}
+
+.redateBox{
+  position: relative;
+  top:5px;
 }
 
 @media all and (min-width: 600px) {

@@ -13,7 +13,6 @@ $.ajax({
         $('#venue-field').append($(tag));
     }
     console.log(reply);
-
   }
 });
 
@@ -124,7 +123,7 @@ function displayNewLesson(venue, type, lecturer, date, time, duration, subject){
         <td class="lecturer"  data-field="lecturer">`+lecturer+`</td>
         <td class="datetime"  data-field="date">`+date+ " "+time+`</td>
         <td class="duration"  data-field="duration">`+duration+`</td>
-        <td class="duration"  data-field="subject">`+subject+`</td>
+        <td class="subject"  data-field="subject">`+subject+`</td>
         <td class="edit"><button class="btn btn-default btn-sm edit-lesson-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
         <td class="remove"><button class="btn btn-danger btn-sm remove-item-btn"><i class="fa fa-trash-o" aria-hidden="true"></button></td>
       </tr>

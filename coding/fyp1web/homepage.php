@@ -308,6 +308,10 @@
                    <th >Code</th>
                    <th>Subj Name</th>
                    <th>Lecturer Name</th>
+                   <th >Venue</th>
+                   <th>Type</th>
+                   <th colspan="1">Date Time</th>
+                   <th>Duration</th>
                    <th colspan="2"> actions </th>
                  </tr>
                </thead>

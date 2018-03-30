@@ -3,6 +3,25 @@ var backEndUrl='/fypBackEnd';
 
 var subjectList= [];
 
+/*
+ * To assign the table fields and textbox value to variables
+ */
+var idField = $('#id-field'),
+    codeField = $('#code-field'),
+    nameField = $('#name-field'),
+    lecturerField = $('#lecturer-field'),
+    addBtn = $('#add-btn'),
+    editBtn = $('#edit-btn').hide(),
+    removeBtns = $('.remove-item-btn'),
+    editBtns = $('.edit-item-btn');
+
+var isEditing = false,
+    tempNameValue = "",
+    tempDataValue = "",
+    tempVenueValue = "",
+    tempTypeValue = "",
+    tempDateTimeValue = "";
+
 //reply.lecturerName = json object
 $.ajax({
   url: backEndUrl+'/lecturers/',
@@ -20,19 +39,10 @@ $.ajax({
   }
 });
 
-var idField = $('#id-field'),
-    codeField = $('#code-field'),
-    nameField = $('#name-field'),
-    lecturerField = $('#lecturer-field'),
-    addBtn = $('#add-btn'),
-    editBtn = $('#edit-btn').hide(),
-    removeBtns = $('.remove-item-btn'),
-    editBtns = $('.edit-item-btn');
 
-
-
-
-
+/*
+ * Add subjects
+ */
 addBtn.click(function(){
   var data = {
     id: subjectList.length+1,
@@ -40,7 +50,6 @@ addBtn.click(function(){
     name: $('#name-field').val(),
     lecturer: $('#lecturer-field').val()
   };
-
 
   $.ajax({
     url : backEndUrl+'/subjects/',
@@ -55,7 +64,6 @@ addBtn.click(function(){
       var lecName = $('#lecturer-field option:selected').text();
       displayNewSubj(data.id, data.code, data.name, lecName);
         alert(reply.msg);
-
     },
     error: function(reply){
       reply = reply.responseJSON;
@@ -65,16 +73,10 @@ addBtn.click(function(){
   console.log(data);
 });
 
-$.ajax({
-  url: backEndUrl+'/subjects/',
-  method: 'GET',
-  dataType:'json',
-  success: function(reply){
-    insertData(reply);
-    subjectData = reply;
-  }
-});
-
+/*
+ * To insert Data one by one in the table
+ * from function displayNewSubj
+ */
 function insertData(data){
   $('#subjectData').html("");
   for(var i=0; i< data.length; i++){
@@ -82,16 +84,26 @@ function insertData(data){
     displayNewSubj(i, item.subjectID,  item.subjectName, item.lecturerName);
 
   }
+    // to have the data in the table in pagination if exceeds the amount
+    // defined in the listPaginate function
+    listPaginate();
 }
 
-function displayNewSubj(id, code, name, lecturer){
+/*
+ * To display the subject, lecturer, rooms and lessons
+ * info accordingly with the table field
+ */
+function displayNewSubj(id, code, name, lecturer, venue, type, date, time, duration){
   var newSubjRow =
   `<tr class="listContent" id="subject-`+id+`">
         <td class="id"  style="display:none;">`+id+`</td>
         <td class="code" data-field="code">`+code+`</td>
         <td class="name"  data-field="name">`+name+`</td>
         <td class="lecturer"  data-field="lecturer">`+lecturer+`</td>
-
+        <td class="venue" data-field="venue">`+venue+`</td>
+        <td class="type"  data-field="type">`+type+`</td>
+        <td class="datetime"  data-field="date">`+date+ " "+time+`</td>
+        <td class="duration"  data-field="duration">`+duration+`</td>
         <td class="edit"><button class="btn btn-default btn-sm edit-item-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
         <td class="remove"><button class="btn btn-danger btn-sm remove-item-btn"><i class="fa fa-trash-o" aria-hidden="true"></button></td>
 
@@ -102,12 +114,21 @@ function displayNewSubj(id, code, name, lecturer){
 
 }
 
-var isEditing = false,
-    tempNameValue = "",
-    tempDataValue = "",
-    tempVenueValue = "",
-    tempTypeValue = "",
-    tempDateTimeValue = "";
+/*
+ * To retrieve subjects list from backend
+ * and call function insertData to display subjects data
+ */
+$.ajax({
+  url: backEndUrl+'/subjects/',
+  method: 'GET',
+  dataType:'json',
+  success: function(reply){
+    insertData(reply);
+    subjectData = reply;
+  }
+});
+
+
 
 // Handles live/dynamic element events, i.e. for newly created edit buttons
 $(document).on('click', '.edit-item-btn', function() {
@@ -240,7 +261,7 @@ $(document).on('click', '.remove-item-btn', function() {
 
 
 
-/*
+
 //pagination
 var listPaginate = function(){
 (function($){
@@ -367,13 +388,13 @@ var listPaginate = function(){
         // handle click events on the buttons
         $(document).on('click', '.lPage-button', function(e) {
             // get current page from active button
-            var currentPage = parseInt($('.lPage-button.active').text(), 11),
+            var currentPage = parseInt($('.lPage-button.active').text(), 9),
                 newPage = currentPage,
                 totalPages = lPaginate.totalPages(items, perPage),
                 target = $(e.target);
 
             // get numbered page
-            newPage = parseInt(target.text(), 11);
+            newPage = parseInt(target.text(), 9);
             if (target.text() == '«') newPage = 1;
             if (target.text() == '»') newPage = totalPages;
 
@@ -384,11 +405,11 @@ var listPaginate = function(){
     };
 
 })(jQuery);
-if (items.length > 10)
+if (items.length > 8)
   $('.lPage-button').hide();
 else
   $('.lPage-button').show();
 //var l = (items.length > 6)? 6 : items.length;
 
-$('.listContent').lPaginate(10);
-} */
+$('.listContent').lPaginate(8);
+}

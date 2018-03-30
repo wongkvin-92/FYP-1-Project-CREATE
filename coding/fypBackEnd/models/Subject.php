@@ -5,7 +5,6 @@ class Subject{
     private $lecturer;
     private $classList;
 
-    //only lecturer field can be amended
     public function setLecturer($l){
         $this->lecturer = $l;
     }
@@ -28,6 +27,7 @@ class Subject{
     public function getTime(){
         return $this->time;
         }**/
+
 
 }
 

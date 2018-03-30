@@ -51,16 +51,27 @@ function removeClass(id){
 }
 
 function approveClass(id){
-  $.ajax({
-      url : backEndUrl+"/classes/"+id+"/approve/",
-      method : "GET",
-      dataType : "json",
-      success : function(r) {
-        removeClass(id);
-        alert(r.msg);
+  if ($('#venue').val() == ""){
+    alert("Please enter a class venue!");
+    return;
+  }else{
+  if (confirm('Are you sure you want to save this thing into the database?')) {
+    $.ajax({
+        url : backEndUrl+"/classes/"+id+"/approve/",
+        method : "GET",
+        dataType : "json",
+        success : function(r) {
 
-      }
-  });
+          removeClass(id);
+          alert(r.msg);
+
+        }
+    });
+} else {
+    return;
+
+  }
+}
 }
 
 //create structure of the card
@@ -136,13 +147,13 @@ var subjectBox = $('#approval-request-'+id);
     <h3 ><span class="left">Code:</span> <span class="right" id="subjectCode">`+item.subjectCode+`</span></h3>
     <h5 ><span class="left">Subject:</span> <span class="right" id="subjectName">`+item.subjectName+`</span></h5>
     <h5 ><span class="left">Lecturer:</span> <span class="right" id="lecturer">`+item.lecturer+`</span></h5>
-    <p ><span class="left">Re-Date:</span> <span class="right date" id="reDate"><input id="newDate" type="date" name="datechanged" value="`+item.reDate+`" /></span></p>
-    <p ><span class="left">Re-Time:</span> <span class="right time" id="reTime"><input id="newTime" type="time" name="timechanged" value="`+item.reTime+`" /></span></p>
-    <p ><span class="left">Duration:</span> <span class="right" id="duration">2</span></p>
-    <p><span class="left">Venue:</span> <span class="right"><input type="text" name="venue" placeholder="Class Venue" id="venue"   required/ size="14"></span></p>
-    <div class="btn-style">
-      <!--<p><a class="btn btn-primary venueBtn" role="button">Check Venue &raquo;</a></p>-->
-      <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="saveBtn(`+id+`)">Save &raquo;</a></p>
+    <div class="redateBox">
+      <p ><span class="left redateBox">Re-Date:</span> <span class="right date" id="reDate"><input id="newDate" type="date" name="datechanged" value="`+item.reDate+`" /></span></p>
+      <p ><span class="left">Re-Time:</span> <span class="right time" id="reTime"><input id="newTime" type="time" name="timechanged" value="`+item.reTime+`" /></span></p>
+      <p ><span class="left">Duration:</span> <span class="right" id="duration">2</span></p>
+      <div class="btn-style">
+        <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="saveBtn(`+id+`)">Save &raquo;</a></p>
+      </div>
     </div>
    </div>`;
    if(!checkEditing){
