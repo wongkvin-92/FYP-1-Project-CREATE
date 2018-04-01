@@ -42,7 +42,7 @@ $.ajax({
 
 /*
  * Add subjects
- */
+*/
 addBtn.click(function(){
   var data = {
     id: subjectList.length+1,
@@ -61,11 +61,15 @@ addBtn.click(function(){
       'lecturer' : data.lecturer
     },
     success: function(reply){
+
       var lecName = $('#lecturer-field option:selected').text();
       displayNewSubj(data.id, data.code, data.name, lecName);
         alert(reply.msg);
+
+        //apend option
     },
     error: function(reply){
+
       reply = reply.responseJSON;
       alert(reply.msg);
     }
@@ -100,10 +104,7 @@ function displayNewSubj(id, code, name, lecturer, venue, type, date, time, durat
         <td class="code" data-field="code">`+code+`</td>
         <td class="name"  data-field="name">`+name+`</td>
         <td class="lecturer"  data-field="lecturer">`+lecturer+`</td>
-        <td class="venue" data-field="venue">`+venue+`</td>
-        <td class="type"  data-field="type">`+type+`</td>
-        <td class="datetime"  data-field="date">`+date+ " "+time+`</td>
-        <td class="duration"  data-field="duration">`+duration+`</td>
+
         <td class="edit"><button class="btn btn-default btn-sm edit-item-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
         <td class="remove"><button class="btn btn-danger btn-sm remove-item-btn"><i class="fa fa-trash-o" aria-hidden="true"></button></td>
 
@@ -260,7 +261,18 @@ $(document).on('click', '.remove-item-btn', function() {
 });
 
 
+function printData()
+{
+   var divToPrint=document.getElementById("subjTable");
+   newWin= window.open("");
+   newWin.document.write(divToPrint.outerHTML);
+   newWin.print();
+   newWin.close();
+}
 
+$('#printMe').on('click',function(){
+printData();
+})
 
 //pagination
 var listPaginate = function(){

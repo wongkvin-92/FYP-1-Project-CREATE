@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css'>
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800'>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/homepage.css">
 
 
@@ -36,15 +36,15 @@
     <div class="dashboard-nav">
       <ul>
         <!-- Item:Selected (Element:Modifier)        -->
-        <li class="dashboard-nav__item dashboard-nav__item--selected"><a href="home"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_my_trip.svg"/>Home</a></li>
+        <li class="dashboard-nav__item dashboard-nav__item--selected"><a href="home"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>
         <!-- Class Replacement (Element)-->
-        <li class="dashboard-nav__item "><a href="class_replacement"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_home.svg"/>Class Replacement</a></li>
+        <li class="dashboard-nav__item "><a href="class_replacement"><i class="fa fa-calendar" aria-hidden="true"></i>Class Rescheduling</a></li>
         <!-- Report (Element)-->
-        <li class="dashboard-nav__item"><a href="report"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Report</a></li>
+        <li class="dashboard-nav__item"><a href="report"><i class="fa fa-table" aria-hidden="true"></i>Report</a></li>
         <!-- Subject (Element)-->
         <li class="dashboard-nav__item"><a href="subject"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Subject</a></li>
         <!-- Subject (Element)-->
-        <li class="dashboard-nav__item"><a href="lesson"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Lesson</a></li>
+        <li class="dashboard-nav__item"><a href="lesson"><i class="fa fa-tasks" aria-hidden="true"></i>Lesson</a></li>
       </ul>
     </div>
   </div>
@@ -67,7 +67,7 @@
       </ul>
       <ul class="flex cards">
         <li>
-          <h2>No. of Class Replacement Request</h2>
+          <h2>No. of Class Rescheduling Request</h2>
           <p>
             10
           </p>
@@ -104,9 +104,20 @@
     <!-- Dashboard Content Panel (Element)-->
     <div class="dashboard-content__panel" data-panel-id="report">
       <div class="dashboard-list report-content">
-        <table id="report-table" class="display responsive nowrap" cellspacing="0" width="100%" height="60vh">
-        <thead>
-            <tr>
+         <div id="report" class="panel panel-primary panel-table table-responsive reportTable" style="border:none; ">
+           <div class="panel-heading" >
+             <div class="row">
+               <div class="col col-xs-12">
+                 <h3 class="panel-title">Report</h3>
+                      <br/><br/><br/>
+               </div>
+             </div>
+            </div>
+
+          <div class="panel-body " >
+            <table id="report-table" class="table table-hover table-responsive "  width="100%" >
+              <thead>
+                <tr>
                 <th>Lecturer</th>
                 <th>Subject Code</th>
                 <th>Subject Name</th>
@@ -115,8 +126,7 @@
                 <th>Status</th>
             </tr>
         </thead>
-        <tfoot>
-        </tfoot>
+
         <tbody>
             <tr>
                 <td>Winson</td>
@@ -263,8 +273,12 @@
                 <td>Pending</td>
             </tr>
         </tbody>
-    </table>
-      </div>
+        <tfoot>
+        </tfoot>
+      </table>
+    </div>
+    </div>
+  </div>
     </div>
     <!-- Dashboard Content Panel (subject)-->
     <div class="dashboard-content__panel " data-panel-id="subject">
@@ -272,7 +286,7 @@
         <div id="subjects" class="panel panel-primary panel-table subject_view table-responsive" style="border:none;">
           <div class="panel-heading">
             <div class="row">
-              <div class="col col-xs-6">
+              <div class="col-md-4 col-xs-6">
                 <h3 class="panel-title">Subject</h3>
                 <br/>
                 <table >
@@ -292,13 +306,12 @@
                     <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
                   </td>
                 </table>
+
+                    <button id="printMe">Print me</button>
               </div>
             </div>
           </div>
-          <table class="table  table-hover subjListTb "  data-show-header="true" data-pagination="true"
-               data-id-field="name"
-               data-page-list="[5, 10, 25, 50, 100, ALL]"
-               data-page-size="5" id="subjTable" width="100%">
+          <table class="table  table-hover subjListTb "  id="subjTable" width="100%">
                <thead>
                  <tr>
                    <div class="pull-right searchBar">
@@ -324,21 +337,44 @@
        <!-- Dashboard Content Panel (lesson)-->
        <div class="dashboard-content__panel " data-panel-id="lesson">
          <div class="dashboard-list">
-           <div id="lessons" class="panel panel-primary panel-table list_view table-responsive" style="border:none; ">
+           <div id="lessons" class="panel panel-primary panel-table list_view table-responsive lessonPage" style="border:none; ">
              <div class="panel-heading">
+               <div class="row">
+                 <div class="col col-xs-6">
+               <h3 class="panel-title">Subject</h3>
+                            <br/>
+             </div>
+
+             </div>
+              <div id = "remove-me" class="row">
+
+
+                 <form class="form-inline">
+                <div class="col-xs-12 col-md-2">
+                 <select class="s2" id="hey">
+                  <option value="">Subject Code</option>
+                 </select>
+               </div>
+               <div class="col-xs-12 col-md-2">
+                 <input type="text" id="subject_name" placeholder="Subject Name" style="margin-left:10px;" disabled/>
+               </div>
+               <div class="col-xs-12 col-md-2">
+                 <input type="text" id="lecturer_name" placeholder="Lecturer Name" style="margin-left:10px;" disabled/>
+               </div>
+               </form>
+              </div>
+              <br/>
                <div class="row">
                  <div class="col col-xs-6">
                    <h3 class="panel-title">Lessons</h3>
                    <br/>
                    <table >
                      <td class="venue">
-                       <select  id="venue-field" style="margin-left:10px;">
-                         <option value="" >Venue</option>
-                       </select>
+                        <input type="text" id="venue-field" placeholder="Venue" />
                      </td>
                      <td class="type">
                        <select  id="type-field" style="margin-left:10px;">
-                         <option value="lecturer" >lecturer</option>
+                         <option value="lecture" >lecture</option>
                          <option value="tutorial" >tutorial</option>
                        </select>
                      </td>
@@ -351,11 +387,6 @@
                      <td class="duration">
                        <input type="text" id="duration-field" placeholder="Duration" style="margin-left:10px;"/>
                      </td>
-                     <td class="subject">
-                       <select  id="subject-field" style="margin-left:10px;">
-                         <option value="" ></option>
-                       </select>
-                     </td>
 
                      <td class="add" style="margin-left:10px;">
                        <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
@@ -365,10 +396,8 @@
                  </div>
                </div>
              </div>
-             <table class="table  table-hover subjListTb " data-show-header="true" data-pagination="true"
-                  data-id-field="name"
-                  data-page-list="[5, 10, 25, 50, 100, ALL]"
-                  data-page-size="5"  width="100%">
+                <div class="panel-body ">
+             <table class="table  table-hover subjListTb "  width="100%">
                   <thead>
                     <tr>
                       <div class="pull-right searchBar">
@@ -389,6 +418,7 @@
                   <tbody  id="lessonTable">
                   </tbody>
                 </table>
+              </div>
               </div>
             </div>
           </div>
@@ -426,6 +456,9 @@
   <script src='js/classRescheduling.js'></script>
   <script src='js/subject.js'></script>
   <script src='js/lesson.js'></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 var backEndUrl = '/fypBackEnd';
 
 
-Using regular expressions is probably the best way. You can see a bunch of tests here (taken from chromium)
+//Using regular expressions is probably the best way. You can see a bunch of tests here (taken from chromium)
 
 
 function validateEmail(email) {
@@ -9,22 +9,27 @@ function validateEmail(email) {
   return re.test(email);
 }
 
-function validate() {
-  var $result = $("#result");
+function validate(e) {
   var email = $("#email").val();
-  $result.text("");
+
 
   if (validateEmail(email)) {
-    $result.text(email + " is valid :)");
-    $result.css("color", "green");
+      e.preventDefault();
+    $('#email').css("border-bottom", " 2px solid #228B22");
+
   } else {
-    $result.text(email + " is not valid :(");
-    $result.css("color", "red");
+    if ($('#pass').val() == ""){
+      e.preventDefault();
+    $('#email').css("border-bottom", "2px solid #ff0000");
+      alert(email + " is not a valid email!");
+        $('#pass').css("border-bottom", "2px solid #ff0000");
   }
+}
   return false;
 }
 
-$("#validate").bind("click", validate);
+$("#btnLogin").bind("click", validate);
+
 $('#btnLogin').on('click', function(){
   var email = $('#email').val();
   var pass = $('#pass').val();
