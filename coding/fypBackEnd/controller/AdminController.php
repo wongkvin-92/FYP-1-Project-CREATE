@@ -147,6 +147,10 @@
           $this->returnObject($lesson);     
       }
 
+      /*      public function updateLesson($lessonID, $date, $time, $venue){
+
+              }*/
+
       public function addClass($subjectId, $roomId, $date, $time, $duration, $type){
           $da = new ClassLessonDA($this->con);
           $subjectDA = new SubjectDA($this->con);
