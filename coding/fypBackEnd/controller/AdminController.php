@@ -197,7 +197,7 @@
               $o['time'] = "12321";
               $o['duration']= $v->getDuration();
               $o['lecturer'] = $lecturer->getName();
-              $o['subject'] = $subject->getSubName();
+              $o['subjectID'] = $subject->getSubId();
 
               $out[] = $o;
           }
