@@ -111,26 +111,26 @@
           $lecturer = $lecturerDA->fetchLecturerByName($lname);
 
           if($lecturer == null){
-              //print "Lecturer not found";
+              print "Lecturer not found";
               $lecturer = new Lecturer();
               $lecturer->lecturerName = $lname;
               $lecturerDA->save($lecturer);
               $lecturer = $lecturerDA->fetchLecturerByName($lname);
 
           }else{
-              // print "Lecturer found";
+               print "Lecturer found";
           }
           
           if($subject == null){
-              //print "Subject not found";
+              print "Subject not found";
               $subject = new Subject();
               $subject->subjectID = $sid;
               $subject->lecturerID = $lecturer->lecturerID;
               $subject->subjectName = $sname;
-              $subjectDA->save($subject);
-              $subject = $subjectDA->fetchSubjectById($sid);
+              //$subjectDA->save($subject);
+              //$subject = $subjectDA->fetchSubjectById($sid);
           }else{
-              //print "subject found";
+              print "subject found";
           }
 
           $lesson = new ClassLesson();
@@ -140,7 +140,9 @@
           $lesson->venue = $rid;
           $lesson->setDuration($duration);
           $lesson->setType($type);
-          $da->save($lesson);
+          if($da->save($lesson) != true){
+              throw new \Exception("Cannot create lesson!");
+          }
           
           $this->returnObject($lesson);     
       }
