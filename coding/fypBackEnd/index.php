@@ -94,6 +94,17 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
     $admin->listLessons();
   });
 
+  /*  $klein->respond('POST', $root.'/lessons/[*:code]/', function($r) use ($admin){
+      $lecturerName = getPost('lecturerName');
+      $subjectName = getPost('lecturerName');
+      $date = getPost('date');
+      $time = getPost('time');
+      $venue = getPost('venue');
+
+      print "AOK!";
+  });
+  */
+
   $klein->respond('GET', $root.'/lessons/search/[*:query]', function($req, $resp) use ($admin){
       $query = $req->param('query');
       if(isset($query)){
@@ -103,17 +114,21 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
       }
   });
 
+
   
   $klein->respond('POST', $root.'/lessons/', function($r) use ($admin){
       $sid = getPost('subjectID');
-      $rid = getPost('roomID');
+      $sname = getPost('subjectName');
+      $lname = getPost('lecturerName');
+      $rid = getPost('venue');
       $date = getPost('date');
       $time = getPost('time');
       $duration = getPost('duration');
       $type = getPost('type');
-
-      $admin->addClass($sid, $rid, $date, $time, $duration, $type);
+      $admin->addNewSubjectLesson($sid, $rid, $date, $time, $duration, $type, $lname, $sname);     
   });
+  
+  
 
 
   //Lecturer related routes

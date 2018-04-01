@@ -15,6 +15,12 @@
       return $result->fetch_object('Lecturer');
     }
 
+      function fetchLecturerByName($name){
+      $result = $this->con->query("SELECT * FROM lecturer WHERE lecturerName='$name'");
+
+      return $result->fetch_object('Lecturer');
+    }
+
   }
 
  ?>
