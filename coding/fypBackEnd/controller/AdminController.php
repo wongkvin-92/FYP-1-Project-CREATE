@@ -120,7 +120,7 @@
           }else{
                print "Lecturer found";
           }
-          
+
           if($subject == null){
               print "Subject not found";
               $subject = new Subject();
@@ -143,8 +143,8 @@
           if($da->save($lesson) != true){
               throw new \Exception("Cannot create lesson!");
           }
-          
-          $this->returnObject($lesson);     
+
+          $this->returnObject($lesson);
       }
 
       /*      public function updateLesson($lessonID, $date, $time, $venue){
@@ -184,15 +184,15 @@
       }
 
       /**
-       * Search through the lesson table and returns 
-       * list of lessons in a  
+       * Search through the lesson table and returns
+       * list of lessons in a
        * presentable format.
-       * @param $query string Subject code 
+       * @param $query string Subject code
        **/
       public function searchLesson($query){
           $lessonda = new SubjectDA($this->con);
           $result = $lessonda->searchBySubjectId($query);
-          $this->returnObject($result);          
+          $this->returnObject($result);
       }
 
       /**
@@ -235,9 +235,9 @@
           $out = [];
           foreach($in as $v){
               // $roomda = new RoomDA($this->con);
-              //$room = $roomda->getRoomById($v->roomID);              
+              //$room = $roomda->getRoomById($v->roomID);
               $sda = new SubjectDA($this->con);
-              $subject = $sda->fetchSubjectById($v->subjectID);              
+              $subject = $sda->fetchSubjectById($v->subjectID);
 
               $lda = new LecturerDA($this->con);
               $lecturer = $lda->fetchLecturerById($subject->lecturerID);

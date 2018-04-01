@@ -356,10 +356,10 @@
                  </select>
                </div>
                <div class="col-xs-12 col-md-2">
-                 <input type="text" id="subject_name" placeholder="Subject Name" style="margin-left:10px;" disabled/>
+                 <input type="text" id="subject_name" placeholder="Subject Name" style="margin-left:10px;" />
                </div>
                <div class="col-xs-12 col-md-2">
-                 <input type="text" id="lecturer_name" placeholder="Lecturer Name" style="margin-left:10px;" disabled/>
+                 <input type="text" id="lecturer_name" placeholder="Lecturer Name" style="margin-left:10px;" />
                </div>
                </form>
               </div>
