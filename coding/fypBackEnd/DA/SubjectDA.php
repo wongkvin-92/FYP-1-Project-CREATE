@@ -5,7 +5,9 @@
         parent::__construct($con, "Subject");
     }
 
-    //returns the user by email
+      /**
+       *retrieves the subject given the id
+       **/
     function fetchSubjectById($id){
       $result = $this->con->query("SELECT * FROM subject WHERE subjectID='$id'");
       return $result->fetch_object('Subject');
@@ -15,6 +17,19 @@
       $result = $this->con->query("DELETE FROM subject WHERE subjectID = '$id';");
       return $this->con->affected_rows != 0;
     }
+
+      /**
+       * Retrieves a list of subjects similar to the given subject code.
+       **/
+      function searchBySubjectId($code){
+          $result = $this->con->query("SELECT * FROM subject WHERE subjectID LIKE '%{$code}%';");
+          $arr = [];
+          while($o = $result->fetch_object()){
+              $arr [] = $o;
+          }
+          return $arr;
+                      
+      }
 
   }
 

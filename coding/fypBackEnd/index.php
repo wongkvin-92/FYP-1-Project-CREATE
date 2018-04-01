@@ -93,8 +93,18 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
   $klein->respond('GET', $root.'/lessons/', function($r) use ($admin){
     $admin->listLessons();
   });
-  $klein->respond('POST', $root.'/lessons/', function($r) use ($admin){
 
+  $klein->respond('GET', $root.'/lessons/search/[*:query]', function($req, $resp) use ($admin){
+      $query = $req->param('query');
+      if(isset($query)){
+          $admin->searchLesson($query);
+      }else{
+          throw new \Exception("No query received !");
+      }
+  });
+
+  
+  $klein->respond('POST', $root.'/lessons/', function($r) use ($admin){
       $sid = getPost('subjectID');
       $rid = getPost('roomID');
       $date = getPost('date');

@@ -132,6 +132,18 @@
       }
 
       /**
+       * Search through the lesson table and returns 
+       * list of lessons in a  
+       * presentable format.
+       * @param $query string Subject code 
+       **/
+      public function searchLesson($query){
+          $lessonda = new SubjectDA($this->con);
+          $result = $lessonda->searchBySubjectId($query);
+          $this->returnObject($result);          
+      }
+
+      /**
        * Returns all rooms
        **/
       public function listRooms(){

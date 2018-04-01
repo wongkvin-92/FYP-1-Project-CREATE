@@ -19,6 +19,18 @@ class ClassLessonDA extends DataAccessObject{
         return $result->fetch_object('ClassLesson');
     }
 
+    public function getLinkedClassById($id){
+        $q = "SELECT * FROM class_lesson, subject, room WHERE classID = '{$id}' AND roomID = room.roomID AND subjectID = subject.subjectID;";
+        $result = $this->con->query($q);
+        //$o = [];
+        
+        // $result->fetch_object('');
+        //while($obj = $result->fetch_object('ClassLesson')){
+            //$subjectDA = 
+        //}
+        return $result;
+    }
+
 }
 
 ?>
