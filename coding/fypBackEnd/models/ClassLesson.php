@@ -7,6 +7,7 @@
  **/
 class ClassLesson{
     public $classID, $dateTime, $roomID, $duration, $type;
+    public $venue;
     public $subjectID;
 
     public function getDateTime(){

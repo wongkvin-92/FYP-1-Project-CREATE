@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#btnAdd").click(function(){
+        $("#mytable tbody").append("<tr><td>col1</td><td>col2</td></tr>");
+    });
+});
+</script>
+</head>
+<body>
+
+<table id="mytable" border="1">
+<thead>
+<tr>
+<th>Header 1</th><th>Header 2</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+<button id="btnAdd">Add Row...</button>
+
+</body>
+</html>

@@ -99,6 +99,54 @@
 
     }
 
+      /**
+       * Creates a new subject if subject does not exist.
+       **/
+      public function addNewSubjectLesson($sid, $rid, $date, $time, $duration, $type, $lname, $sname){
+          $subjectDA = new SubjectDA($this->con);
+          $lecturerDA = new LecturerDA($this->con);
+
+          $da = new ClassLessonDA($this->con);
+          $subject = $subjectDA->fetchSubjectById($sid);
+          $lecturer = $lecturerDA->fetchLecturerByName($lname);
+
+          if($lecturer == null){
+              print "Lecturer not found";
+              $lecturer = new Lecturer();
+              $lecturer->lecturerName = $lname;
+              $lecturerDA->save($lecturer);
+              $lecturer = $lecturerDA->fetchLecturerByName($lname);
+
+          }else{
+               print "Lecturer found";
+          }
+
+          if($subject == null){
+              print "Subject not found";
+              $subject = new Subject();
+              $subject->subjectID = $sid;
+              $subject->lecturerID = $lecturer->lecturerID;
+              $subject->subjectName = $sname;
+              //$subjectDA->save($subject);
+              //$subject = $subjectDA->fetchSubjectById($sid);
+          }else{
+              print "subject found";
+          }
+
+          $lesson = new ClassLesson();
+          $lesson->subjectID = $subject->subjectID;
+          $lesson->setDateTime($date, $time);
+          //$lesson->setRoom($rid);
+          $lesson->venue = $rid;
+          $lesson->setDuration($duration);
+          $lesson->setType($type);
+          if($da->save($lesson) != true){
+              throw new \Exception("Cannot create lesson!");
+          }
+
+          $this->returnObject($lesson);
+      }
+
       public function addClass($subjectId, $roomId, $date, $time, $duration, $type){
           $da = new ClassLessonDA($this->con);
           $subjectDA = new SubjectDA($this->con);
@@ -182,15 +230,15 @@
           $in = $list;
           $out = [];
           foreach($in as $v){
-              $roomda = new RoomDA($this->con);
-              $room = $roomda->getRoomById($v->roomID);
+              // $roomda = new RoomDA($this->con);
+              //$room = $roomda->getRoomById($v->roomID);
               $sda = new SubjectDA($this->con);
               $subject = $sda->fetchSubjectById($v->subjectID);
 
               $lda = new LecturerDA($this->con);
               $lecturer = $lda->fetchLecturerById($subject->lecturerID);
 
-              $o['venue'] = "hey";
+              $o['venue'] = $v->venue;
               $o['type'] = $v->type;
               //$o['dateTime'] = $v->getDateTime();
               $o['date'] = '12331231';
