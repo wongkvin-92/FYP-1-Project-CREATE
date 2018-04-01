@@ -6,8 +6,9 @@ class RoomDA extends DataAccessObject {
     }
 
     public function getRoomById($id){
-      $result = $this->con->query("SELECT * FROM room WHERE roomID = '$id';");
-      return $result->fetch_object('Room');
+      //$result = $this->con->query("SELECT * FROM room WHERE roomID = '$id';");
+      //return $result->fetch_object('Room');
+      return null;
     }
 
     public function getAllRooms(){

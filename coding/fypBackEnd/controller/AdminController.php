@@ -132,15 +132,15 @@
       }
 
       /**
-       * Search through the lesson table and returns 
-       * list of lessons in a  
+       * Search through the lesson table and returns
+       * list of lessons in a
        * presentable format.
-       * @param $query string Subject code 
+       * @param $query string Subject code
        **/
       public function searchLesson($query){
           $lessonda = new SubjectDA($this->con);
           $result = $lessonda->searchBySubjectId($query);
-          $this->returnObject($result);          
+          $this->returnObject($result);
       }
 
       /**
@@ -190,7 +190,7 @@
               $lda = new LecturerDA($this->con);
               $lecturer = $lda->fetchLecturerById($subject->lecturerID);
 
-              $o['venue'] = $room->getName();
+              $o['venue'] = "hey";
               $o['type'] = $v->type;
               //$o['dateTime'] = $v->getDateTime();
               $o['date'] = '12331231';
