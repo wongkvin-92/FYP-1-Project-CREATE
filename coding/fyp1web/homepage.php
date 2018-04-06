@@ -42,8 +42,6 @@
         <!-- Report (Element)-->
         <li class="dashboard-nav__item"><a href="report"><i class="fa fa-table" aria-hidden="true"></i>Report</a></li>
         <!-- Subject (Element)-->
-        <li class="dashboard-nav__item"><a href="subject"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/planner_dashboard_discover_places.svg"/>Subject</a></li>
-        <!-- Subject (Element)-->
         <li class="dashboard-nav__item"><a href="lesson"><i class="fa fa-tasks" aria-hidden="true"></i>Lesson</a></li>
       </ul>
     </div>
@@ -53,30 +51,30 @@
     <!-- Dashboard Header (Block)-->
 
     <!-- Dashboard Content Panel (Element)-->
-    <div class="dashboard-content__panel dashboard-content__panel--active" data-panel-id="home">
-      <div id="userTitle">
+      <div class="dashboard-content__panel dashboard-content__panel--active" data-panel-id="home">
+        <div id="userTitle">
+        </div>
+        <div class="cardsLayout">
+        <ul class="flex cards">
+          <li>
+            <h2>Welcome to Create!</h2>
+            <p class="cardsUser">
+              User Name: <span id="uName"></span>
+            </p>
+          </li>
+        </ul>
+        <ul class="flex cards">
+          <li>
+            <h2>No. of Class Rescheduling Request</h2>
+            <p>
+              10
+            </p>
+          </li>
+        </ul>
       </div>
-      <div class="cardsLayout">
-      <ul class="flex cards">
-        <li>
-          <h2>Welcome to Create!</h2>
-          <p class="cardsUser">
-            User Name: <span id="uName"></span>
-          </p>
-        </li>
-      </ul>
-      <ul class="flex cards">
-        <li>
-          <h2>No. of Class Rescheduling Request</h2>
-          <p>
-            10
-          </p>
-        </li>
-      </ul>
-    </div>
       <div class="buttonLayout">
-      <button class="btnSubmit" id="btnLogout"> logout </button>
-    </div>
+        <button class="btnSubmit" id="btnLogout"> logout </button>
+      </div>
     </div>
 
     <!-- Dashboard Content Panel (Home)-->
@@ -94,17 +92,18 @@
       <div class="dashboard-list">
         <!-- Dasboard List Item (Element)-->
         <!-- Rows and Ccolumns of the Page Contents-->
+
         <div class="row inner-row-content" id="reContainer"></div>
 
-        </div>
-
       </div>
+
+    </div>
 
 
     <!-- Dashboard Content Panel (Element)-->
     <div class="dashboard-content__panel" data-panel-id="report">
       <div class="dashboard-list report-content">
-         <div id="report" class="panel panel-primary panel-table table-responsive reportTable" style="border:none; ">
+         <div id="report" class="panel panel-primary panel-table  reportTable" style="border:none; ">
            <div class="panel-heading" >
              <div class="row">
                <div class="col col-xs-12">
@@ -115,7 +114,7 @@
             </div>
 
           <div class="panel-body " >
-            <table id="report-table" class="table table-hover table-responsive "  width="100%" >
+            <table id="report-table" class="table table-hover  "  width="100%" >
               <thead>
                 <tr>
                 <th>Lecturer</th>
@@ -277,10 +276,11 @@
         </tfoot>
       </table>
     </div>
-    </div>
+   </div>
   </div>
-    </div>
+  </div>
     <!-- Dashboard Content Panel (subject)-->
+    <!--
     <div class="dashboard-content__panel " data-panel-id="subject">
       <div class="dashboard-list">
         <div id="subjects" class="panel panel-primary panel-table subject_view table-responsive" style="border:none;">
@@ -334,41 +334,37 @@
            </div>
          </div>
        </div>
+     -->
        <!-- Dashboard Content Panel (lesson)-->
        <div class="dashboard-content__panel " data-panel-id="lesson">
          <div class="dashboard-list">
            <div id="lessons" class="panel panel-primary panel-table list_view table-responsive lessonPage" style="border:none; ">
              <div class="panel-heading">
-               <div class="row">
-                 <div class="col col-xs-6">
                <h3 class="panel-title">Subject</h3>
-                            <br/>
-             </div>
-
-             </div>
-              <div id = "remove-me" class="row">
-
-
-                 <form class="form-inline">
-                <div class="col-xs-12 col-md-2">
-                 <select class="s2" id="hey">
-                  <option value="">Subject Code</option>
-                 </select>
+               <br/>
+               <div id ="remove-me" class="row table-responsive borderline-style">
+                 <table>
+                   <td>
+                     <select class="s2" id="subjCode-field">
+                       <option value="">Subject Code</option>
+                     </select>
+                   </td>
+                   <td>
+                     <input type="text" id="subjectName-field" placeholder="Subject Name" style="margin-left:20px;" />
+                     <!-- <input type="text" id="lecturer_name" placeholder="Lecturer Name" style="margin-left:10px;" /> -->
+                   </td>
+                   <td>
+                     <select  id="lecturerName-field" style="margin-left:10px;">
+                       <option value="">Lecture Name</option>
+                     </select>
+                   </td>
+                 </table>
                </div>
-               <div class="col-xs-12 col-md-2">
-                 <input type="text" id="subject_name" placeholder="Subject Name" style="margin-left:10px;" />
-               </div>
-               <div class="col-xs-12 col-md-2">
-                 <input type="text" id="lecturer_name" placeholder="Lecturer Name" style="margin-left:10px;" />
-               </div>
-               </form>
-              </div>
-              <br/>
-               <div class="row">
-                 <div class="col col-xs-6">
-                   <h3 class="panel-title">Lessons</h3>
-                   <br/>
-                   <table >
+               <br/>
+               <h3 class="panel-title">Lessons</h3>
+               <br/>
+               <div class="row table-responsive lesson-input_outline borderline-style">
+                 <table>
                      <td class="venue">
                         <input type="text" id="venue-field" placeholder="Venue" />
                      </td>
@@ -387,17 +383,15 @@
                      <td class="duration">
                        <input type="text" id="duration-field" placeholder="Duration" style="margin-left:10px;"/>
                      </td>
-
                      <td class="add" style="margin-left:10px;">
                        <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
                      </td>
-
-                   </table>
-                 </div>
+                 </table>
                </div>
              </div>
-                <div class="panel-body ">
-             <table class="table  table-hover subjListTb "  width="100%">
+
+             <div class="panel-body ">
+                <table class="table  table-hover subjListTb "  width="100%">
                   <thead>
                     <tr>
                       <div class="pull-right searchBar">
@@ -417,11 +411,11 @@
                   </thead>
                   <tbody  id="lessonTable">
                   </tbody>
-                </table>
-              </div>
-              </div>
-            </div>
-          </div>
+               </table>
+             </div>
+           </div>
+         </div>
+       </div>
      </div>
    </div>
  </div>
@@ -454,7 +448,6 @@
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js'></script>
   <script src='js/classRescheduling.js'></script>
-  <script src='js/subject.js'></script>
   <script src='js/lesson.js'></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>

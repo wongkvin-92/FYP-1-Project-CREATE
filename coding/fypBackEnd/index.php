@@ -114,21 +114,30 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
       }
   });
 
+  $klein->respond('GET', $root.'/lessons/[i:id]/', function($req, $resp) use ($admin){
+    $id = $req->param('id');
+    if(isset($id)){
+        $admin->getLesson($id);
+    }else{
+        throw new \Exception("No query received !");
+    }
+  });
 
-  
+
+
   $klein->respond('POST', $root.'/lessons/', function($r) use ($admin){
       $sid = getPost('subjectID');
       $sname = getPost('subjectName');
-      $lname = getPost('lecturerName');
+      $lid = getPost('lecturer');
       $rid = getPost('venue');
       $date = getPost('date');
       $time = getPost('time');
       $duration = getPost('duration');
       $type = getPost('type');
-      $admin->addNewSubjectLesson($sid, $rid, $date, $time, $duration, $type, $lname, $sname);     
+      $admin->addNewSubjectLesson($sid, $rid, $date, $time, $duration, $type, $lid, $sname);
   });
-  
-  
+
+
 
 
   //Lecturer related routes
@@ -140,8 +149,14 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
 
 
     //Subject related routes
+
   $klein->respond('GET', $root.'/subjects/', function($r) use ($admin){
     $admin->listSubjects();
+  });
+  //use ($admin) user control, only admin can use
+  $klein->respond('GET', $root.'/subjects/[*:id]/', function($req,$resp) use ($admin){
+    $id = $req->param('id');
+    $admin->getSubject($id);
   });
   $klein->respond('POST', $root.'/subjects/', function($r) use ($admin, $con){
       $name = getPost('name');

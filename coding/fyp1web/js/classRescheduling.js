@@ -23,10 +23,6 @@ $("#btnLogout").on("click", function(){
 });
 
 
-
-//var item2 = createReCard("BIT202", "IT Entre", "Anita", "2018/01/20", "08:00", "2");
-
-
 $.ajax({
   url: backEndUrl+'/classes/pending/',
   method: 'GET',
@@ -51,11 +47,17 @@ function removeClass(id){
 }
 
 function approveClass(id){
-  if ($('#venue').val() == ""){
+  var regexVenue = /^(sr)[2]{1}.[1-3]{1}|^(lh)[2]{1}.[1-3]{1}|^(ls)[1-2]{1}|^(tis)$/;
+  var venue = $('#venue').val();
+  if (venue == ""){
     alert("Please enter a class venue!");
     return;
-  }else{
-  if (confirm('Are you sure you want to save this thing into the database?')) {
+  }else if(!(regexVenue.test(venue))){
+    alert(venue + " is invalid!");
+        return;
+  }
+  else{
+  if (confirm('Are you sure you approve this Class Reschedulement?')) {
     $.ajax({
         url : backEndUrl+"/classes/"+id+"/approve/",
         method : "GET",
@@ -69,7 +71,6 @@ function approveClass(id){
     });
 } else {
     return;
-
   }
 }
 }
@@ -79,11 +80,11 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id){
   var replacementCard = `<div class="content-layout" id="approval-request-`+id+`">
 
 
-  <h3 style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-default btn-sm pull-right btnEdit" onClick="editBtnClicked(`+id+`)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></h3>
+  <div style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-default btn-sm pull-right btnEdit" onClick="editBtnClicked(`+id+`)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></div>
   <div style="position:relative; z-index:9999; top:-5px;">
     <h3><span class="left">Code:</span> <span class="right" id="subjectCode"></span></h3>
-    <h5><span class="left">Subject:</span> <span class="right" id="subjectName"></span></h5>
-    <h5><span class="left">Lecturer:</span> <span class="right" id="lecturer"></span></h5>
+    <p class="class-reschedule_subject"><span class="left">Subject:</span> <span class="right" id="subjectName"></span></p>
+    <p><span class="left">Lecturer:</span> <span class="right" id="lecturer"></span></p>
     <p><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
     <p><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
     <p><span class="left">Duration:</span> <span class="right" id="duration"></span></p>
@@ -142,11 +143,11 @@ var editBtnClicked = function(id) {
 var subjectBox = $('#approval-request-'+id);
 
   var subjCard = `
-  <h3 style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-default btn-sm pull-right btnSave" onClick="goBackViewMode(`+id+`)"><i class="fa fa-close" aria-hidden="true"></i></i></button></h3>
+  <div style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-default btn-sm pull-right btnSave" onClick="goBackViewMode(`+id+`)"><i class="fa fa-close" aria-hidden="true"></i></i></button></div>
   <div style="position:relative; z-index:9999; top:-5px;">
     <h3 ><span class="left">Code:</span> <span class="right" id="subjectCode">`+item.subjectCode+`</span></h3>
-    <h5 ><span class="left">Subject:</span> <span class="right" id="subjectName">`+item.subjectName+`</span></h5>
-    <h5 ><span class="left">Lecturer:</span> <span class="right" id="lecturer">`+item.lecturer+`</span></h5>
+    <p ><span class="left">Subject:</span> <span class="right" id="subjectName">`+item.subjectName+`</span></h5>
+    <p ><span class="left">Lecturer:</span> <span class="right" id="lecturer">`+item.lecturer+`</span></h5>
     <div class="redateBox">
       <p ><span class="left redateBox">Re-Date:</span> <span class="right date" id="reDate"><input id="newDate" type="date" name="datechanged" value="`+item.reDate+`" /></span></p>
       <p ><span class="left">Re-Time:</span> <span class="right time" id="reTime"><input id="newTime" type="time" name="timechanged" value="`+item.reTime+`" /></span></p>

@@ -99,16 +99,31 @@
 
     }
 
+    /*
+     * Get a Subject
+     */
+     public function getSubject($id){
+       $subjectDA = new SubjectDA($this->con);
+       $lecturerDA = new LecturerDA($this->con);
+       $subject = $subjectDA->fetchSubjectById($id);
+       $lecturer = $lecturerDA->fetchLecturerById($subject->lecturerID);
+       //$subject->lecturerName = $lecturer->getName();
+       $subject->lecturerID = $lecturer->getId();
+
+       $this->returnObject($subject);
+     }
+
       /**
        * Creates a new subject if subject does not exist.
        **/
-      public function addNewSubjectLesson($sid, $rid, $date, $time, $duration, $type, $lname, $sname){
+      public function addNewSubjectLesson($sid, $rid, $date, $time, $duration, $type, $lid, $sname){
           $subjectDA = new SubjectDA($this->con);
           $lecturerDA = new LecturerDA($this->con);
 
           $da = new ClassLessonDA($this->con);
           $subject = $subjectDA->fetchSubjectById($sid);
-          $lecturer = $lecturerDA->fetchLecturerByName($lname);
+          //$lecturer = $lecturerDA->fetchLecturerByName($lname);
+          $lecturer = $lecturerDA->fetchLecturerById($lid);
 
           if($lecturer == null){
             //  print "Lecturer not found";
@@ -116,7 +131,6 @@
               $lecturer->lecturerName = $lname;
               $lecturerDA->save($lecturer);
               $lecturer = $lecturerDA->fetchLecturerByName($lname);
-
           }else{
               // print "Lecturer found";
           }
@@ -127,7 +141,7 @@
               $subject->subjectID = $sid;
               $subject->lecturerID = $lecturer->lecturerID;
               $subject->subjectName = $sname;
-              //$subjectDA->save($subject);
+              $subjectDA->save($subject);
               //$subject = $subjectDA->fetchSubjectById($sid);
           }else{
             //  print "subject found";
@@ -137,13 +151,14 @@
           $lesson->subjectID = $subject->subjectID;
           $lesson->setDateTime($date, $time);
           //$lesson->setRoom($rid);
-          $lesson->venue = $rid;
+          $lesson->venue = strtolower($rid);
           $lesson->setDuration($duration);
           $lesson->setType($type);
           if($da->save($lesson) != true){
               throw new \Exception("Cannot create lesson!");
           }
-
+          $lesson->lecturerName = $lecturer->getName();
+          //$lesson
           $this->returnObject($lesson);
       }
 
@@ -205,6 +220,7 @@
           $this->returnObject($list);
       }
 
+
       /**
        * Add a new Room
        **/
@@ -222,6 +238,13 @@
           }
       }
 
+
+/*
+      public function getLesson($id){
+        $lessonDA = new ClassLessonDA($this->con);
+        returnObject($lessonDA->getClassById($id));
+      }*/
+
       /**
        * Returns all Lessons
        * for testing purpose
@@ -238,15 +261,21 @@
               //$room = $roomda->getRoomById($v->roomID);
               $sda = new SubjectDA($this->con);
               $subject = $sda->fetchSubjectById($v->subjectID);
+              if($subject == null){
+                  throw new \Exception("System error: The subject not found with id " . $v->subjectID);
+              }
 
               $lda = new LecturerDA($this->con);
               $lecturer = $lda->fetchLecturerById($subject->lecturerID);
+              if($lecturer == null){
+                  throw new \Exception("System error: The lecturer not found for subject "+ $subject->getId());
+              }
 
               $o['venue'] = $v->venue;
               $o['type'] = $v->type;
-              //$o['dateTime'] = $v->getDateTime();
-              $o['date'] = '12331231';
-              $o['time'] = "12321";
+              $o['dateTime'] = $v->getDateTime();
+            //  $o['date'] = '12331231';
+            //  $o['time'] = "12321";
               $o['duration']= $v->getDuration();
               $o['lecturer'] = $lecturer->getName();
               $o['subjectID'] = $subject->getSubId();

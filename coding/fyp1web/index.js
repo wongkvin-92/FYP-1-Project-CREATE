@@ -11,21 +11,21 @@ function validateEmail(email) {
 
 function validate(e) {
   var email = $("#email").val();
-
-
-  if (validateEmail(email)) {
-      e.preventDefault();
-    $('#email').css("border-bottom", " 2px solid #228B22");
-
+  if ($('#email').val() == "")  {
+        e.preventDefault();
+      $('#email').css("border-bottom", "2px solid #ff0000");
+      alert("Email entry is empty");
   } else {
-    if ($('#pass').val() == ""){
-      e.preventDefault();
-    $('#email').css("border-bottom", "2px solid #ff0000");
-      alert(email + " is not a valid email!");
-        $('#pass').css("border-bottom", "2px solid #ff0000");
-  }
-}
-  return false;
+        if (validateEmail(email)) {
+            e.preventDefault();
+          $('#email').css("border-bottom", " 2px solid #228B22");
+
+        } else {
+          e.preventDefault();
+          $('#email').css("border-bottom", "2px solid #ff0000");
+          alert("Email entry is not a valid!");
+        }
+    }
 }
 
 $("#btnLogin").bind("click", validate);
@@ -51,6 +51,7 @@ $('#btnLogin').on('click', function(){
    },
     error: function(a,b,c){
     alert(a.responseJSON.msg);
+      $('#pass').css("border-bottom", "2px solid #ff0000");
    }
 });
 

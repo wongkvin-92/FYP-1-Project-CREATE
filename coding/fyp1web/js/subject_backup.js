@@ -11,7 +11,6 @@ var idField = $('#id-field'),
     nameField = $('#name-field'),
     lecturerField = $('#lecturer-field'),
     addBtn = $('#add-btn'),
-    editBtn = $('#edit-btn').hide(),
     removeBtns = $('.remove-item-btn'),
     editBtns = $('.edit-item-btn');
 

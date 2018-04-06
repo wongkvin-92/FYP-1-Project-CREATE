@@ -1,4 +1,11 @@
-var backEndUrl='/fypBackEnd';
+var backEndUrl='/fypBackEnd',
+    venue = $('#venue-field').val(),
+    subjCode = $('#subjCode-field').val(),
+    lecturer = $('#lecturerName-field').val(),
+    classType = $('#type-field').val(),
+    date = $('date-field').val(),
+    time = $('time-field').val(),
+    duration = $('duration-field').val();
 
 $.ajax({
   url: backEndUrl+'/subjects/',
@@ -10,17 +17,40 @@ $.ajax({
       var tag = `
           <option value="`+d.subjectID+`">`+d.subjectID+`</option>
         `;
-        $('#hey').append($(tag));
-
+        $('#subjCode-field').append($(tag));
     }
     console.log(reply);
 
   }
 });
 
+$.ajax({
+
+  url: backEndUrl +'/lecturers/',
+  method:'GET',
+  dataType:'json',
+  success: function(reply){
+    for(var i = 0; i<reply.length; i++){
+      record = reply[i];
+      var recordTag = `
+        <option value="`+record.lecturerID+`">`+record.lecturerName+`</option>
+      `
+        $('#lecturerName-field').append($(recordTag));
+    }
+  }
+});
+
 $('document').ready( function(){
  $('.s2').select2({
-   placeholder: 'Subject Code'
+   placeholder: 'Subject Code',
+   tags: true,
+   createTags: function(params){
+     return{
+       id: params.term,
+       text: params.term,
+       newOption: true
+     }
+   }
  });
 });
 
@@ -30,13 +60,13 @@ $('.select2-selection__arrow').append('<i class="fa fa-angle-down"></i>');
 /*
  * To add new Class Lesson
  */
-function displayNewLesson(venue, type, lecturer, date, time, duration, subject){
+function displayNewLesson(venue, type, lecturer, datetime, duration, subject){
   var newLessonRow =
   `<tr class="listContent">
         <td class="venue" data-field="venue">`+venue+`</td>
         <td class="type"  data-field="type">`+type+`</td>
         <td class="lecturer"  data-field="lecturer">`+lecturer+`</td>
-        <td class="datetime"  data-field="date">`+date+ " "+time+`</td>
+        <td class="datetime"  data-field="date">`+datetime+`</td>
         <td class="duration"  data-field="duration">`+duration+`</td>
         <td class="subject"  data-field="subject">`+subject+`</td>
         <td class="edit"><button class="btn btn-default btn-sm edit-lesson-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
@@ -52,10 +82,9 @@ function insertLessonData(data){
   $('#lessonTable').html("");
   for(var i=0; i< data.length; i++){
     var item  = data[i];
-    displayNewLesson( item.venue,  item.type, item.lecturer, item.date,item.time,item.duration, item.subjectID);
-
-
+    displayNewLesson( item.venue,  item.type, item.lecturer, item.dateTime,item.duration, item.subjectID);
   }
+      listPaginate();
 }
 $.ajax({
   url: backEndUrl+'/lessons/',
@@ -70,8 +99,83 @@ $.ajax({
     console.log(reply);
   }
 });
+/*
+ * Retrieve Subject
+ */
+ $('#subjCode-field').change(function(e){
+ var subjectID = $(this).val();
+	$.ajax({
+   url: "/fypBackEnd/subjects/"+subjectID+"/",
+    dataType: 'json',
+   success: function(r){
+    console.log(r);
+	$('#subjectName-field').prop('disabled', true);
+	$('#lecturerName-field').prop('disabled', true);
+	$('#subjectName-field').val(r.subjectName);
+    $('#lecturerName-field').val(r.lecturerID);
+  },
+  error: function(r){
+    $('#subjectName-field').val("");
+      $('#lecturerName-field').val("");
+    $('#subjectName-field').prop('disabled', false);
+    $('#lecturerName-field').prop('disabled', false);
+    alert("Subject does not exist. \nYou will create a new subject when you add the lesson");
 
+    }
+  });
+})
+/*
+ * Add New Subject
+ */
 
+/*
+ * Add lessons
+*/
+$('#add-btn').click(function(){
+
+  var data = {
+    venue : $('#venue-field').val(),
+    subjCode : $('#subjCode-field').val(),
+    classType : $('#type-field').val(),
+    date : $('#date-field').val(),
+    time : $('#time-field').val(),
+    duration : $('#duration-field').val(),
+    lecturer : $('#lecturerName-field').val(),
+    subjName : $('#subjectName-field').val()
+
+  };
+
+  $.ajax({
+    url : backEndUrl+'/lessons/',
+    method : 'POST',
+    dataType : 'json',
+    data : {
+      'venue' : data.venue,
+      'subjectID' : data.subjCode,
+      'type' : data.classType,
+      'date' : data.date,
+      'time' : data.time,
+      'duration' : data.duration,
+      'lecturer' : data.lecturer,
+      'subjectName' : data.subjName
+    },
+    success: function(reply){
+
+      var lecName = $('#lecturer-field option:selected').text();
+      displayNewLesson(data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subjName);
+      alert("Successfully added.");
+
+        //apend option
+    },
+    error: function(reply){
+
+      reply = reply.responseJSON;
+      alert(reply.msg);
+    }
+  });
+  console.log(data);
+
+});
 
 // End of Adding Class Lesson
 
@@ -164,6 +268,8 @@ $(document).on('click', '.edit-lesson-btn', function() {
      tdType.html('<select name="type" value=""> <option value="' + tdTypeValue + '"> ' + tdTypeValue + ' </option></select>');
      tdDateTime.html('<input type="datetime" name="datetime" value="' + tdDateTimeValue + '">');
      tdDuration.html('<input type="text" name="duration" value="' + tdDurationValue + '">');
+
+
   }
 
 });
@@ -204,3 +310,157 @@ $(document).on('click', '.remove-item-btn', function() {
 });
 
 // End of removing Class Lesson
+
+// Beginning of pagination
+//pagination
+var listPaginate = function(){
+(function($){
+
+    var lPaginate = {
+        startPos: function(pageNumber, perPage) {
+            // determine what array position to start from
+            // based on current page and # per page
+            return pageNumber * perPage;
+        },
+
+        getPage: function(items, startPos, perPage) {
+            // declare an empty array to hold our page items
+            var page = [];
+
+            // only get items after the starting position
+            items = items.slice(startPos, items.length);
+
+            // loop remaining items until max per page
+            for (var i=0; i < perPage; i++) {
+                page.push(items[i]); }
+
+            return page;
+        },
+
+        totalPages: function(items, perPage) {
+            // determine total number of pages
+            return Math.ceil(items.length / perPage);
+        },
+
+        createBtns: function(totalPages, currentPage) {
+            // create buttons to manipulate current page
+            var p = $('<div class="lPage" />');
+
+            // add a "first" button
+            p.append('<span class="lPage-button">&laquo;</span>');
+
+            // add pages inbetween
+            for (var i=1; i <= totalPages; i++) {
+                // truncate list when too large
+                if (totalPages > 5 && currentPage !== i) {
+                    // if on first two pages
+                    if (currentPage === 1 || currentPage === 2) {
+                        // show first 5 pages
+                        if (i > 5) continue;
+                    // if on last two pages
+                    } else if (currentPage === totalPages || currentPage === totalPages - 1) {
+                        // show last 5 pages
+                        if (i < totalPages - 4) continue;
+                    // otherwise show 5 pages w/ current in middle
+                    } else {
+                        if (i < currentPage - 2 || i > currentPage + 2) {
+                            continue; }
+                    }
+                }
+
+                // markup for page button
+                var pageBtn = $('<span class="lPage-button page-num" />');
+
+                // add active class for current page
+                if (i == currentPage) {
+                    pageBtn.addClass('active'); }
+
+                // set text to the page number
+                pageBtn.text(i);
+
+                // add button to the container
+                p.append(pageBtn);
+            }
+
+            // add a "last" button
+            p.append($('<span class="lPage-button">&raquo;</span>'));
+
+            return p;
+        },
+
+        createPage: function(items, currentPage, perPage) {
+            // remove pagination from the page
+            $('.lPage').remove();
+
+            // set context for the items
+            var container = items.parent(),
+                // detach items from the page and cast as array
+                items = items.detach().toArray(),
+                // get start position and select items for page
+                startPos = this.startPos(currentPage - 1, perPage),
+                page = this.getPage(items, startPos, perPage);
+
+            // loop items and readd to page
+            $.each(page, function(){
+                // prevent empty items that return as Window
+                if (this.window === undefined) {
+                    container.append($(this)); }
+            });
+
+            // prep pagination buttons and add to page
+            var totalPages = this.totalPages(items, perPage),
+                pageButtons = this.createBtns(totalPages, currentPage);
+
+            container.after(pageButtons);
+        }
+    };
+
+    // stuff it all into a jQuery method!
+    $.fn.lPaginate = function(perPage) {
+        var items = $(this);
+
+        // default perPage to 5
+        if (isNaN(perPage) || perPage === undefined) {
+            perPage = 5; }
+
+        // don't fire if fewer items than perPage
+        if (items.length <= perPage) {
+            return true; }
+
+        // ensure items stay in the same DOM position
+        if (items.length !== items.parent()[0].children.length) {
+            items.wrapAll('<div class="lPage-items" />');
+        }
+
+        // paginate the items starting at page 1
+        lPaginate.createPage(items, 1, perPage);
+
+        // handle click events on the buttons
+        $(document).on('click', '.lPage-button', function(e) {
+            // get current page from active button
+            var currentPage = parseInt($('.lPage-button.active').text(), 9),
+                newPage = currentPage,
+                totalPages = lPaginate.totalPages(items, perPage),
+                target = $(e.target);
+
+            // get numbered page
+            newPage = parseInt(target.text(), 9);
+            if (target.text() == '«') newPage = 1;
+            if (target.text() == '»') newPage = totalPages;
+
+            // ensure newPage is in available range
+            if (newPage > 0 && newPage <= totalPages) {
+                lPaginate.createPage(items, newPage, perPage); }
+        });
+    };
+
+})(jQuery);
+if (items.length > 6)
+  $('.lPage-button').hide();
+else
+  $('.lPage-button').show();
+//var l = (items.length > 6)? 6 : items.length;
+
+$('.listContent').lPaginate(6);
+}
+//End of Pagination
