@@ -119,9 +119,28 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
     if(isset($id)){
         $admin->getLesson($id);
     }else{
-        throw new \Exception("No query received !");
+        throw new \Exception("Invalid id received !");
     }
   });
+
+    $klein->respond('DELETE', $root.'/lessons/[i:id]/', function($req, $resp) use ($admin){
+    $id = $req->param('id');
+    if(isset($id)){
+        $admin->deleteLesson($id);
+    }else{
+        throw new \Exception("Invalid id received !");
+    }
+  });
+
+
+  /*   $klein->respond('GET', $root.'/lessons/[i:id]/', function($req, $resp) use ($admin){
+    $id = $req->param('id');
+    if(isset($id)){
+        $admin->getLesson($id);
+    }else{
+        throw new \Exception("No query received !");
+    }
+    });*/
 
 
 

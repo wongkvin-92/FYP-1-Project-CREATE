@@ -239,11 +239,17 @@
       }
 
 
-/*
       public function getLesson($id){
         $lessonDA = new ClassLessonDA($this->con);
-        returnObject($lessonDA->getClassById($id));
-      }*/
+        $this->returnObject($lessonDA->getClassById($id));
+      }
+
+      public function deleteLesson($id){
+          $lessonDA = new ClassLessonDA($this->con);
+          $lesson = $lessonDA->getClassById($id);
+          $success = $lessonDA->remove($lesson);
+          print $success;
+      }
 
       /**
        * Returns all Lessons

@@ -73,6 +73,23 @@ class DataAccessObject{
         return $arr;
     }
 
+    /**
+     * Deletes the object from the database
+     **/
+    public function remove($o){
+        if(!isset($o->{$this->getPrimaryKey()}))
+            $pk = null;
+        else
+            $pk = $o->{$this->getPrimaryKey()};
+
+        if($pk == null)
+            throw new \Exception("Cannot delete, failed to fin the object in the database.");
+        $cond = "{$this->getPrimaryKey()} = '{$pk}';";
+        $query = "DELETE FROM  {$this->tableName} WHERE {$cond}";
+        $result =  $this->con->query($query);
+        return $result;
+    }
+
 
     /**
      * Must save the object to the database.
