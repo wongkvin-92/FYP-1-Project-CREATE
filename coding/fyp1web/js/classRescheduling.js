@@ -39,7 +39,7 @@ $.ajax({
 
 //insert Data
 function newReCard(item){
-  return createReCard(item.subjectCode, item.subjectName, item.lecturer, item.reDate, item.reTime, item.duration, item.id);
+    return createReCard(item.subjectCode, item.subjectName, item.lecturer, item.reDate, item.reTime, item.duration, item.id, item.venue);
 }
 
 function removeClass(id){
@@ -76,7 +76,7 @@ function approveClass(id){
 }
 
 //create structure of the card
-function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id){
+function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id, venue){
   var replacementCard = `<div class="content-layout" id="approval-request-`+id+`">
 
 
@@ -88,7 +88,7 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id){
     <p><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
     <p><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
     <p><span class="left">Duration:</span> <span class="right" id="duration"></span></p>
-    <p><span class="left">Venue:</span> <span class="right"><input type="text" name="venue" placeholder="Class Venue" id="venue"   required/ size="14"></span></p>
+    <p><span class="left">Venue:</span> <span class="right"><input type="text" name="venue" placeholder="Class Venue" id="venue" value="`+venue+`"  required/ size="14"></span></p>
     <div class="btn-style">
       <!--<p><a class="btn btn-primary venueBtn" role="button">Check Venue &raquo;</a></p>-->
       <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="approveClass(`+id+`)">Approve &raquo;</a></p>

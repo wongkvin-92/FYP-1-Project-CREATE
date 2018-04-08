@@ -7,19 +7,21 @@
  **/
 class ClassLesson{
     public $classID, $dateTime, $roomID, $duration, $type;
-    public $venue;
+    //public $venue;
     public $subjectID;
 
     public function getDateTime(){
         return $this->dateTime;
     }
-
+    
     public function getRoomID(){
         return $this->roomID;
-    }
+        }
+    
     public function getDuration(){
       return $this->duration;
     }
+
     public function setSubject($subjectID){
       $this->subjectID = $subjectID;
     }

@@ -1,12 +1,12 @@
 <?php
-  class ClassReschedulingDA{
-    //sql connection
-    private $con;
+  class ClassReschedulingDA extends DataAccessObject{
     //creating sql object outside, to inject inside (create, remove, update..)
     public function __construct($con){
       if($con == null)
         throw new \Exception("ClassReschedulingDA: No connection received");
       $this->con = $con;
+      $this->setPrimaryKey("id");
+      $this->setTableName("class_rescheduling");
     }
 
     public function getPendingRequest(){
@@ -47,10 +47,10 @@
 
     }
 
-    public function save($o){
+      /*public function save($o){
       $result = $this->con->query("UPDATE class_rescheduling SET status = '{$o->getStatus()}', newDateTime = '{$o->getNewDateTime()}' WHERE id = '{$o->getId()}' ");
 
       return $result === true;
-    }
+      }*/
   }
  ?>

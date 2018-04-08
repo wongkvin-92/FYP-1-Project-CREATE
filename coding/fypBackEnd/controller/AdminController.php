@@ -64,6 +64,7 @@
       if($result != false){
         $arr = [];
         ///entry is an object of the ClassRescheduling
+
         foreach ($result as $entry) {
           $o['id'] = $entry->getId();
           $o['subjectCode'] = $entry->getSubject()->getSubId();
@@ -74,6 +75,8 @@
           $o['reDate'] = $date[0];
           $o['reTime'] = $date[1];
           $o['duration'] = '2';
+          $o['venue'] = $entry->getVenue();
+          
           $arr[] =$o;
         }
         $this->returnJSON($arr);
@@ -83,6 +86,15 @@
           throw new \Exception("No Pending Request!");
       }
     }
+
+      /*
+      public function changeVenue($id, $venue){
+          $da = new ClassReschedulingDA($this->con);
+          $rq = $da->getApprovalRequest($id);          
+          $rq->setVenue($venue);
+          $da->save($rq);
+          $this->returnObject($rq);
+          }*/
 
     public function approveClass($id){
                           //link to db
@@ -96,7 +108,6 @@
       }else{
         throw new \Exception("You've already approved!");
       }
-
     }
 
     /*
@@ -358,10 +369,11 @@
         $this->sendMsg("Successfully Updated!");
       }
 
-      public function updateClassScheduling($id, $date, $time){
+      public function updateClassScheduling($id, $date, $time, $venue){
         $rescheduleDA = new ClassReschedulingDA($this->con);
         $record = $rescheduleDA->getApprovalRequest($id);
         $record->setNewDateTime($date, $time);
+        $record->setVenue($venue);
         $rescheduleDA->save($record);
         $this->sendMsg("Successfully Updated!");
       }
