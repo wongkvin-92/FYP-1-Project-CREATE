@@ -194,7 +194,7 @@
               $da->save($lesson);
               $this->sendMsg("Lesson successfully created!");
           }catch(\Exception $ex){
-              throw new \Exception("Failed to create a new lesson");
+              throw new \Exception("Failed to create a new lesson: ");
           }
       }
 
@@ -270,7 +270,7 @@
               if($lecturer == null){
                   throw new \Exception("System error: The lecturer not found for subject "+ $subject->getId());
               }
-
+              $o['id'] = $v->classID;
               $o['venue'] = $v->venue;
               $o['type'] = $v->type;
               $o['dateTime'] = $v->getDateTime();
@@ -332,9 +332,24 @@
         else
           throw new Exception("Error! Failed to delete subject!");
       }
-
+      /*
       public function updateSubject($id, $name, Lecturer $lecturer){
 
+      }*/
+      public function editLesson($id, $venue, $type, $dateTime, $duration){
+        $lessonDA = new ClassLessonDA($this->con);
+
+        $lesson = $lessonDA->getClassById($id);
+        if($lesson == null){
+          throw new Exception("Lesson not found!");
+        }
+        //setters for lesson object
+        $lesson->venue = $venue;
+        $lesson->type = $type;
+        $lesson->dateTime = $dateTime;
+        $lesson->duration= $duration;
+        $lessonDA->save($lesson);
+        $this->sendMsg("Successfully Updated!");
       }
 
       public function updateClassScheduling($id, $date, $time){

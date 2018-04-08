@@ -137,6 +137,16 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
       $admin->addNewSubjectLesson($sid, $rid, $date, $time, $duration, $type, $lid, $sname);
   });
 
+ $klein->respond('PATCH', $root.'/lessons/[*:id]/', function($resp, $reply) use ($admin){
+   $id = $resp->id;
+   $venue = getData('venue');
+   $type = getData('type');
+   $dateTime = getData('dateTime');
+   $duration = getData('duration');
+   $admin->editLesson($id, $venue, $type, $dateTime, $duration);
+
+
+ });
 
 
 

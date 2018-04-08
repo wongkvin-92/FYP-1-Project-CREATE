@@ -38,7 +38,7 @@ class DataAccessObject{
         return $this->primaryKey;
     }
 
-    
+
     /**
      * Retrieve a list of objects that has the given attribute set.
      * Model must have a default constructor, and public attributes.
@@ -51,12 +51,12 @@ class DataAccessObject{
         $result = $this->con->query($q);
         if($result == false)
             return false;
-        
-        $arr = [];        
+
+        $arr = [];
         while($obj = $result->fetch_object($this->className)){
             $arr[] = $obj;
         }
-        
+
         return $arr;
     }
 
@@ -65,11 +65,11 @@ class DataAccessObject{
         $result = $this->con->query($q);
         if($result == false)
             return false;
-        
-        $arr = [];        
+
+        $arr = [];
         while($obj = $result->fetch_object($this->className)){
             $arr[] = $obj;
-        }        
+        }
         return $arr;
     }
 
@@ -82,7 +82,7 @@ class DataAccessObject{
             $pk = null;
         else
             $pk = $o->{$this->getPrimaryKey()};
-        
+
         $cond = "{$this->getPrimaryKey()} = '{$pk}'";
         $vars = get_object_vars($o);
         $vars = array_filter($vars);
@@ -92,7 +92,7 @@ class DataAccessObject{
         foreach ($vars as $field => $value)
         {
             $terms--;
-            $qStr .= $field . ' = ' . $value;
+            $qStr .= $field . ' = ' . "'{$value}'";
             if ($terms)
             {
                 $qStr .= ' , ';
@@ -101,7 +101,7 @@ class DataAccessObject{
 
         if($pk == null){
             $keys = implode(",", array_keys($vars));
-            $vals = implode("','", $vars); 
+            $vals = implode("','", $vars);
             $q = "INSERT INTO {$this->tableName} ({$keys}) VALUES ('{$vals}');";
         }else{
             $q = "UPDATE {$this->tableName} SET {$qStr} WHERE {$cond};";

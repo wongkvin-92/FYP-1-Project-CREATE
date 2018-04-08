@@ -64,14 +64,14 @@ function displayNewLesson(id, venue, type, lecturer, datetime, duration, subject
   var newLessonRow =
   `<tr class="listContent">
         <input type="hidden" id="lesson_id" name='lessonID' value="`+id+`"/>
-        <td colspan="1" class="venue" data-field="venue" >`+venue+`</td>
-        <td colspan="1" class="type"  data-field="type" >`+type+`</td>
-        <td colspan="1" class="lecturer"  data-field="lecturer" >`+lecturer+`</td>
-        <td  class="datetime"  data-field="date" >`+datetime+`</td>
-        <td   class="duration"  data-field="duration" style="position:relative; left:20px;" >`+duration+`</td>
-        <td colspan="1" class="subject"  data-field="subject" >`+subject+`</td>
-        <td class="edit" style="border-left:1px solid #d8d8d8; padding-left:30px"><button class="btn btn-default btn-sm edit-lesson-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
-        <td class="remove" ><button class="btn btn-danger btn-sm remove-item-btn"><i class="fa fa-trash-o" aria-hidden="true"></button></td>
+        <td class="venue" data-field="venue" >`+venue+`</td>
+        <td class="type"  data-field="type" >`+type+`</td>
+        <td class="lecturer"  data-field="lecturer" >`+lecturer+`</td>
+        <td class="datetime"  data-field="date" >`+datetime+`</td>
+        <td class="duration"  data-field="duration" >`+duration+`</td>
+        <td class="subject"  data-field="subject" >`+subject+`</td>
+        <td class="edit"><button class="btn btn-default btn-sm edit-lesson-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+        <td class="remove"><button class="btn btn-danger btn-sm remove-item-btn"><i class="fa fa-trash-o" aria-hidden="true"></button></td>
       </tr>
       `;
       $('#lessonTable').append($(newLessonRow));
@@ -85,10 +85,8 @@ function insertLessonData(data){
     var item  = data[i];
     displayNewLesson(item.id, item.venue,  item.type, item.lecturer, item.dateTime,item.duration, item.subjectID);
   }
-
-listPaginate();
+      listPaginate();
 }
-
 $.ajax({
   url: backEndUrl+'/lessons/',
   method: 'GET',
@@ -214,7 +212,7 @@ $(document).on('click', '.edit-lesson-btn', function() {
     var x = {
       "venue": $('.venueTest').val(),
       "type": $('[name=type]').val(),
-      "dateTime": $('input[name=datetime]').val(),
+      "dateTime": $('[name=datetime]').val(),
       "duration": $('[name=duration]').val()
     };
 
@@ -284,7 +282,7 @@ $(document).on('click', '.edit-lesson-btn', function() {
          tdTypeValue = tdType.html(),
          tdDateTimeValue = tdDateTime.html(),
          tdDurationValue = tdDuration.html();
-         //console.log(tdDateTimeValue);
+
 
      // Save current html values for canceling an edit
      tempVenueValue = tdVenueValue;
@@ -299,16 +297,10 @@ $(document).on('click', '.edit-lesson-btn', function() {
      tdDuration.empty();
 
      // Create input forms
-     tdVenue.html('<input type="text" class="venueTest" name="venue" value="' + tdVenueValue + '" size="4">');
-     tdType.html(`<select name="type" value="">
-                    <option value="` + tdTypeValue + `">  `+ tdTypeValue + ` </option>
-                    <option value="lecture1" >lecture1</option>
-                    <option value="lecture2" >lecture2</option>
-                    <option value="tutorial1" >tutorial1</option>
-                    <option value="tutorial2" >tutorial2</option>
-                  </select>`);
-     tdDateTime.html('<input type="datetime-local" name="datetime" value="' + tdDateTimeValue + '" style="width:165px">');
-     tdDuration.html('<input type="text" name="duration" value="' + tdDurationValue + '" style="position:relative; left:-10px; text-align:center;" size="2">');
+     tdVenue.html('<input type="text" class="venueTest" name="venue" value="' + tdVenueValue + '">');
+     tdType.html('<select name="type" value=""> <option value="' + tdTypeValue + '"> ' + tdTypeValue + ' </option></select>');
+     tdDateTime.html('<input type="datetime" name="datetime" value="' + tdDateTimeValue + '">');
+     tdDuration.html('<input type="text" name="duration" value="' + tdDurationValue + '">');
 
 
   }
@@ -496,38 +488,12 @@ var listPaginate = function(){
     };
 
 })(jQuery);
+if (items.length > 6)
+  $('.lPage-button').hide();
+else
+  $('.lPage-button').show();
+//var l = (items.length > 6)? 6 : items.length;
 
-
-if($(window).width() >= 1920){
-  if (items.length > 12){
-    $('.lPage-button').hide();
-  }
-  else{
-    $('.lPage-button').show();
-  }
-  $( window ).load(function() {
-      if (window.location.href.indexOf('reload')==-1) {
-           window.location.replace(window.location.href+'?reload');
-      }
-  });
-  $('.listContent').lPaginate(12);
-}else if (($(window).width() <= 1919)){
-  if (items.length > 6){
-    $('.lPage-button').hide();
-  }
-  else{
-    $('.lPage-button').show();
-  }
-  //var l = (items.length > 6)? 6 : items.length;
-  /*
-  $( window ).load(function() {
-      if (window.location.href.indexOf('reload')==-1) {
-           window.location.replace(window.location.href+'?reload');
-      }
-  });*/
-  $('.listContent').lPaginate(6);
-}
+$('.listContent').lPaginate(6);
 }
 //End of Pagination
-
-/*Customized screen size on specific task running Jquery*/

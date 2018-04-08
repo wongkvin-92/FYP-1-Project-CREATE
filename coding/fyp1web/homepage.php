@@ -342,7 +342,7 @@
              <div class="panel-heading">
                <h3 class="panel-title">Subject</h3>
                <br/>
-               <div id ="remove-me" class="row table-responsive borderline-style">
+               <div id ="remove-me" class="row table-responsive borderline-style1">
                  <table>
                    <td>
                      <select class="s2" id="subjCode-field">
@@ -370,8 +370,10 @@
                      </td>
                      <td class="type">
                        <select  id="type-field" style="margin-left:10px;">
-                         <option value="lecture" >lecture</option>
-                         <option value="tutorial" >tutorial</option>
+                         <option value="lecture1" >lecture1</option>
+                         <option value="lecture2" >lecture2</option>
+                         <option value="tutorial1" >tutorial1</option>
+                         <option value="tutorial2" >tutorial2</option>
                        </select>
                      </td>
                      <td class="date">
@@ -400,13 +402,13 @@
                       </div>
                     </tr>
                     <tr>
-                      <th >Venue</th>
-                      <th>Type</th>
-                      <th>Lecturer</th>
-                      <th colspan="1">Date Time</th>
-                      <th>Duration</th>
+                      <th colspan="1">Venue</th>
+                      <th colspan="1">Type</th>
+                      <th colspan="1">Lecturer</th>
+                      <th>Date Time</th>
+                      <th colspan="1">Duration</th>
                       <th>Subject</th>
-                      <th colspan="2"> actions </th>
+                      <th class="action-title" colspan="2" > Actions </th>
                     </tr>
                   </thead>
                   <tbody  id="lessonTable">

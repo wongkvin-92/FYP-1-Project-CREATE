@@ -37,7 +37,7 @@ body::after {
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
   background: #FFF;
-  height: 85vh;
+  height: 86vh;
   border-radius: 0.4375rem;
   -webkit-box-shadow: 0 15px 40px rgba(0,0,0,.5);
   box-shadow: 0 15px 40px rgba(0,0,0,.5);
@@ -171,7 +171,6 @@ body::after {
   font-size: 12px;
   color:black;
   width:75vw;
-
 }
 .reportTable input{
   color: black;
@@ -194,7 +193,22 @@ body::after {
 #newDate{
   width:140px;
 }
-
+/*table subject*/
+.list_view{
+  padding: 20px;
+  font-size: 12px;
+  color:black;
+  width:75vw;
+}
+.list_view input{
+  color: black;
+}
+.list_view select{
+  color:black;
+}
+.s2{
+  margin-left: 100px;
+}
 .dashboard-header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -366,24 +380,6 @@ border-radius: 0 18px 18px 0;
     position: relative;
 }
 
-/*table subject*/
-.list_view{
-  padding: 20px;
-  padding-right: 10px;
-  font-size: 13px;
-  color:black;
-  width:75vw;
-}
-.list_view input{
-  color: black;
-}
-.list_view select{
-  color:black;
-}
-.s2{
-  margin-left: 100px;
-}
-
 .lessonPage input{
   border-radius: 3px;
   height:28px;
@@ -397,70 +393,50 @@ border-radius: 0 18px 18px 0;
 .lesson-input_outline{
   border: none;
 }
-.listContent{
-  border-bottom:  1px solid #d8d8d8;
-}
+
 .borderline-style{
   border: 1px solid #d8d8d8;
   padding:10px;
   margin-left: 10px;
-  width: 83%;
+  width: 70%;
   border-radius: 3px;
 }
-.borderline-style1{
-  border: 1px solid #d8d8d8;
-  padding:10px;
-  margin-left: 10px;
-  width: 53%;
-  border-radius: 3px;
-}
-.action-title{
-  border-left:1px solid #d8d8d8;
-  text-align: center;
-}
+
 /*Pagination style for Lesson Table*/
 .lPage {
-    /*
-  display:block;
-  width: 100%;
-  text-align: center;
-  position: relative;
-  left:100%;
-  */
-  display:block;
-  position: absolute;
-  margin-top: 27px;
-  left: 59%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
+display:block;
+width: 100%;
+text-align: center;
+position: relative;
+left:100%;
 }
 .lPage:after {
-  content: '';
-  clear: both;
+content: '';
+clear: both;
 }
 .lPage-button {
-  display: inline-block;
-  padding: 5px 10px;
-  border: 1px solid #e0e0e0;
-  background-color: #eee;
-  color: #333;
-  cursor: pointer;
-  transition: background 0.1s, color 0.1s;
+display: inline-block;
+padding: 5px 10px;
+border: 1px solid #e0e0e0;
+background-color: #eee;
+color: #333;
+cursor: pointer;
+transition: background 0.1s, color 0.1s;
 }
 .lPage-button:hover {
-  background-color: #ddd;
-  color: #3366cc;
+background-color: #ddd;
+color: #3366cc;
 }
 .lPage-button.active {
-  background-color: #bbb;
-  border-color: #bbb;
-  color: #3366cc;
+background-color: #bbb;
+border-color: #bbb;
+color: #3366cc;
 }
 .lPage-button:first-of-type {
-  border-radius: 18px 0 0 18px;
+border-radius: 18px 0 0 18px;
 }
 .lPage-button:last-of-type {
-  border-radius: 0 18px 18px 0;
+border-radius: 0 18px 18px 0;
 }
 /*End of Pagination*/
 
@@ -492,31 +468,7 @@ border-radius: 0 18px 18px 0;
 }
 /*End of the Customization of Animation*/
 
-/*Customization of Different Screen Size of CSS for Height*/
-@media screen and (max-height:773px){
-  .dashboard {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
-    background: #FFF;
-    height: 90vh;
-    border-radius: 0.4375rem;
-    -webkit-box-shadow: 0 15px 40px rgba(0,0,0,.5);
-    box-shadow: 0 15px 40px rgba(0,0,0,.5);
-    margin: auto;
-
-    -webkit-animation-duration: 1.0s;
-      animation-duration: 1.0s;
-      -webkit-animation-name: bounceInDown;
-      animation-name: bounceInDown;
-}
-}
-
-/*Customization of Different Screen Size of CSS for Width*/
+/*Customization of Different Screen Size of CSS*/
 @media all and (min-width: 600px) {
   .dashboard .dashboard-sidebar:nth-of-type(1) {flex-grow: 1;}
   .dashboard .dashboard-content:nth-of-type(2) {flex-grow: 5;}
@@ -605,6 +557,7 @@ border-radius: 0 18px 18px 0;
     padding: 40px;
     font-size: 30px;
   }
+
 }
 @media screen and (min-width:1500px) and (max-width: 1599px){
   .inner-row-content{
@@ -670,14 +623,6 @@ text-align: center;
   .dashboard-header__new {
     border-top: 0.0625rem solid #F2F2F2;
   }
-  .lPage {
-    display:block;
-    position: absolute;
-    margin-top: 20px;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%)
-  }
 }
 
 @media screen and (max-width: 1200px) {
@@ -715,12 +660,7 @@ text-align: center;
     width:88vw;
   }
 }
-@media screen and (max-width: 796px) {
-  #report, #lessons{
-    width:90vw;
-  }
 
-}
 @media screen and (max-width: 782px) {
   #report, #lessons{
     width:90vw;
