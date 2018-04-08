@@ -7,6 +7,8 @@ var backEndUrl='/fypBackEnd',
     time = $('time-field').val(),
     duration = $('duration-field').val();
 
+var dateTimeFormat = "dddd HH:MM";
+
 $.ajax({
   url: backEndUrl+'/subjects/',
   method: 'GET',
@@ -61,13 +63,14 @@ $('.select2-selection__arrow').append('<i class="fa fa-angle-down"></i>');
  * To add new Class Lesson
  */
 function displayNewLesson(id, venue, type, lecturer, datetime, duration, subject){
+  var dateTimeStr = moment(datetime).format(dateTimeFormat);
   var newLessonRow =
   `<tr class="listContent">
         <input type="hidden" id="lesson_id" name='lessonID' value="`+id+`"/>
         <td colspan="1" class="venue" data-field="venue" >`+venue+`</td>
         <td colspan="1" class="type"  data-field="type" >`+type+`</td>
         <td colspan="1" class="lecturer"  data-field="lecturer" >`+lecturer+`</td>
-        <td  class="datetime"  data-field="date" >`+datetime+`</td>
+        <td  class="datetime"  data-date="`+datetime+`" >`+dateTimeStr+`</td>
         <td   class="duration"  data-field="duration" style="position:relative; left:20px;" >`+duration+`</td>
         <td colspan="1" class="subject"  data-field="subject" >`+subject+`</td>
         <td class="edit" style="border-left:1px solid #d8d8d8; padding-left:30px"><button class="btn btn-default btn-sm edit-lesson-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
@@ -83,6 +86,7 @@ function insertLessonData(data){
   $('#lessonTable').html("");
   for(var i=0; i< data.length; i++){
     var item  = data[i];
+
     displayNewLesson(item.id, item.venue,  item.type, item.lecturer, item.dateTime,item.duration, item.subjectID);
   }
 
@@ -207,7 +211,7 @@ $(document).on('click', '.edit-lesson-btn', function() {
     var d = `{
       "venue": "`+$('.venueTest').val()+`",
       "type": "`+$('[name=type]').val()+`",
-      "dateTime": "`+$('[name=datetime]').val()+`",
+      "dateTime": "`+moment($('[name=datetime]').val()).format("YYYY-MM-DD HH:mm:ss")+`",
       "duration": "`+$('[name=duration]').val()+`"
     }`;
     /*json*/
@@ -227,7 +231,7 @@ $(document).on('click', '.edit-lesson-btn', function() {
       success: function(r){
         el.children(".venue").html(x.venue);
         el.children(".type").html(x.type);
-        el.children(".datetime").html(x.dateTime);
+        el.children(".datetime").html(moment(x.dateTime).format(dateTimeFormat));
         el.children(".duration").html(x.duration);
       }
     });
@@ -283,6 +287,7 @@ $(document).on('click', '.edit-lesson-btn', function() {
      var tdVenueValue = tdVenue.html(),
          tdTypeValue = tdType.html(),
          tdDateTimeValue = tdDateTime.html(),
+         tdDateTimeSQL = tdDateTime.data().date,
          tdDurationValue = tdDuration.html();
          //console.log(tdDateTimeValue);
 
@@ -307,7 +312,13 @@ $(document).on('click', '.edit-lesson-btn', function() {
                     <option value="tutorial1" >tutorial1</option>
                     <option value="tutorial2" >tutorial2</option>
                   </select>`);
-     tdDateTime.html('<input type="datetime-local" name="datetime" value="' + tdDateTimeValue + '" style="width:165px">');
+     //tdDateTime.html('<input type="datetime-local" name="datetime" value="' + tdDateTimeValue + '" style="width:165px">');
+     //tdDateTime.html(`<input type='text' class="form-control" name="datetime" value="` + tdDateTimeValue + `" style="width:165px" id='datetimepicker1'/>`);
+      tdDateTime.html(" <input type='text' name='datetime' id='datetimepicker4' />");
+              $('#datetimepicker4').datetimepicker({
+                  defaultDate: moment(tdDateTimeSQL)
+              });
+
      tdDuration.html('<input type="text" name="duration" value="' + tdDurationValue + '" style="position:relative; left:-10px; text-align:center;" size="2">');
 
 
@@ -323,13 +334,16 @@ $(document).on('click', '.edit-lesson-btn', function() {
  * To Remove a lesson data
  */
 
+//var dbg = null;
+
 // Handles live/dynamic element events, i.e. for newly created trash buttons
 $(document).on('click', '.remove-item-btn', function() {
    // Turn off editing if row is current input
   if(isEditing) {
   }else{
-       var key = $(this).parent().parent().children('.venue').html();
-
+       var key = $(this).parent().parent().children('#lesson_id').val();
+    //   dbg = $(this);
+    //   console.log(dbg);
        var el = this;
        var deleteRow = function(){
 
@@ -345,8 +359,21 @@ $(document).on('click', '.remove-item-btn', function() {
 
             // Remove selected row from table
             $(el).closest('tr').remove();
-         }
 
+         }
+           if (confirm('Are you sure you want to delete this record?')) {
+         $.ajax(
+           {
+             "url" : backEndUrl +"/lessons/" + key + "/",
+             "method" : "DELETE",
+             "dataType" : "json",
+             "success" : function(response){
+               deleteRow();
+             }
+           });
+       }else{
+         return;
+       }
   }
 });
 

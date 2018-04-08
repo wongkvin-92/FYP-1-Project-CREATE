@@ -16,6 +16,7 @@
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css'>
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800'>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/homepage.css">
 
 
@@ -425,20 +426,7 @@
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
   <script  src="js/homepage.js"></script>
-  <script type="text/javascript">
-  $(document).ready(function() {
-    $('#report-table').DataTable( {
 
-      dom: 'Bfrtip',
-
-      buttons: [
-          'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-
-      } );
-
-      } );
-  </script>
   <script  src='https://code.jquery.com/jquery-1.12.4.js'></script>
   <script  src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script>
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
@@ -449,10 +437,21 @@
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
   <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $('#report-table').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+      } );
+    } );
+  </script>
   <script src='js/classRescheduling.js'></script>
   <script src='js/lesson.js'></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
 </body>
 
