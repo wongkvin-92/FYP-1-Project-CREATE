@@ -48,7 +48,7 @@ function removeClass(id){
 
 function approveClass(id){
   var regexVenue = /^(sr)[2]{1}.[1-3]{1}|^(lh)[2]{1}.[1-3]{1}|^(ls)[1-2]{1}|^(tis)$/;
-  var venue = $('#reVenue').val();
+  var venue = $('#venue').val();
   if (venue == ""){
     alert("Please enter a class venue!");
     return;
@@ -88,12 +88,7 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id, 
     <p><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
     <p><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
     <p><span class="left">Duration:</span> <span class="right" id="duration"></span></p>
-<<<<<<< HEAD
-    <!--<p><span class="left">Venue:</span> <span class="right"><input type="text" name="venue" placeholder="Class Venue" id="venue"   required/ size="14"></span></p> -->
-    <p><span class="left">Venue:</span> <span class="right" id="reVenue"></span></p>
-=======
-    <p><span class="left">Venue:</span> <span class="right"><input type="text" name="venue" placeholder="Class Venue" id="venue" value="`+venue+`"  required/ size="14"></span></p>
->>>>>>> 72c371757242b927f33a223a43593cf2b9c5a3bd
+    <p><span class="left">Venue:</span> <span class="right"><input type="text" name="venue" placeholder="Class Venue" id="venue" value="`+venue+`"  required/ size="14" disabled></span></p>
     <div class="btn-style">
       <!--<p><a class="btn btn-primary venueBtn" role="button">Check Venue &raquo;</a></p>-->
       <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="approveClass(`+id+`)">Approve &raquo;</a></p>
@@ -157,7 +152,7 @@ var subjectBox = $('#approval-request-'+id);
       <p ><span class="left redateBox">Re-Date:</span> <span class="right date" id="reDate"><input id="newDate" type="date" name="datechanged" value="`+item.reDate+`" /></span></p>
       <p ><span class="left">Re-Time:</span> <span class="right time" id="reTime"><input id="newTime" type="time" name="timechanged" value="`+item.reTime+`" /></span></p>
       <p ><span class="left">Duration:</span> <span class="right" id="duration">2</span></p>
-      <p><span class="left">Venue:</span> <span class="right"><input id="newVenue"  type="text" name="venuechanged"  value="`+item.reVenue+`" required/ size="14"></span></p>
+      <p><span class="left">Venue:</span> <span class="right"><input id="newVenue"  type="text" name="venuechanged"  value="`+item.venue+`" required/ size="14"></span></p>
       <div class="btn-style">
         <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="saveBtn(`+id+`)">Save &raquo;</a></p>
       </div>
@@ -179,11 +174,11 @@ $.ajax({
  "method": "PATCH",
  "processData": false,
  "dataType": "json",
- "data": "{\n\t\"date\": \""+date+"\",\n\t\"time\": \""+time+"\"\n}",
+ "data": "{\n\t\"date\": \""+date+"\",\n\t\"venue\": \""+venue+"\",\n\t\"time\": \""+time+"\"\n}",
  "success": function(response){
    items[id].reDate = date;
    items[id].reTime = time;
-   item[id].reVenue = venue;
+   items[id].venue = venue;
    goBackViewMode(id);
    alert(response.msg);
  }

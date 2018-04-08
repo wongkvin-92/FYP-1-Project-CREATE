@@ -276,7 +276,7 @@ $(document).on('click', '.edit-lesson-btn', function() {
                  tdDurationInput.html(tempDurationValue);
               }
               // Display static row
-              currentEdit.html('<td class="edit"><button class="btn btn-default btn-sm edit-lesson-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>');
+              currentEdit.html('<button class="btn btn-default btn-sm edit-lesson-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>');
               isEditing = false;
 
   }else {
