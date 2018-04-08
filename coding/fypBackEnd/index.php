@@ -69,14 +69,15 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
   });
                                     //i = int, id = var name    //r = request
   $klein->respond('GET', $root.'/classes/[i:id]/approve/', function($r) use ($admin){
-
     $admin->approveClass($r->id);
   });
 
   $klein->respond('PATCH', $root.'/requests/rescheduling/[i:id]/', function($r) use ($admin){
-    $date = getData('date');
-    $time = getData('time');
-    $admin->updateClassScheduling( $r->id, $date,$time);
+      $ex = null;
+      $date = getData('date');
+      $time = getData('time');
+      $venue = getData('venue');
+      $admin->updateClassScheduling( $r->id, $date,$time, $venue);
   });
 
   //Room routes

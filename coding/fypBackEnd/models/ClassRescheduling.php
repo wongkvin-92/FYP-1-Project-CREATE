@@ -3,8 +3,8 @@ class ClassRescheduling{
   public $id;
   public $newDateTime;
   public $status;
-  public $subjectID;
-
+    public $subjectID;
+    public $Venue;
   private $subject;
 
 
@@ -17,6 +17,14 @@ class ClassRescheduling{
     $this->status = "pending";
     $this->newDateTime = $nDT;
   }*/
+
+    public function getVenue(){
+        return $this->Venue;
+    }
+
+    public function setVenue($v){
+        $this->Venue = $v;
+    }
 
   public function getSubject(){
     return $this->subject;
