@@ -424,55 +424,7 @@ border-radius: 0 18px 18px 0;
   width: 53%;
   border-radius: 3px;
 }
-.action-title{
-  border-left:1px solid #d8d8d8;
-  text-align: center;
-}
-/*Pagination style for Lesson Table*/
-.lPage {
-    /*
-  display:block;
-  width: 100%;
-  text-align: center;
-  position: relative;
-  left:100%;
-  */
-  display:block;
-  position: absolute;
-  margin-top: 27px;
-  left: 59%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
-.lPage:after {
-  content: '';
-  clear: both;
-}
-.lPage-button {
-  display: inline-block;
-  padding: 5px 10px;
-  border: 1px solid #e0e0e0;
-  background-color: #eee;
-  color: #333;
-  cursor: pointer;
-  transition: background 0.1s, color 0.1s;
-}
-.lPage-button:hover {
-  background-color: #ddd;
-  color: #3366cc;
-}
-.lPage-button.active {
-  background-color: #bbb;
-  border-color: #bbb;
-  color: #3366cc;
-}
-.lPage-button:first-of-type {
-  border-radius: 18px 0 0 18px;
-}
-.lPage-button:last-of-type {
-  border-radius: 0 18px 18px 0;
-}
-/*End of Pagination*/
+
 
 /*Custimized Animation*/
 @keyframes bounceInDown {
@@ -595,7 +547,7 @@ border-radius: 0 18px 18px 0;
   }
   #report, #lessons{
     font-size: 18px;
-    width:74vw;
+    width:100%;
   }
   .panel-title{
     font-size: 34px;
@@ -618,6 +570,10 @@ border-radius: 0 18px 18px 0;
     padding:5px;
     margin:70px auto;
     max-width: 80%;
+  }
+  #report, #lessons{
+    font-size: 18px;
+    width:100%;
   }
 }
 @media screen and (max-height: 773px) {
@@ -712,6 +668,11 @@ text-align: center;
     width: 75%;
   }
 }
+@media screen and (max-width:1082px){
+  .panel-heading{
+    width:88vw;
+  }
+}
 @media screen and (max-width: 1048px) {
 
   .borderline-style{
@@ -725,12 +686,6 @@ text-align: center;
   }
   .borderline-style{
     width: 83%;
-  }
-}
-
-@media screen and (max-width: 872px) {
-  .panel-heading{
-    width:88vw;
   }
 }
 @media screen and (max-width: 796px) {

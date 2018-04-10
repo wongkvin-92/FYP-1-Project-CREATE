@@ -102,7 +102,7 @@
     <!-- Dashboard Content Panel (Element)-->
     <div class="dashboard-content__panel" data-panel-id="report">
       <div class="dashboard-list report-content">
-         <div id="report" class="panel panel-primary panel-table  reportTable" style="border:none; ">
+         <div id="report" class="panel panel-primary panel-table table-responsive reportTable" style="border:none; ">
            <div class="panel-heading" >
              <div class="row">
                <div class="col col-xs-12">
@@ -381,14 +381,9 @@
                </div>
              </div>
 
-             <div class="panel-body ">
+             <div class="panel-body table-responsive">
                 <table class="table  table-hover subjListTb "  width="100%" id="lesson_datatable">
                   <thead>
-                    <tr>
-                      <div class="pull-right searchBar">
-                        <input  class="search" placeholder="Search contact" />
-                      </div>
-                    </tr>
                     <tr>
                       <th colspan="1">Venue</th>
                       <th colspan="1">Type</th>
