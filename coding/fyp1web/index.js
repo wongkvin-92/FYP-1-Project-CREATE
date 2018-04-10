@@ -8,52 +8,87 @@ function validateEmail(email) {
   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);
 }
+$('input#email').keyup(function() {
+    var email = $("#email").val();
+  if(!(validateEmail(email))){
+          $('#email').css("border-bottom", "2px solid #ff0000");
+}else{
+  $('#email').css("border-bottom", "2px solid #228B22");
+}
+});
+
+$('input#pass').keyup(function() {
+  var pass = $('#pass').val();
+    if(pass.length<6){
+      $('#pass').css("border-bottom", "2px solid #ff0000");
+    }else{
+      $('#pass').css("border-bottom", "2px solid #228B22");
+    }
+});
 
 function validate(e) {
-  var email = $("#email").val();
-  if ($('#email').val() == "")  {
-        e.preventDefault();
-      $('#email').css("border-bottom", "2px solid #ff0000");
-      alert("Email entry is empty");
-  } else {
-        if (validateEmail(email)) {
-            e.preventDefault();
-          $('#email').css("border-bottom", " 2px solid #228B22");
 
-        } else {
-          e.preventDefault();
+  var email = $("#email").val();
+  var pass = $('#pass').val();
+  if (email == "" && pass == "")  {
+
+      $('#email').css("border-bottom", "2px solid #ff0000");
+      $('#pass').css("border-bottom", "2px solid #ff0000");
+      alert("All entries are empty!");
+  } else {
+        if (email == ""){
+
+        $('#email').css("border-bottom", "2px solid #ff0000");
+          alert("Email entry are empty!");
+        }else if (!(validateEmail(email)) ) {
+
           $('#email').css("border-bottom", "2px solid #ff0000");
           alert("Email entry is not a valid!");
+          if(pass==""){
+
+            $('#pass').css("border-bottom", "2px solid #ff0000");
+          }
+        }else if(pass.length<6){
+          alert("Password should be more than 6 characters!");
+        }
+         else {
+
+        $('#email').css("border-bottom", " 2px solid #228B22");
+        return true;
         }
     }
+    return false;
 }
 
-$("#btnLogin").bind("click", validate);
+//$("#btnLogin").bind("click", validate);
 
-$('#btnLogin').on('click', function(){
+$('#btnLogin').on('click', function(e){
+
   var email = $('#email').val();
   var pass = $('#pass').val();
   if(saveEmail === "true"){
     Cookies.set('emailId', email);
   }
-  if($('#email').val())
-  $.ajax({
-   url: backEndUrl+'/admin/login/',
-   method: 'POST',
-   data: {
-    email: email,
-    password: pass,
-   },
-   dataType: 'json',
-   success: function(reply){
-      alert(reply.msg);
-		  window.location = "/fyp1web/homepage.php";
-   },
-    error: function(a,b,c){
-    alert(a.responseJSON.msg);
-      $('#pass').css("border-bottom", "2px solid #ff0000");
-   }
-});
+ if(validate()){
+      $.ajax({
+       url: backEndUrl+'/admin/login/',
+       method: 'POST',
+       data: {
+        email: email,
+        password: pass,
+       },
+       dataType: 'json',
+       success: function(reply){
+          alert(reply.msg);
+    		  window.location = "/fyp1web/homepage.php";
+       },
+        error: function(a,b,c){
+        alert(a.responseJSON.msg);
+          $('#pass').css("border-bottom", "2px solid #ff0000");
+       }
+    });
+
+}
 
 });
 

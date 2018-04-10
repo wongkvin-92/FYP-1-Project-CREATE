@@ -13,18 +13,18 @@ body {
 
 body::after {
   content: "";
-	background: rgba(243,129,129,0.9); /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */
-	background: -webkit-linear-gradient(top, rgba(243,129,129,0.9), rgba(252, 227, 138, 0.9));
-	background: -o-linear-gradient(top, rgba(243,129,129,0.9), rgba(252, 227, 138, 0.9));
-	background: linear-gradient(to bottom, rgba(243,129,129,0.9), rgba(252, 227, 138, 0.9)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	/*filter: blur(12px);*/
+  background: rgba(243,129,129,0.9); /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(top, rgba(243,129,129,0.9), rgba(252, 227, 138, 0.9));
+  background: -o-linear-gradient(top, rgba(243,129,129,0.9), rgba(252, 227, 138, 0.9));
+  background: linear-gradient(to bottom, rgba(243,129,129,0.9), rgba(252, 227, 138, 0.9)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   /*filter: blur(12px);*/
-	background-size: cover;
-	position: absolute;
-	top: 0;
+  /*filter: blur(12px);*/
+  background-size: 100%;
+  position: fixed;
+  top: 0;
   left: 0;
-  bottom: 0;
-  right: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1;
 }
 
@@ -37,7 +37,8 @@ body::after {
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
   background: #FFF;
-  height: 85vh;
+  min-height: 85vh;
+  height: auto;
   border-radius: 0.4375rem;
   -webkit-box-shadow: 0 15px 40px rgba(0,0,0,.5);
   box-shadow: 0 15px 40px rgba(0,0,0,.5);
@@ -192,7 +193,10 @@ body::after {
   color:black;
 }
 #newDate{
-  width:140px;
+  width:150px;
+}
+#newTime{
+  width:120px;
 }
 
 .dashboard-header {
@@ -547,7 +551,7 @@ border-radius: 0 18px 18px 0;
     height:255px;
   }
   .content-layout h3{
-      padding-top:  10px;
+      padding-top:  20px;
   }
   .content-layout .approveBtn{
       font-size: 19px;
@@ -648,22 +652,7 @@ border-radius: 0 18px 18px 0;
   .buttonLayout{
     margin-top: 50px;
   }
-  body::after {
-    content: "";
-  	background: rgba(243,129,129,0.9); /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */
-  	background: -webkit-linear-gradient(top, rgba(243,129,129,0.9), rgba(252, 227, 138, 0.9));
-  	background: -o-linear-gradient(top, rgba(243,129,129,0.9), rgba(252, 227, 138, 0.9));
-  	background: linear-gradient(to bottom, rgba(243,129,129,0.9), rgba(252, 227, 138, 0.9)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  	/*filter: blur(12px);*/
-    /*filter: blur(12px);*/
-    background-size: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
+
   .inner-row-content{
       max-width: 80%;
       margin-top: 10px;
