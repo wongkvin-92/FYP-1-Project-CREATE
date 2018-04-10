@@ -8,15 +8,13 @@
   <title>HELPiCT Admin CREATE</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css'>
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800'>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.16/b-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/kt-2.3.2/datatables.min.css"/>
     <link rel="stylesheet" href="css/homepage.css">
 
 
@@ -115,7 +113,7 @@
             </div>
 
           <div class="panel-body " >
-            <table id="report-table" class="table table-hover  "  width="100%" >
+            <table id="report-table" class="table table-hover"  width="100%" >
               <thead>
                 <tr>
                 <th>Lecturer</th>
@@ -351,7 +349,7 @@
                      </select>
                    </td>
                    <td>
-                     <input type="text" id="subjectName-field" placeholder="Subject Name" style="margin-left:20px;" />
+                     <input type="text" id="subjectName-field" placeholder="Subject Name" style="margin-left:10px;" />
                      <!-- <input type="text" id="lecturer_name" placeholder="Lecturer Name" style="margin-left:10px;" /> -->
                    </td>
                    <td>
@@ -365,7 +363,7 @@
                <h3 class="panel-title">Lessons</h3>
                <br/>
                <div class="row table-responsive lesson-input_outline borderline-style">
-                 <table>
+                 <table >
                      <td class="venue">
                         <input type="text" id="venue-field" placeholder="Venue" />
                      </td>
@@ -394,11 +392,10 @@
              </div>
 
              <div class="panel-body ">
-                <table class="table  table-hover subjListTb "  width="100%">
+                <table class="table  table-hover subjListTb "  width="100%" id="lesson_datatable">
                   <thead>
                     <tr>
                       <div class="pull-right searchBar">
-
                         <input  class="search" placeholder="Search contact" />
                       </div>
                     </tr>
@@ -423,35 +420,36 @@
    </div>
  </div>
 
+
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
-  <script  src="js/homepage.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.16/b-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/kt-2.3.2/datatables.min.js"></script>
 
-  <script  src='https://code.jquery.com/jquery-1.12.4.js'></script>
-  <script  src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script>
-  <script  src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
-  <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js'></script>
-  <script  src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
-  <script  src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
-  <script  src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
-  <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
-  <script  src='https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js'></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-  <script type="text/javascript">
-  $(document).ready(function() {
-    $('#report-table').DataTable( {
-      dom: 'Bfrtip',
-      buttons: [
-          'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-      } );
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#report-table').DataTable( {
+    "pagingType": "full_numbers",
+   "paging": true,
+   "lengthMenu": [10, 25, 50, 75, 100],
+    "dom": 'Bfrtip',
+    "scroller":       false,
+    "buttons": [
+        'pageLength','copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+
     } );
-  </script>
-  <script src='js/classRescheduling.js'></script>
-  <script src='js/lesson.js'></script>
+    $('#lesson_datatable').DataTable();
+  } );
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script  src="js/homepage.js"></script>
+<script src='js/classRescheduling.js'></script>
+<script src='js/lesson.js'></script>
 
 </body>
 

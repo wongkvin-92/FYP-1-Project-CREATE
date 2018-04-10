@@ -90,7 +90,7 @@ function insertLessonData(data){
     displayNewLesson(item.id, item.venue,  item.type, item.lecturer, item.dateTime,item.duration, item.subjectID);
   }
 
-listPaginate();
+
 }
 
 $.ajax({
@@ -103,7 +103,7 @@ $.ajax({
       insertLessonData(reply);
       lessonData = reply;
     }
-    console.log(reply);
+    //console.log(reply);
   }
 });
 /*
@@ -169,7 +169,7 @@ $('#add-btn').click(function(){
     success: function(reply){
 
       var lecName = $('#lecturer-field option:selected').text();
-      displayNewLesson(reply.classID, data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subjName);
+      displayNewLesson(reply.classID, data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subj);
       alert("Successfully added.");
 
         //apend option
@@ -381,6 +381,7 @@ $(document).on('click', '.remove-item-btn', function() {
 
 // Beginning of pagination
 //pagination
+/*
 var listPaginate = function(){
 (function($){
 
@@ -552,9 +553,11 @@ if($(window).width() >= 1920){
            window.location.replace(window.location.href+'?reload');
       }
   });*/
-  $('.listContent').lPaginate(6);
-}
-}
+//  $('.listContent').lPaginate(6);
+//}
+//}
+
 //End of Pagination
 
+//listPaginate();
 /*Customized screen size on specific task running Jquery*/

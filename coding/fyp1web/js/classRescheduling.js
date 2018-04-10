@@ -42,59 +42,37 @@ function newReCard(item){
     return createReCard(item.subjectCode, item.subjectName, item.lecturer, item.reDate, item.reTime, item.duration, item.id, item.venue);
 }
 
-function removeClass(id){
-  $('#approval-request-' + id).remove();
-}
-
-function approveClass(id){
-  var regexVenue = /^(sr)[2]{1}.[1-3]{1}|^(lh)[2]{1}.[1-3]{1}|^(ls)[1-2]{1}|^(tis)$/;
-  var venue = $('#venue').val();
-  if (venue == ""){
-    alert("Please enter a class venue!");
-    return;
-  }else if(!(regexVenue.test(venue))){
-    alert(venue + " is invalid!");
-        return;
-  }
-  else{
-  if (confirm('Are you sure you approve this Class Reschedulement?')) {
-    $.ajax({
-        url : backEndUrl+"/classes/"+id+"/approve/",
-        method : "GET",
-        dataType : "json",
-        success : function(r) {
-
-          removeClass(id);
-          alert(r.msg);
-
-        }
-    });
-} else {
-    return;
-  }
-}
-}
-
 //create structure of the card
 function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id, venue){
-  var replacementCard = `<div class="content-layout" id="approval-request-`+id+`">
-
-
-  <div style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-default btn-sm pull-right btnEdit" onClick="editBtnClicked(`+id+`)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></div>
-  <div style="position:relative; z-index:9999; top:-5px;">
-    <h3><span class="left">Code:</span> <span class="right" id="subjectCode"></span></h3>
-    <p class="class-reschedule_subject"><span class="left">Subject:</span> <span class="right" id="subjectName"></span></p>
-    <p><span class="left">Lecturer:</span> <span class="right" id="lecturer"></span></p>
-    <p><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
-    <p><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
-    <p><span class="left">Duration:</span> <span class="right" id="duration"></span></p>
-    <p><span class="left">Venue:</span> <span class="right"><input type="text" name="venue" placeholder="Class Venue" id="venue" value="`+venue+`"  required/ size="14" disabled></span></p>
-    <div class="btn-style">
-      <!--<p><a class="btn btn-primary venueBtn" role="button">Check Venue &raquo;</a></p>-->
-      <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="approveClass(`+id+`)">Approve &raquo;</a></p>
-    </div>
-   </div>
-  </div>`;
+  var replacementCard = `
+    <div class="content-layout" id="approval-request-`+id+`">
+      <div style="padding-bottom:10px; position:relative; z-index:9999">
+        <span class="left"></span>
+        <button class="btn btn-default btn-sm pull-right btnEdit" onClick="editBtnClicked(`+id+`)">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div style="position:relative; z-index:1000; top:-5px; left:20px">
+        <h3><span class="left">Code:</span> <span class="right" id="subjectCode"></span></h3>
+        <p class="class-reschedule_subject"><span class="left">Subject:</span> <span class="right" id="subjectName"></span></p>
+        <p><span class="left">Lecturer:</span> <span class="right" id="lecturer"></span></p>
+        <p><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
+        <p><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
+        <p><span class="left">Duration:</span> <span class="right" id="duration"></span></p>
+        <p><span class="left">Venue:</span> <span class="right" >`+venue+`</span></p>
+        <!--
+        <p><span class="left">Venue:</span>
+          <span class="right">
+            <input type="text" name="venue" placeholder="Class Venue" id="venue" value="`+venue+`"  required/ size="14" disabled>
+          </span>
+        </p>
+        -->
+        <div class="btn-style">
+          <!--<p><a class="btn btn-primary venueBtn" role="button">Check Venue &raquo;</a></p>-->
+          <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="approveClass(`+id+`)">Approve &raquo;</a></p>
+        </div>
+        </div>
+    </div>`;
 
   //jQueryselector
   var jqs = $(replacementCard);
@@ -131,7 +109,34 @@ function findData(items, query){
   return result;
 }
 
+function approveClass(id){
+  var regexVenue = /(NA)|^(sr)[2]{1}.[1-3]{1}|^(lh)[2]{1}.[1-3]{1}|^(ls)[1-2]{1}|^(tis)$/;
+  var venue = $('#venue').val();
+  if (venue == "" || venue== "NA"){
+    alert("Please enter a class venue!");
+    return;
+  }else if(!(regexVenue.test(venue))){
+    alert(venue + " is invalid!");
+        return;
+  }
+  else{
+  if (confirm('Are you sure you approve this Class Reschedulement?')) {
+    $.ajax({
+        url : backEndUrl+"/classes/"+id+"/approve/",
+        method : "GET",
+        dataType : "json",
+        success : function(r) {
 
+          removeClass(id);
+          alert(r.msg);
+
+        }
+    });
+} else {
+    return;
+  }
+}
+}
 
 var editBtnClicked = function(id) {
 /*
@@ -143,60 +148,86 @@ var editBtnClicked = function(id) {
 var subjectBox = $('#approval-request-'+id);
 
   var subjCard = `
-  <div style="padding-bottom:20px;"> <span class="left"></span><button class="btn btn-default btn-sm pull-right btnSave" onClick="goBackViewMode(`+id+`)"><i class="fa fa-close" aria-hidden="true"></i></i></button></div>
-  <div style="position:relative; z-index:9999; top:-5px;">
-    <h3 ><span class="left">Code:</span> <span class="right" id="subjectCode">`+item.subjectCode+`</span></h3>
-    <p ><span class="left">Subject:</span> <span class="right" id="subjectName">`+item.subjectName+`</span></h5>
-    <p ><span class="left">Lecturer:</span> <span class="right" id="lecturer">`+item.lecturer+`</span></h5>
-    <div class="redateBox">
-      <p ><span class="left redateBox">Re-Date:</span> <span class="right date" id="reDate"><input id="newDate" type="date" name="datechanged" value="`+item.reDate+`" /></span></p>
-      <p ><span class="left">Re-Time:</span> <span class="right time" id="reTime"><input id="newTime" type="time" name="timechanged" value="`+item.reTime+`" /></span></p>
-      <p ><span class="left">Duration:</span> <span class="right" id="duration">2</span></p>
-      <p><span class="left">Venue:</span> <span class="right"><input id="newVenue"  type="text" name="venuechanged"  value="`+item.venue+`" required/ size="14"></span></p>
-      <div class="btn-style">
-        <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="saveBtn(`+id+`)">Save &raquo;</a></p>
+      <div style="padding-bottom:10px; position:relative; z-index:9999">
+        <span class="left"></span>
+        <button class="btn btn-default btn-sm pull-right btnSave" onClick="goBackViewMode(`+id+`)">
+          <i class="fa fa-close" aria-hidden="true"></i>
+        </button>
       </div>
-    </div>
-   </div>`;
+      <div style="position:relative; z-index:1000; top:-15px;">
+        <h3 ><span class="left">Code:</span> <span class="right" id="subjectCode">`+item.subjectCode+`</span></h3>
+        <p ><span class="left">Subject:</span> <span class="right" id="subjectName">`+item.subjectName+`</span></h5>
+        <p ><span class="left">Lecturer:</span> <span class="right" id="lecturer">`+item.lecturer+`</span></h5>
+        <div class="redateBox">
+          <p ><span class="left redateBox">Re-Date:</span> <span class="right date" id="reDate"><input id="newDate" type="date" name="datechanged" value="`+item.reDate+`" /></span></p>
+          <p ><span class="left">Re-Time:</span> <span class="right time" id="reTime"><input id="newTime" type="time" name="timechanged" value="`+item.reTime+`" /></span></p>
+          <p ><span class="left">Duration:</span> <span class="right" id="duration">2</span></p>
+          <p><span class="left">Venue:</span> <span class="right"><input id="newVenue"  type="text" name="venuechanged"  value="`+item.venue+`" required/ size="14"></span></p>
+          <div class="btn-style">
+            <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="saveBtn(`+id+`)">Save &raquo;</a></p>
+          </div>
+        </div>
+      </div>`;
    if(!checkEditing){
       subjectBox.html(subjCard);
       checkEditing = true;
     }
-
  };
 
-var saveRecheduling = function(id,date, time, venue){
-
-$.ajax({
- "async": true,
- "crossDomain": true,
- "url": backEndUrl + "/requests/rescheduling/"+id+"/",
- "method": "PATCH",
- "processData": false,
- "dataType": "json",
- "data": "{\n\t\"date\": \""+date+"\",\n\t\"venue\": \""+venue+"\",\n\t\"time\": \""+time+"\"\n}",
- "success": function(response){
-   items[id].reDate = date;
-   items[id].reTime = time;
-   items[id].venue = venue;
-   goBackViewMode(id);
-   alert(response.msg);
+ function goBackViewMode(id){
+   checkEditing = false;
+   var subjCard = newReCard(items[id]);
+   var subjectBox = $('#approval-request-'+id);
+   subjectBox.html(subjCard.html());
  }
-});
+
+/*
+ * Update the record in the server
+ */
+var saveRecheduling = function(id,date, time, venue){
+  $.ajax({
+     "async": true,
+     "crossDomain": true,
+     "url": backEndUrl + "/requests/rescheduling/"+id+"/",
+     "method": "PATCH",
+     "processData": false,
+     "dataType": "json",
+     "data": "{\n\t\"date\": \""+date+"\",\n\t\"venue\": \""+venue+"\",\n\t\"time\": \""+time+"\"\n}",
+     "success": function(response){
+         items[id].reDate = date;
+         items[id].reTime = time;
+         items[id].venue = venue;
+         goBackViewMode(id);
+         alert(response.msg);
+     }
+  });
 }
 
-function goBackViewMode(id){
-  checkEditing = false;
-  var subjCard = newReCard(items[id]);
-  var subjectBox = $('#approval-request-'+id);
-  subjectBox.html(subjCard.html());
-}
-
+/*
+ * Save edited data and validate them
+ */
 var saveBtn = function(id){
-  var date = $('#newDate').val(),
-      time = $('#newTime').val(),
-      venue = $('#newVenue').val();
-  saveRecheduling(id,date, time, venue);
+  var regexVenue = /(NA)|^(sr)[2]{1}.[1-3]{1}|^(lh)[2]{1}.[1-3]{1}|^(ls)[1-2]{1}|^(tis)$/;
+  var venue = $('#newVenue').val(),
+      date = $('#newDate').val(),
+      time = $('#newTime').val();
+  if (venue == "" || venue== "NA"){
+    alert("Please enter a class venue!");
+    return;
+  }else if(!(regexVenue.test(venue))){
+    alert(venue + " is invalid!");
+        return;
+  }else{
+    saveRecheduling(id,date, time, venue);
+    return;
+  }
+}
+
+/*
+ * Delete Record
+ */
+function removeClass(id){
+  $('#approval-request-' + id).remove();
 }
 
 //pagination
