@@ -195,6 +195,8 @@
                 <td>sr2.3</td>
                 <td>Completed</td>
             <tr>
+              <td>Dewi</td>
+              <td>BIT 103</td>
               <td>11:00</td>
               <td>3h</td>
               <td>2018/01/15</td>
@@ -204,6 +206,8 @@
               <td>Completed</td>
             </tr>
             <tr>
+              <td>Dewi</td>
+              <td>BIT 103</td>
               <td>11:00</td>
               <td>3h</td>
               <td>2018/01/15</td>
@@ -213,6 +217,8 @@
               <td>Completed</td>
             </tr>
             <tr>
+              <td>Dewi</td>
+              <td>BIT 103</td>
               <td>11:00</td>
               <td>3h</td>
               <td>2018/01/15</td>
@@ -222,6 +228,8 @@
               <td>Completed</td>
             </tr>
             <tr>
+              <td>Dewi</td>
+              <td>BIT 103</td>
               <td>11:00</td>
               <td>3h</td>
               <td>2018/01/15</td>
@@ -231,6 +239,8 @@
               <td>Completed</td>
             </tr>
             <tr>
+              <td>Dewi</td>
+              <td>BIT 103</td>
               <td>11:00</td>
               <td>3h</td>
               <td>2018/01/15</td>
@@ -240,60 +250,8 @@
               <td>Completed</td>
             </tr>
             <tr>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
+              <td>Dewi</td>
+              <td>BIT 103</td>
               <td>11:00</td>
               <td>3h</td>
               <td>2018/01/15</td>
@@ -461,8 +419,10 @@
 
 
 <script type="text/javascript">
+
+var dbg;
 $(document).ready(function() {
-  $('#report-table').DataTable( {
+  dbg = $('#report-table').DataTable( {
     "pagingType": "full_numbers",
    "paging": true,
    "lengthMenu": [10, 25, 50, 75, 100],
