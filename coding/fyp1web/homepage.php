@@ -393,10 +393,10 @@
                       <th colspan="1">Venue</th>
                       <th colspan="1">Type</th>
                       <th colspan="1">Lecturer</th>
-                      <th>Date Time</th>
+                      <th colspan="1">Date Time</th>
                       <th colspan="1">Duration</th>
-                      <th>Subject</th>
-                      <th class="action-title" colspan="2" > Actions </th>
+                      <th colspan="1">Subject</th>
+                      <th class="action-title" colspan="1" > Actions </th>
                     </tr>
                   </thead>
                   <tbody  id="lessonTable">
@@ -419,8 +419,6 @@
 
 
 <script type="text/javascript">
-
-var dbg;
 $(document).ready(function() {
   dbg = $('#report-table').DataTable( {
     "pagingType": "full_numbers",
@@ -433,7 +431,7 @@ $(document).ready(function() {
       ]
 
     } );
-    $('#lesson_datatable').DataTable();
+
   } );
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>

@@ -8,6 +8,56 @@ var backEndUrl='/fypBackEnd',
     duration = $('duration-field').val();
 
 var dateTimeFormat = "dddd HH:MM";
+var lessonTable = null;
+
+
+$(document).ready(function(){
+    //datatable for lesson
+    lessonTable = $('#lesson_datatable').DataTable({
+	ajax: {
+	    url: backEndUrl+'/lessons/',
+	    dataType: 'json',
+	    dataSrc: ""
+	},
+	columns: [
+	    {"data": "venue"},
+	    {"data": "type"},
+	    {"data": "lecturer"},
+	    {"data": "dateTime"},
+	    {"data": "duration"},
+	    {"data": "subjectID"},
+	    {"data": "id"}
+	],
+	columnDefs:[
+	    {
+                "render": function ( data, type, row ) {
+		    return createEditButton() + createRemoveButton();
+                },
+                "targets": 6
+            },
+	]
+    });
+    //                { "visible": false,  "targets": [ 0 ] } // removes the first column
+    
+    
+    //select2 for subject code
+    $('.s2').select2({
+	placeholder: 'Subject Code',
+	tags: true,
+	createTags: function(params){
+	    return{
+		id: params.term,
+		text: params.term,
+		newOption: true
+	    }
+	}
+    });
+    
+});
+
+
+
+
 
 $.ajax({
   url: backEndUrl+'/subjects/',
@@ -26,6 +76,18 @@ $.ajax({
   }
 });
 
+function createEditButton(){
+    return `
+         <td class="edit" style="border-left:1px solid #d8d8d8; padding-left:30px"><button class="btn btn-default btn-sm edit-lesson-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+`;
+}
+
+function createRemoveButton(){
+    return `<td class="remove" ><button class="btn btn-danger btn-sm remove-item-btn"><i class="fa fa-trash-o" aria-hidden="true"></button></td>`;
+}
+
+
+
 $.ajax({
 
   url: backEndUrl +'/lecturers/',
@@ -42,19 +104,6 @@ $.ajax({
   }
 });
 
-$('document').ready( function(){
- $('.s2').select2({
-   placeholder: 'Subject Code',
-   tags: true,
-   createTags: function(params){
-     return{
-       id: params.term,
-       text: params.term,
-       newOption: true
-     }
-   }
- });
-});
 
 $('b[role="presentation"]').hide();
 $('.select2-selection__arrow').append('<i class="fa fa-angle-down"></i>');
@@ -64,6 +113,8 @@ $('.select2-selection__arrow').append('<i class="fa fa-angle-down"></i>');
  */
 function displayNewLesson(id, venue, type, lecturer, datetime, duration, subject){
   var dateTimeStr = moment(datetime).format(dateTimeFormat);
+    
+    /*
   var newLessonRow =
   `<tr class="listContent">
         <input type="hidden" id="lesson_id" name='lessonID' value="`+id+`"/>
@@ -78,6 +129,7 @@ function displayNewLesson(id, venue, type, lecturer, datetime, duration, subject
       </tr>
       `;
       $('#lessonTable').append($(newLessonRow));
+*/
 }
 
 
