@@ -116,7 +116,7 @@ function approveClass(id){
     alert("Please enter a class venue!");
     return;
   }else if(!(regexVenue.test(venue))){
-    alert(venue + " is invalid!");
+    alert("Venue is invalid!");
         return;
   }
   else{
@@ -162,7 +162,7 @@ var subjectBox = $('#approval-request-'+id);
           <p ><span class="left redateBox">Re-Date:</span> <span class="right date" id="reDate"><input id="newDate" type="date" name="datechanged" value="`+item.reDate+`" /></span></p>
           <p ><span class="left">Re-Time:</span> <span class="right time" id="reTime"><input id="newTime" type="time" name="timechanged" value="`+item.reTime+`" /></span></p>
           <p ><span class="left">Duration:</span> <span class="right" id="duration">2</span></p>
-          <p><span class="left">Venue:</span> <span class="right"><input id="newVenue"  type="text" name="venuechanged"  value="`+item.venue+`" required/ size="14"></span></p>
+          <p><span class="left">Venue:</span> <span class="right"><input id="newVenue"  type="text" name="venuechanged"  value="`+item.venue+`" required style="width:52px;" /></span></p>
           <div class="btn-style">
             <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="saveBtn(`+id+`)">Save &raquo;</a></p>
           </div>
@@ -207,11 +207,11 @@ var saveRecheduling = function(id,date, time, venue){
  * Save edited data and validate them
  */
 var saveBtn = function(id){
-  var regexVenue = /(NA)|^(sr)[2]{1}.[1-3]{1}|^(lh)[2]{1}.[1-3]{1}|^(ls)[1-2]{1}|^(tis)$/;
-  var venue = $('#newVenue').val(),
+  var regexVenue = /^(sr)[2]{1}.[1-3]{1}|^(lh)[2]{1}.[1-3]{1}|^(ls)[1-2]{1}|^(tis)$/;
+  var venue = $('#newVenue').val().toLowerCase(),
       date = $('#newDate').val(),
       time = $('#newTime').val();
-  if (venue == "" || venue== "NA"){
+  if (venue == "" || venue== "na"){
     alert("Please enter a class venue!");
     return;
   }else if(!(regexVenue.test(venue))){
