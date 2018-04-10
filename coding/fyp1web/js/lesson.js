@@ -10,6 +10,132 @@ var backEndUrl='/fypBackEnd',
 var dateTimeFormat = "dddd HH:MM";
 var lessonTable = null;
 
+var changeEditMode = function (row){
+    lesson = fetchLessonByRow(row);
+}
+
+var fetchLesson = function(id){
+    return lessonTable.rows().data().filter( e => e.id == id )[0];
+}
+var fetchLessonByRow = function(row){
+    return lessonTable.row(row);
+}
+
+var inEditMode = false;
+
+var startEditLesson = function(row){
+    if(!inEditMode){
+	var editBtn  = $("#edit-btn-"+row) ;
+	console.log("Editing lesson with row " + row);
+	editBtn.children().attr("class", "fa fa-floppy-o");
+	
+	var tr = editBtn.parent().parent();	
+	
+	var tdVenue = $(editBtn.parent().parent().find("td")[0]);
+	var tdType = $(editBtn.parent().parent().find("td")[1]);
+	var tdDateTime = $(editBtn.parent().parent().find("td")[3]);
+	var tdDuration = $(editBtn.parent().parent().find("td")[4]);
+	
+	var tdVenueInput = $('<input type="text" class="venueTest" name="venue" value="' + tdVenue.html() + '" size="4">');
+	var tdTypeInput = $(`<select name="type" value="">
+                    <option value="` + tdType.html() + `">  `+ tdType.html() + ` </option>
+                    <option value="lecture1" >lecture1</option>
+                    <option value="lecture2" >lecture2</option>
+                    <option value="tutorial1" >tutorial1</option>
+                    <option value="tutorial2" >tutorial2</option>
+                  </select>`);
+	var tdDateTimeInput = $("<input type='text' name='datetime' id='datetimepicker4' />");
+	var tdDurationInput = $(`<input type="text" name="duration" value="` + tdDuration.html() +`" style="position:relative; left:-10px; text-align:center;" size="2">`);
+	
+	tdDateTimeInput.datetimepicker({
+    	    defaultDate: moment(tdDateTimeInput.data().date)
+	});
+
+	
+	tdVenue.html(tdVenueInput);
+	tdType.html(tdTypeInput);
+	tdDateTime.html(tdDateTimeInput);
+	tdDuration.html(tdDurationInput);
+	
+	editBtn.attr("onclick", "saveEditLesson("+row+")");
+	inEditMode = true;
+    }else{
+
+    }
+}
+
+var saveEditLesson = function(row){
+    console.log("Saving lesson with row "+row);
+    var editBtn  = $("#edit-btn-"+row) ;   
+    editBtn.attr("onclick", "startEditLesson("+row+")");
+
+    var tdVenue = $(editBtn.parent().parent().find("td")[0]);
+    var tdType = $(editBtn.parent().parent().find("td")[1]);
+    var tdDateTime = $(editBtn.parent().parent().find("td")[3]);
+    var tdDuration = $(editBtn.parent().parent().find("td")[4]);
+
+    var dataToSend = `{
+      "venue": "`+tdVenue.children("input").val()+`",
+      "type": "`+tdType.children("select").val()+`",
+      "dateTime": "`+moment(tdDateTime.children("input").val()).format("YYYY-MM-DD HH:mm:ss")+`",
+      "duration": "`+tdDuration.children("input").val()+`"
+    }`;
+
+    document.body.style.cursor = "wait";
+    $.ajax({
+	url: backEndUrl + "/lessons/"+fetchLessonByRow(row).data().id+"/",
+	dataType: 'json',
+	method: "PATCH",
+	data: dataToSend,
+	processData: false,
+	success: function(r){	    
+	    var inputs = [tdVenue, tdDateTime, tdDuration];
+	    for(var i =0; i<inputs.length; i++){
+		var val = inputs[i].children("input").val();
+		if( inputs[i] === tdDateTime ){
+		    val = moment(val).format(dateTimeFormat);
+		}
+		inputs[i].html(val);
+	    }
+	    tdType.html(tdType.children("select").val());    
+	    
+	    inEditMode = false;
+	    editBtn.children().attr("class", "fa fa-pencil-square-o");    
+	},
+	complete: function(){
+	    document.body.style.cursor = "";
+	}
+    });
+
+
+    
+}
+
+var cancelEditLesson = function(id){
+
+}
+
+var removeLesson = function(row){
+    lesson = fetchLessonByRow(row);
+    if(lesson !== undefined){
+	var key = lesson.data().id;
+	if (confirm('Are you sure you want to delete this record?')) {
+            $.ajax(
+		{
+		    "url" : backEndUrl +"/lessons/" + key + "/",
+		    "method" : "DELETE",
+		    "dataType" : "json",
+		    "success" : function(response){
+			lesson.remove();
+			lessonTable.draw();
+		    }
+		});
+	}else{
+            return;
+	}
+
+    }
+}
 
 $(document).ready(function(){
     //datatable for lesson
@@ -30,11 +156,19 @@ $(document).ready(function(){
 	],
 	columnDefs:[
 	    {
-                "render": function ( data, type, row ) {
-		    return createEditButton() + createRemoveButton();
+                "render": function ( data, type, row , meta) {
+		    return createEditButton(meta.row) + createRemoveButton(meta.row);
                 },
                 "targets": 6
             },
+	    {
+                "render": function ( data, type, row , meta) {
+		    var dateTimeStr = moment(data).format(dateTimeFormat);
+		    return `<td  class="datetime"  data-date="`+data+`" >`+dateTimeStr+`</td>`;
+                },
+                "targets": 3
+            },
+
 	]
     });
     //                { "visible": false,  "targets": [ 0 ] } // removes the first column
@@ -76,14 +210,18 @@ $.ajax({
   }
 });
 
-function createEditButton(){
+function viewRow(id){
+    console.log(fetchLesson(id));
+}
+
+function createEditButton(row){
     return `
-         <td class="edit" style="border-left:1px solid #d8d8d8; padding-left:30px"><button class="btn btn-default btn-sm edit-lesson-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+         <td class="edit" style="border-left:1px solid #d8d8d8; padding-left:30px"><button id="edit-btn-`+row+`" class="btn btn-default btn-sm edit-lesson-btn" onClick="startEditLesson(`+row+`)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
 `;
 }
 
-function createRemoveButton(){
-    return `<td class="remove" ><button class="btn btn-danger btn-sm remove-item-btn"><i class="fa fa-trash-o" aria-hidden="true"></button></td>`;
+function createRemoveButton(row){
+    return `<td class="remove" ><button class="btn btn-danger btn-sm remove-item-btn" onClick="removeLesson(`+row+`)" ><i class="fa fa-trash-o" aria-hidden="true"></button></td>`;
 }
 
 
@@ -138,11 +276,8 @@ function insertLessonData(data){
   $('#lessonTable').html("");
   for(var i=0; i< data.length; i++){
     var item  = data[i];
-
     displayNewLesson(item.id, item.venue,  item.type, item.lecturer, item.dateTime,item.duration, item.subjectID);
   }
-
-
 }
 
 $.ajax({
@@ -158,6 +293,8 @@ $.ajax({
     //console.log(reply);
   }
 });
+
+
 /*
  * Retrieve Subject
  */
@@ -182,10 +319,8 @@ $.ajax({
 
     }
   });
-})
-/*
- * Add New Subject
- */
+ });
+
 
 /*
  * Add lessons
@@ -242,6 +377,7 @@ $('#add-btn').click(function(){
  * To edit class lesson
  */
 
+/*
 var isEditing = false,
     tempVenueValue = "",
     tempTypeValue = "",
@@ -259,14 +395,14 @@ $(document).on('click', '.edit-lesson-btn', function() {
   if(isEditing) {
     var id = $(this).parent().parent().children('input[name=lessonID]').val();
     var el = $(this).parent().parent();
-    /*string value*/
+    //string value
     var d = `{
       "venue": "`+$('.venueTest').val()+`",
       "type": "`+$('[name=type]').val()+`",
       "dateTime": "`+moment($('[name=datetime]').val()).format("YYYY-MM-DD HH:mm:ss")+`",
       "duration": "`+$('[name=duration]').val()+`"
     }`;
-    /*json*/
+    //json
     var x = {
       "venue": $('.venueTest').val(),
       "type": $('[name=type]').val(),
@@ -308,7 +444,7 @@ $(document).on('click', '.edit-lesson-btn', function() {
                     // Restore previous html values
                     tdVenueInput.empty();
                     tdTypeInput.empty();
-                    tdDateTimeInput.empty();
+2                    tdDateTimeInput.empty();
                     tdDurationInput.empty();
 
                     tdVenueInput.html(tdVenueValue);
@@ -377,7 +513,7 @@ $(document).on('click', '.edit-lesson-btn', function() {
   }
 
 });
-
+*/
 
 
 //End of Editing Class Lesson
@@ -389,7 +525,7 @@ $(document).on('click', '.edit-lesson-btn', function() {
 //var dbg = null;
 
 // Handles live/dynamic element events, i.e. for newly created trash buttons
-$(document).on('click', '.remove-item-btn', function() {
+/*$(document).on('click', '.remove-item-btn', function() {
    // Turn off editing if row is current input
   if(isEditing) {
   }else{
@@ -429,187 +565,4 @@ $(document).on('click', '.remove-item-btn', function() {
   }
 });
 
-// End of removing Class Lesson
-
-// Beginning of pagination
-//pagination
-/*
-var listPaginate = function(){
-(function($){
-
-    var lPaginate = {
-        startPos: function(pageNumber, perPage) {
-            // determine what array position to start from
-            // based on current page and # per page
-            return pageNumber * perPage;
-        },
-
-        getPage: function(items, startPos, perPage) {
-            // declare an empty array to hold our page items
-            var page = [];
-
-            // only get items after the starting position
-            items = items.slice(startPos, items.length);
-
-            // loop remaining items until max per page
-            for (var i=0; i < perPage; i++) {
-                page.push(items[i]); }
-
-            return page;
-        },
-
-        totalPages: function(items, perPage) {
-            // determine total number of pages
-            return Math.ceil(items.length / perPage);
-        },
-
-        createBtns: function(totalPages, currentPage) {
-            // create buttons to manipulate current page
-            var p = $('<div class="lPage" />');
-
-            // add a "first" button
-            p.append('<span class="lPage-button">&laquo;</span>');
-
-            // add pages inbetween
-            for (var i=1; i <= totalPages; i++) {
-                // truncate list when too large
-                if (totalPages > 5 && currentPage !== i) {
-                    // if on first two pages
-                    if (currentPage === 1 || currentPage === 2) {
-                        // show first 5 pages
-                        if (i > 5) continue;
-                    // if on last two pages
-                    } else if (currentPage === totalPages || currentPage === totalPages - 1) {
-                        // show last 5 pages
-                        if (i < totalPages - 4) continue;
-                    // otherwise show 5 pages w/ current in middle
-                    } else {
-                        if (i < currentPage - 2 || i > currentPage + 2) {
-                            continue; }
-                    }
-                }
-
-                // markup for page button
-                var pageBtn = $('<span class="lPage-button page-num" />');
-
-                // add active class for current page
-                if (i == currentPage) {
-                    pageBtn.addClass('active'); }
-
-                // set text to the page number
-                pageBtn.text(i);
-
-                // add button to the container
-                p.append(pageBtn);
-            }
-
-            // add a "last" button
-            p.append($('<span class="lPage-button">&raquo;</span>'));
-
-            return p;
-        },
-
-        createPage: function(items, currentPage, perPage) {
-            // remove pagination from the page
-            $('.lPage').remove();
-
-            // set context for the items
-            var container = items.parent(),
-                // detach items from the page and cast as array
-                items = items.detach().toArray(),
-                // get start position and select items for page
-                startPos = this.startPos(currentPage - 1, perPage),
-                page = this.getPage(items, startPos, perPage);
-
-            // loop items and readd to page
-            $.each(page, function(){
-                // prevent empty items that return as Window
-                if (this.window === undefined) {
-                    container.append($(this)); }
-            });
-
-            // prep pagination buttons and add to page
-            var totalPages = this.totalPages(items, perPage),
-                pageButtons = this.createBtns(totalPages, currentPage);
-
-            container.after(pageButtons);
-        }
-    };
-
-    // stuff it all into a jQuery method!
-    $.fn.lPaginate = function(perPage) {
-        var items = $(this);
-
-        // default perPage to 5
-        if (isNaN(perPage) || perPage === undefined) {
-            perPage = 5; }
-
-        // don't fire if fewer items than perPage
-        if (items.length <= perPage) {
-            return true; }
-
-        // ensure items stay in the same DOM position
-        if (items.length !== items.parent()[0].children.length) {
-            items.wrapAll('<div class="lPage-items" />');
-        }
-
-        // paginate the items starting at page 1
-        lPaginate.createPage(items, 1, perPage);
-
-        // handle click events on the buttons
-        $(document).on('click', '.lPage-button', function(e) {
-            // get current page from active button
-            var currentPage = parseInt($('.lPage-button.active').text(), 9),
-                newPage = currentPage,
-                totalPages = lPaginate.totalPages(items, perPage),
-                target = $(e.target);
-
-            // get numbered page
-            newPage = parseInt(target.text(), 9);
-            if (target.text() == '«') newPage = 1;
-            if (target.text() == '»') newPage = totalPages;
-
-            // ensure newPage is in available range
-            if (newPage > 0 && newPage <= totalPages) {
-                lPaginate.createPage(items, newPage, perPage); }
-        });
-    };
-
-})(jQuery);
-
-
-if($(window).width() >= 1920){
-  if (items.length > 12){
-    $('.lPage-button').hide();
-  }
-  else{
-    $('.lPage-button').show();
-  }
-  $( window ).load(function() {
-      if (window.location.href.indexOf('reload')==-1) {
-           window.location.replace(window.location.href+'?reload');
-      }
-  });
-  $('.listContent').lPaginate(12);
-}else if (($(window).width() <= 1919)){
-  if (items.length > 6){
-    $('.lPage-button').hide();
-  }
-  else{
-    $('.lPage-button').show();
-  }
-  //var l = (items.length > 6)? 6 : items.length;
-  /*
-  $( window ).load(function() {
-      if (window.location.href.indexOf('reload')==-1) {
-           window.location.replace(window.location.href+'?reload');
-      }
-  });*/
-//  $('.listContent').lPaginate(6);
-//}
-//}
-
-//End of Pagination
-
-//listPaginate();
-/*Customized screen size on specific task running Jquery*/
+*/
