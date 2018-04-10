@@ -118,9 +118,12 @@
                 <tr>
                 <th>Lecturer</th>
                 <th>Subject Code</th>
-                <th>Subject Name</th>
+                <th>Subject Start Time (24h)</th>
+                <th>Duration (hours)</th>
                 <th>Cancellation Date</th>
                 <th>Rescheduling Date</th>
+                <th>Resceduling Start Time (24h)</th>
+                <th>Venue</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -129,146 +132,175 @@
             <tr>
                 <td>Winson</td>
                 <td>BMC 308</td>
-                <td>Mobile Development</td>
+                <td>11:00</td>
+                <td>3h</td>
                 <td>2018/01/15</td>
                 <td>2018/02/25</td>
+                <td>12:00</td>
+                <td>sr2.3</td>
                 <td>Completed</td>
             </tr>
             <tr>
                 <td>Anita</td>
                 <td>BIT 200</td>
-                <td>IT & Entrepreneurship</td>
-                <td>2018/01/18</td>
-                <td>2018/02/18</td>
+                <td>11:00</td>
+                <td>3h</td>
+                <td>2018/01/15</td>
+                <td>2018/02/25</td>
+                <td>12:00</td>
+                <td>sr2.3</td>
                 <td>Completed</td>
             </tr>
             <tr>
                 <td>Fong</td>
                 <td>BIT 210</td>
-                <td>Web Programming</td>
-                <td>2018/02/01</td>
-                <td>2018/02/15</td>
-                <td>Pending</td>
+                <td>11:00</td>
+                <td>3h</td>
+                <td>2018/01/15</td>
+                <td>2018/02/25</td>
+                <td>12:00</td>
+                <td>sr2.3</td>
+                <td>Completed</td>
             </tr>
             <tr>
                 <td>Seetha</td>
                 <td>BIT 216</td>
-                <td>Software Engineering Principles</td>
-                <td>2018/02/12</td>
-                <td>2018/04/25</td>
-                <td>Pending</td>
+                <td>11:00</td>
+                <td>3h</td>
+                <td>2018/01/15</td>
+                <td>2018/02/25</td>
+                <td>12:00</td>
+                <td>sr2.3</td>
+                <td>Completed</td>
             </tr>
             <tr>
                 <td>Kok</td>
                 <td>BIT 208</td>
-                <td>Data Structures</td>
-                <td>2018/02/06</td>
-                <td>2018/02/20</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Dewi</td>
-                <td>BIT 103</td>
-                <td>Introduction to Databases</td>
-                <td>2018/01/25</td>
-                <td>2018/03/25</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Dewi</td>
-                <td>BGM 101</td>
-                <td>Multimedia Authoring and Development</td>
-                <td>2018/01/20</td>
-                <td>2018/03/01</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>Dewi</td>
-                <td>BIT 103</td>
-                <td>Introduction to Databases</td>
+                <td>11:00</td>
+                <td>3h</td>
+                <td>2018/01/15</td>
                 <td>2018/02/25</td>
-                <td>2018/03/25</td>
-                <td>Pending</td>
+                <td>12:00</td>
+                <td>sr2.3</td>
+                <td>Completed</td>
             </tr>
             <tr>
-                <td>Fong</td>
-                <td>BIT 306</td>
-                <td>Web Technologies</td>
-                <td>2018/01/28</td>
-                <td>2018/02/20</td>
-                <td>Pending</td>
+                <td>Dewi</td>
+                <td>BIT 103</td>
+                <td>11:00</td>
+                <td>3h</td>
+                <td>2018/01/15</td>
+                <td>2018/02/25</td>
+                <td>12:00</td>
+                <td>sr2.3</td>
+                <td>Completed</td>
+            <tr>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
             <tr>
-                <td>Anita</td>
-                <td>BIT 200</td>
-                <td>IT & Entrepreneurship</td>
-                <td>2018/03/01</td>
-                <td>2018/04/01</td>
-                <td>Pending</td>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
             <tr>
-                <td>Anita</td>
-                <td>BIT 200</td>
-                <td>IT & Entrepreneurship</td>
-                <td>2018/02/12</td>
-                <td>2018/04/25</td>
-                <td>Pending</td>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
             <tr>
-                <td>Winson</td>
-                <td>BMC 308</td>
-                <td>Mobile Development</td>
-                <td>2018/01/10</td>
-                <td>2018/02/15</td>
-                <td>Pending</td>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
             <tr>
-                <td>Fong</td>
-                <td>BIT 210</td>
-                <td>Web Programming</td>
-                <td>2018/02/05</td>
-                <td>2018/03/12</td>
-                <td>Pending</td>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
             <tr>
-                <td>Anita</td>
-                <td>BIT 310</td>
-                <td>Business Development Plan</td>
-                <td>2018/02/02</td>
-                <td>2018/03/10</td>
-                <td>Pending</td>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
             <tr>
-                <td>Anita</td>
-                <td>BIT 200</td>
-                <td>IT & Entrepreneurship</td>
-                <td>2018/02/12</td>
-                <td>2018/04/25</td>
-                <td>Pending</td>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
             <tr>
-                <td>Winson</td>
-                <td>BMC 308</td>
-                <td>Mobile Development</td>
-                <td>2018/01/10</td>
-                <td>2018/02/15</td>
-                <td>Pending</td>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
             <tr>
-                <td>Fong</td>
-                <td>BIT 210</td>
-                <td>Web Programming</td>
-                <td>2018/02/05</td>
-                <td>2018/03/12</td>
-                <td>Pending</td>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
             <tr>
-                <td>Anita</td>
-                <td>BIT 310</td>
-                <td>Business Development Plan</td>
-                <td>2018/02/02</td>
-                <td>2018/03/10</td>
-                <td>Pending</td>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>11:00</td>
+              <td>3h</td>
+              <td>2018/01/15</td>
+              <td>2018/02/25</td>
+              <td>12:00</td>
+              <td>sr2.3</td>
+              <td>Completed</td>
             </tr>
         </tbody>
         <tfoot>
