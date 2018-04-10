@@ -26,8 +26,11 @@ var inEditMode = false;
 var startEditLesson = function(row){
     if(!inEditMode){
 	var editBtn  = $("#edit-btn-"+row) ;
+	var removeBtn = $("#remove-btn-"+row);
+	
 	console.log("Editing lesson with row " + row);
 	editBtn.children().attr("class", "fa fa-floppy-o");
+	removeBtn.children().attr("class", "fa fa-times");
 	
 	var tr = editBtn.parent().parent();	
 	
@@ -56,7 +59,8 @@ var startEditLesson = function(row){
 	tdType.html(tdTypeInput);
 	tdDateTime.html(tdDateTimeInput);
 	tdDuration.html(tdDurationInput);
-	
+
+	removeBtn.attr("onclick", "cancelEditLesson("+row+")");
 	editBtn.attr("onclick", "saveEditLesson("+row+")");
 	inEditMode = true;
     }else{
@@ -65,9 +69,12 @@ var startEditLesson = function(row){
 }
 
 var saveEditLesson = function(row){
-    console.log("Saving lesson with row "+row);
     var editBtn  = $("#edit-btn-"+row) ;   
+    var removeBtn = $("#remove-btn-"+row);
+
     editBtn.attr("onclick", "startEditLesson("+row+")");
+    removeBtn.children().attr("class", "fa fa-trash-o");
+
 
     var tdVenue = $(editBtn.parent().parent().find("td")[0]);
     var tdType = $(editBtn.parent().parent().find("td")[1]);
@@ -100,6 +107,7 @@ var saveEditLesson = function(row){
 	    tdType.html(tdType.children("select").val());    
 	    
 	    inEditMode = false;
+	    removeBtn.attr("onclick", "removeLesson("+row+")");
 	    editBtn.children().attr("class", "fa fa-pencil-square-o");    
 	},
 	complete: function(){
@@ -111,11 +119,40 @@ var saveEditLesson = function(row){
     
 }
 
-var cancelEditLesson = function(id){
+var cancelEditLesson = function(row){
+    var editBtn  = $("#edit-btn-"+row) ;   
+    var removeBtn = $("#remove-btn-"+row);
 
+    editBtn.attr("onclick", "startEditLesson("+row+")");
+    removeBtn.children().attr("class", "fa fa-trash-o");
+
+
+    var tdVenue = $(editBtn.parent().parent().find("td")[0]);
+    var tdType = $(editBtn.parent().parent().find("td")[1]);
+    var tdDateTime = $(editBtn.parent().parent().find("td")[3]);
+    var tdDuration = $(editBtn.parent().parent().find("td")[4]);
+
+    var inputs = [tdVenue, tdDateTime, tdDuration];
+    for(var i =0; i<inputs.length; i++){
+	var val = inputs[i].children("input").val();
+	if( inputs[i] === tdDateTime ){
+	    val = moment(val).format(dateTimeFormat);
+	}
+	inputs[i].html(val);
+    }
+    tdType.html(tdType.children("select").val());    
+    
+    inEditMode = false;
+    removeBtn.attr("onclick", "removeLesson("+row+")");
+    editBtn.children().attr("class", "fa fa-pencil-square-o");    
+    
 }
 
 var removeLesson = function(row){
+    if(inEditMode){
+	alert("Cannot remove while in edit mode");
+	return; 
+    }
     lesson = fetchLessonByRow(row);
     if(lesson !== undefined){
 	var key = lesson.data().id;
@@ -221,7 +258,7 @@ function createEditButton(row){
 }
 
 function createRemoveButton(row){
-    return `<td class="remove" ><button class="btn btn-danger btn-sm remove-item-btn" onClick="removeLesson(`+row+`)" ><i class="fa fa-trash-o" aria-hidden="true"></button></td>`;
+    return `<td class="remove" ><button id="remove-btn-`+row+`" class="btn btn-danger btn-sm remove-item-btn" onClick="removeLesson(`+row+`)" ><i class="fa fa-trash-o" aria-hidden="true"></button></td>`;
 }
 
 
@@ -250,8 +287,8 @@ $('.select2-selection__arrow').append('<i class="fa fa-angle-down"></i>');
  * To add new Class Lesson
  */
 function displayNewLesson(id, venue, type, lecturer, datetime, duration, subject){
-  var dateTimeStr = moment(datetime).format(dateTimeFormat);
-    
+    var dateTimeStr = moment(datetime).format(dateTimeFormat);
+    //lessonTable.draw();
     /*
   var newLessonRow =
   `<tr class="listContent">
@@ -356,7 +393,8 @@ $('#add-btn').click(function(){
     success: function(reply){
 
       var lecName = $('#lecturer-field option:selected').text();
-      displayNewLesson(reply.classID, data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subj);
+	//displayNewLesson(reply.classID, data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subj);
+	lessonTable.ajax.reload();
       alert("Successfully added.");
 
         //apend option
