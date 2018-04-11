@@ -69,6 +69,8 @@ var startEditLesson = function(row){
 	removeBtn.attr("onclick", "cancelEditLesson("+row+")");
 	editBtn.attr("onclick", "saveEditLesson("+row+")");
 	inEditMode = true;
+    }else{
+
     }
 }
 
@@ -94,120 +96,127 @@ var saveEditLesson = function(row){
 
     document.body.style.cursor = "wait";
     $.ajax({
-    	url: backEndUrl + "/lessons/"+fetchLessonByRow(row).data().id+"/",
-    	dataType: 'json',
-    	method: "PATCH",
-    	data: dataToSend,
-    	processData: false,
-    	success: function(r){
-    	    var inputs = [tdVenue, tdDateTime, tdDuration];
-    	    for(var i =0; i<inputs.length; i++){
-    		    var val = inputs[i].children("input").val();
-    		    if( inputs[i] === tdDateTime ){
-    		        val = moment(val).format(dateTimeFormat);
-    		    }
-    		      inputs[i].html(val);
-    	    }
-    	    tdType.html(tdType.children("select").val());
+	url: backEndUrl + "/lessons/"+fetchLessonByRow(row).data().id+"/",
+	dataType: 'json',
+	method: "PATCH",
+	data: dataToSend,
+	processData: false,
+	success: function(r){
+	    var inputs = [tdVenue, tdDateTime, tdDuration];
+	    for(var i =0; i<inputs.length; i++){
+		var val = inputs[i].children("input").val();
+		if( inputs[i] === tdDateTime ){
+		    val = moment(val).format(dateTimeFormat);
+		}
+		inputs[i].html(val);
+	    }
+	    tdType.html(tdType.children("select").val());
 
-    	    inEditMode = false;
-    	    removeBtn.attr("onclick", "removeLesson("+row+")");
-    	    editBtn.children().attr("class", "fa fa-pencil-square-o");
-          createSuccessAlert("Successfully updated");
-    	},
-    	complete: function(){
-    	    document.body.style.cursor = "";
-    	}
+	    inEditMode = false;
+	    removeBtn.attr("onclick", "removeLesson("+row+")");
+	    editBtn.children().attr("class", "fa fa-pencil-square-o");
+      createSuccessAlert("Successfully updated");
+	},
+	complete: function(){
+	    document.body.style.cursor = "";
+	}
     });
-  }
-
-    var cancelEditLesson = function(row){
-      var editBtn  = $("#edit-btn-"+row) ;
-      var removeBtn = $("#remove-btn-"+row);
-
-      editBtn.attr("onclick", "startEditLesson("+row+")");
-      removeBtn.children().attr("class", "fa fa-trash-o");
 
 
-      var tdVenue = $(editBtn.parent().parent().find("td")[0]);
-      var tdType = $(editBtn.parent().parent().find("td")[1]);
-      var tdDateTime = $(editBtn.parent().parent().find("td")[3]);
-      var tdDuration = $(editBtn.parent().parent().find("td")[4]);
 
-      var inputs = [tdVenue, tdDateTime, tdDuration];
-      for(var i =0; i<inputs.length; i++){
-  	     var val = inputs[i].children("input").val();
-  	     if( inputs[i] === tdDateTime ){
-  	         val = moment(val).format(dateTimeFormat);
-  	     }
-  	      inputs[i].html(val);
-      }
-      tdType.html(tdType.children("select").val());
+}
 
-      inEditMode = false;
-      removeBtn.attr("onclick", "removeLesson("+row+")");
-      editBtn.children().attr("class", "fa fa-pencil-square-o");
+var cancelEditLesson = function(row){
+    var editBtn  = $("#edit-btn-"+row) ;
+    var removeBtn = $("#remove-btn-"+row);
+
+    editBtn.attr("onclick", "startEditLesson("+row+")");
+    removeBtn.children().attr("class", "fa fa-trash-o");
+
+
+    var tdVenue = $(editBtn.parent().parent().find("td")[0]);
+    var tdType = $(editBtn.parent().parent().find("td")[1]);
+    var tdDateTime = $(editBtn.parent().parent().find("td")[3]);
+    var tdDuration = $(editBtn.parent().parent().find("td")[4]);
+
+    var inputs = [tdVenue, tdDateTime, tdDuration];
+    for(var i =0; i<inputs.length; i++){
+	var val = inputs[i].children("input").val();
+	if( inputs[i] === tdDateTime ){
+	    val = moment(val).format(dateTimeFormat);
+	}
+	inputs[i].html(val);
     }
+    tdType.html(tdType.children("select").val());
 
-    var removeLesson = function(row){
-      if(inEditMode){
-	       alert("Cannot remove while in edit mode");
-	       return;
-      }
-      lesson = fetchLessonByRow(row);
-      if(lesson !== undefined){
-	       var key = lesson.data().id;
-	        if (confirm('Are you sure you want to delete this record?')) {
-            $.ajax({
-      		    "url" : backEndUrl +"/lessons/" + key + "/",
-      		    "method" : "DELETE",
-      		    "dataType" : "json",
-      		    "success" : function(response){
-      			       lesson.remove();
-      			       lessonTable.draw();
-                   createSuccessAlert("Successfully removed!");
-		         }
-		        });
-	         }else{
-             return;
-	         }
-         }
-       }
+    inEditMode = false;
+    removeBtn.attr("onclick", "removeLesson("+row+")");
+    editBtn.children().attr("class", "fa fa-pencil-square-o");
 
-       $(document).ready(function(){
-         //datatable for lesson
-         lessonTable = $('#lesson_datatable').DataTable({
-	          ajax: {
-	             url: backEndUrl+'/lessons/',
-	              dataType: 'json',
-	               dataSrc: ""
-	              },
-	               columns: [
-	                  {"data": "venue"},
-	                  {"data": "type"},
-              	    {"data": "lecturer"},
-              	    {"data": "dateTime"},
-              	    {"data": "duration"},
-              	    {"data": "subjectID"},
-              	    {"data": "id"}
-	                 ],
-	                columnDefs:[
-                	    {
-                        "render": function ( data, type, row , meta) {
-                		        return createEditButton(meta.row) + createRemoveButton(meta.row);
-                        },
-                         "targets": 6
-                      },
-                	    {
-                                "render": function ( data, type, row , meta) {
-                		    var dateTimeStr = moment(data).format(dateTimeFormat);
-                		    return `<td  class="datetime"  data-date="`+data+`" >`+dateTimeStr+`</td>`;
-                                },
-                                "targets": 3
-                       },
-            	     ]
-         });
-       });
+}
+
+var removeLesson = function(row){
+    if(inEditMode){
+	alert("Cannot remove while in edit mode");
+	return;
+    }
+    lesson = fetchLessonByRow(row);
+    if(lesson !== undefined){
+	var key = lesson.data().id;
+	if (confirm('Are you sure you want to delete this record?')) {
+            $.ajax(
+		{
+		    "url" : backEndUrl +"/lessons/" + key + "/",
+		    "method" : "DELETE",
+		    "dataType" : "json",
+		    "success" : function(response){
+			lesson.remove();
+			lessonTable.draw();
+      createSuccessAlert("Successfully removed!");
+		    }
+		});
+	}else{
+            return;
+	}
+
+    }
+}
+
+$(document).ready(function(){
+    //datatable for lesson
+    lessonTable = $('#lesson_datatable').DataTable({
+	ajax: {
+	    url: backEndUrl+'/lessons/',
+	    dataType: 'json',
+	    dataSrc: ""
+	},
+	columns: [
+	    {"data": "venue"},
+	    {"data": "type"},
+	    {"data": "lecturer"},
+	    {"data": "dateTime"},
+	    {"data": "duration"},
+	    {"data": "subjectID"},
+	    {"data": "id"}
+	],
+	columnDefs:[
+	    {
+                "render": function ( data, type, row , meta) {
+		    return createEditButton(meta.row) + createRemoveButton(meta.row);
+                },
+                "targets": 6
+            },
+	    {
+                "render": function ( data, type, row , meta) {
+		    var dateTimeStr = moment(data).format(dateTimeFormat);
+		    return `<td  class="datetime"  data-date="`+data+`" >`+dateTimeStr+`</td>`;
+                },
+                "targets": 3
+            },
+
+	]
+    });
+    //                { "visible": false,  "targets": [ 0 ] } // removes the first column
 
 
     //select2 for subject code
@@ -236,36 +245,40 @@ var saveEditLesson = function(row){
 
     });
 
-    $.ajax({
-      url: backEndUrl+'/subjects/',
-      method: 'GET',
-      dataType: 'json',
-      success: function(reply){
-        for(var i=0; i<reply.length; i++){
-          d = reply[i];
-          var tag = `
-              <option value="`+d.subjectID+`">`+d.subjectID+`</option>
-            `;
-            $('#subjCode-field').append($(tag));
-        }
-        console.log(reply);
 
-      }
-    });
 
-    function viewRow(id){
-        console.log(fetchLesson(id));
+
+
+$.ajax({
+  url: backEndUrl+'/subjects/',
+  method: 'GET',
+  dataType: 'json',
+  success: function(reply){
+    for(var i=0; i<reply.length; i++){
+      d = reply[i];
+      var tag = `
+          <option value="`+d.subjectID+`">`+d.subjectID+`</option>
+        `;
+        $('#subjCode-field').append($(tag));
     }
+    console.log(reply);
 
-    function createEditButton(row){
-        return `
-             <td class="edit" style="border-left:1px solid #d8d8d8; padding-left:30px"><button id="edit-btn-`+row+`" class="btn btn-default btn-sm edit-lesson-btn" onClick="startEditLesson(`+row+`)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
-    `;
-    }
+  }
+});
 
-    function createRemoveButton(row){
-        return `<td class="remove" ><button id="remove-btn-`+row+`" class="btn btn-danger btn-sm remove-item-btn" onClick="removeLesson(`+row+`)" ><i class="fa fa-trash-o" aria-hidden="true"></button></td>`;
-    }
+function viewRow(id){
+    console.log(fetchLesson(id));
+}
+
+function createEditButton(row){
+    return `
+         <td class="edit" style="border-left:1px solid #d8d8d8; padding-left:30px"><button id="edit-btn-`+row+`" class="btn btn-default btn-sm edit-lesson-btn" onClick="startEditLesson(`+row+`)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+`;
+}
+
+function createRemoveButton(row){
+    return `<td class="remove" ><button id="remove-btn-`+row+`" class="btn btn-danger btn-sm remove-item-btn" onClick="removeLesson(`+row+`)" ><i class="fa fa-trash-o" aria-hidden="true"></button></td>`;
+}
 
 
 
