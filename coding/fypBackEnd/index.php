@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 //include 'vendor/autoload.php';
 require_once __DIR__ . '/vendor/autoload.php';
 include 'dbconfig.php';
-$debug_mode = true;
+$debug_mode = false;
 
 $klein = new \Klein\Klein();
 
@@ -94,6 +94,16 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
 	$capacity = getPost('capacity');
 	$admin->addRoom($name, $capacity);
     });
+
+    //Venue related routes
+    $klein->respond('GET', $root.'/venue/[*:venue]/[*:date]/[*:time]/[*:duration]', function($r, $resp) use ($admin){
+	$venue = $r->venue;
+	$date = $r->date;
+	$time = $r->time;
+	$duration = $r->duration;
+	$admin->findClasses($venue, $date, $time, $duration);
+    });
+
 
     //Lesson related routes
     $klein->respond('GET', $root.'/lessons/', function($r) use ($admin){

@@ -157,8 +157,8 @@ class AdminController extends MasterController{
 	}
 	
 	//validate duration
-	if($duration > 4)
-	    throw new \Exception("Duration cannot be longer than 4 hours.");
+	if($duration > 6)
+	    throw new \Exception("Duration cannot be longer than 6 hours.");
 	if($duration < 0)
 	    throw new \Exception("A lesson must atleast be one hour long.");
 
@@ -169,6 +169,7 @@ class AdminController extends MasterController{
         $da = new ClassLessonDA($this->con);
         $subject = $subjectDA->fetchSubjectById($sid);
         //$lecturer = $lecturerDA->fetchLecturerByName($lname);
+	//$lid = $subject->getLecturer();
         $lecturer = $lecturerDA->fetchLecturerById($lid);
 
         if($lecturer == null){
@@ -186,26 +187,31 @@ class AdminController extends MasterController{
         if($da->numExistingClasses($lesson) >= 1){
             throw new \Exception("Cannot create {$type} for subject {$subject->subjectID}. {$type} already exists.");
         }
+	
 
         if($subject == null){
-            //  print "Subject not found";
-            $subject = new Subject();
-            $subject->subjectID = $sid;
-            $subject->lecturerID = $lecturer->lecturerID;
-            $subject->subjectName = $sname;
-            $subjectDA->save($subject);
-            //$subject = $subjectDA->fetchSubjectById($sid);
+	    //  print "Subject not found";
+	    $subject = new Subject();
+	    $subject->subjectID = $sid;
+	    $subject->lecturerID = $lecturer->lecturerID;
+	    $subject->subjectName = $sname;
+	    $subjectDA->save($subject);
+	    //$subject = $subjectDA->fetchSubjectById($sid);
         }else{
-            //  print "subject found";
+	    //  print "subject found";
         }
 
 
         $lesson->setDateTime($date, $time);
-        //$lesson->setRoom($rid);
-        $lesson->venue = strtolower($rid);
+	$lesson->venue = strtolower($rid);
         $lesson->setDuration($duration);
+	if($this->classClash($lesson)){
+	    throw new \Exception("Cannot create lesson for that time. Another class is taking place at the same venue, in the given time range");
+	}
+
+        //$lesson->setRoom($rid);
         if($da->save($lesson) != true){
-            throw new \Exception("Cannot create lesson!");
+	    throw new \Exception("Cannot create lesson!");
         }
         $lesson->lecturerName = $lecturer->getName();
         //$lesson
@@ -217,35 +223,35 @@ class AdminController extends MasterController{
        }*/
 
     public function addClass($subjectId, $roomId, $date, $time, $duration, $type){
-        $da = new ClassLessonDA($this->con);
-        $subjectDA = new SubjectDA($this->con);
-        $roomDA = new RoomDA($this->con);
+	$da = new ClassLessonDA($this->con);
+	$subjectDA = new SubjectDA($this->con);
+	$roomDA = new RoomDA($this->con);
 
 
-        $room = $roomDA->getRoomById($roomId);
-        $subject = $subjectDA->fetchSubjectById($subjectId);
-        if($room == false ){
-            throw new \Exception("Invalid request received! Room cannot be found.");
-            return;
-        }else if($subject == false){
-            throw new \Exception("Invalid request received! Subject cannot be found.");
-            return;
-        }
+	$room = $roomDA->getRoomById($roomId);
+	$subject = $subjectDA->fetchSubjectById($subjectId);
+	if($room == false ){
+	    throw new \Exception("Invalid request received! Room cannot be found.");
+	    return;
+	}else if($subject == false){
+	    throw new \Exception("Invalid request received! Subject cannot be found.");
+	    return;
+	}
 
 
-        $lesson = new ClassLesson();
-        $lesson->setSubject($subjectId);
-        $lesson->setRoom($roomId);
-        $lesson->setDateTime($date, $time);
-        $lesson->setDuration($duration);
-        $lesson->setType($type);
+	$lesson = new ClassLesson();
+	$lesson->setSubject($subjectId);
+	$lesson->setRoom($roomId);
+	$lesson->setDateTime($date, $time);
+	$lesson->setDuration($duration);
+	$lesson->setType($type);
 
-        try{
-            $da->save($lesson);
-            $this->sendMsg("Lesson successfully created!");
-        }catch(\Exception $ex){
-            throw new \Exception("Failed to create a new lesson: ");
-        }
+	try{
+	    $da->save($lesson);
+	    $this->sendMsg("Lesson successfully created!");
+	}catch(\Exception $ex){
+	    throw new \Exception("Failed to create a new lesson: ");
+	}
     }
 
     /**
@@ -255,19 +261,19 @@ class AdminController extends MasterController{
      * @param $query string Subject code
      **/
     public function searchLesson($query){
-        $lessonda = new SubjectDA($this->con);
-        $result = $lessonda->searchBySubjectId($query);
-        $this->returnObject($result);
+	$lessonda = new SubjectDA($this->con);
+	$result = $lessonda->searchBySubjectId($query);
+	$this->returnObject($result);
     }
 
     /**
      * Returns all rooms
      **/
     public function listRooms(){
-        $roomDA = new RoomDA($this->con);
+	$roomDA = new RoomDA($this->con);
 
-        $list = $roomDA->getAllRooms();
-        $this->returnObject($list);
+	$list = $roomDA->getAllRooms();
+	$this->returnObject($list);
     }
 
 
@@ -275,30 +281,30 @@ class AdminController extends MasterController{
      * Add a new Room
      **/
     public function addRoom($name, $capacity){
-        $roomDA = new RoomDA($this->con);
-        $room = new Room();
-        $room->setName($name);
-        $room->setCapacity($capacity);
+	$roomDA = new RoomDA($this->con);
+	$room = new Room();
+	$room->setName($name);
+	$room->setCapacity($capacity);
 
-        try{
-            $roomDA->save($room);
-            $this->sendMsg("Successfully Created!");
-        }catch(\Exception $ex){
-            throw new \Exception("Failed to create a new room, the room already exists.");
-        }
+	try{
+	    $roomDA->save($room);
+	    $this->sendMsg("Successfully Created!");
+	}catch(\Exception $ex){
+	    throw new \Exception("Failed to create a new room, the room already exists.");
+	}
     }
 
 
     public function getLesson($id){
-        $lessonDA = new ClassLessonDA($this->con);
-        $this->returnObject($lessonDA->getClassById($id));
+	$lessonDA = new ClassLessonDA($this->con);
+	$this->returnObject($lessonDA->getClassById($id));
     }
 
     public function deleteLesson($id){
-        $lessonDA = new ClassLessonDA($this->con);
-        $lesson = $lessonDA->getClassById($id);
-        $success = $lessonDA->remove($lesson);
-        print $success;
+	$lessonDA = new ClassLessonDA($this->con);
+	$lesson = $lessonDA->getClassById($id);
+	$success = $lessonDA->remove($lesson);
+	print $success;
     }
 
     /**
@@ -306,41 +312,41 @@ class AdminController extends MasterController{
      * for testing purpose
      **/
     public function listLessons(){
-        $classDA = new ClassLessonDA($this->con);
+	$classDA = new ClassLessonDA($this->con);
 
-        $list = $classDA->findAll();
+	$list = $classDA->findAll();
 
-        $in = $list;
-        $out = [];
-        foreach($in as $v){
-            // $roomda = new RoomDA($this->con);
-            //$room = $roomda->getRoomById($v->roomID);
-            $sda = new SubjectDA($this->con);
-            $subject = $sda->fetchSubjectById($v->subjectID);
-            if($subject == null){
-                throw new \Exception("System error: The subject not found with id " . $v->subjectID);
-            }
+	$in = $list;
+	$out = [];
+	foreach($in as $v){
+	    // $roomda = new RoomDA($this->con);
+	    //$room = $roomda->getRoomById($v->roomID);
+	    $sda = new SubjectDA($this->con);
+	    $subject = $sda->fetchSubjectById($v->subjectID);
+	    if($subject == null){
+		throw new \Exception("System error: The subject not found with id " . $v->subjectID);
+	    }
 
-            $lda = new LecturerDA($this->con);
-            $lecturer = $lda->fetchLecturerById($subject->lecturerID);
-            if($lecturer == null){
-                throw new \Exception("System error: The lecturer not found for subject "+ $subject->getId());
-            }
-            $o['id'] = $v->classID;
-            $o['venue'] = $v->venue;
-            $o['type'] = $v->type;
-            $o['dateTime'] = $v->getDateTime();
-            //  $o['date'] = '12331231';
-            //  $o['time'] = "12321";
-            $o['duration']= $v->getDuration();
-            $o['lecturer'] = $lecturer->getName();
-            $o['subjectID'] = $subject->getSubId();
+	    $lda = new LecturerDA($this->con);
+	    $lecturer = $lda->fetchLecturerById($subject->lecturerID);
+	    if($lecturer == null){
+		throw new \Exception("System error: The lecturer not found for subject "+ $subject->getId());
+	    }
+	    $o['id'] = $v->classID;
+	    $o['venue'] = $v->venue;
+	    $o['type'] = $v->type;
+	    $o['dateTime'] = $v->getDateTime();
+	    //  $o['date'] = '12331231';
+	    //  $o['time'] = "12321";
+	    $o['duration']= $v->getDuration();
+	    $o['lecturer'] = $lecturer->getName();
+	    $o['subjectID'] = $subject->getSubId();
 
-            $out[] = $o;
-        }
+	    $out[] = $o;
+	}
 
 
-        $this->returnObject($out);
+	$this->returnObject($out);
     }
 
     /**
@@ -348,97 +354,153 @@ class AdminController extends MasterController{
      * for testing purpose
      **/
     public function listSubjects(){
-        $subjectDA = new SubjectDA($this->con);
+	$subjectDA = new SubjectDA($this->con);
 
-        $list = $subjectDA->findAll();
-        $arr = [];
-        foreach($list as $k => $v){
-            $lda = new LecturerDA($this->con);
-            $lecturer = $lda->fetchLecturerById($v->lecturerID);
-            $v->setLecturer($lecturer);
+	$list = $subjectDA->findAll();
+	$arr = [];
+	foreach($list as $k => $v){
+	    $lda = new LecturerDA($this->con);
+	    $lecturer = $lda->fetchLecturerById($v->lecturerID);
+	    $v->setLecturer($lecturer);
 
-            $o['subjectID'] = $v->subjectID;
-            $o['subjectName'] = $v->getSubName();
-            $o['lecturerID'] = $v->getLecturer()->getId();
-            $o['lecturerName'] = $v->getLecturer()->getName();
+	    $o['subjectID'] = $v->subjectID;
+	    $o['subjectName'] = $v->getSubName();
+	    $o['lecturerID'] = $v->getLecturer()->getId();
+	    $o['lecturerName'] = $v->getLecturer()->getName();
 
-            $arr[] = $o;
-        }
-        $this->returnObject($arr);
+	    $arr[] = $o;
+	}
+	$this->returnObject($arr);
     }
 
     public function addSubject($id, $name, Lecturer $lecturer){
-        $subjectDA = new SubjectDA($this->con);
-        $subject = new Subject();
-        $subject->subjectID = $id;
-        $subject->lecturerID = $lecturer->lecturerID;
-        $subject->subjectName = $name;
+	$subjectDA = new SubjectDA($this->con);
+	$subject = new Subject();
+	$subject->subjectID = $id;
+	$subject->lecturerID = $lecturer->lecturerID;
+	$subject->subjectName = $name;
 
-        $subjectDA->save($subject);
-        $this->sendMsg("Successfully Created!");
+	$subjectDA->save($subject);
+	$this->sendMsg("Successfully Created!");
 
     }
 
     public function deleteSubject($id){
-        $subjectDA = new SubjectDA($this->con);
+	$subjectDA = new SubjectDA($this->con);
 
-        if ($subjectDA->remove($id) == true){
-            $this->sendMsg("Successfully Deleted!");
-        }
-        else
-            throw new Exception("Error! Failed to delete subject!");
+	if ($subjectDA->remove($id) == true){
+	    $this->sendMsg("Successfully Deleted!");
+	}
+	else
+	    throw new Exception("Error! Failed to delete subject!");
     }
     /*
        public function updateSubject($id, $name, Lecturer $lecturer){
 
        }*/
     public function editLesson($id, $venue, $type, $dateTime, $duration){
-        $lessonDA = new ClassLessonDA($this->con);
+	$lessonDA = new ClassLessonDA($this->con);
 
-        $lesson = $lessonDA->getClassById($id);
-        if($lesson == null){
-            throw new Exception("Lesson not found!");
-        }
-        //setters for lesson object
-        $lesson->venue = $venue;
-        $lesson->type = $type;
-        $lesson->dateTime = $dateTime;
-        $lesson->duration= $duration;
-        $lessonDA->save($lesson);
-        $this->sendMsg("Successfully Updated!");
+	$lesson = $lessonDA->getClassById($id);
+	if($lesson == null){
+	    throw new Exception("Lesson not found!");
+	}
+	//setters for lesson object
+	$lesson->venue = $venue;
+	$lesson->type = $type;
+	$lesson->dateTime = $dateTime;
+	$lesson->duration= $duration;
+	$lessonDA->save($lesson);
+	$this->sendMsg("Successfully Updated!");
     }
 
     public function updateClassScheduling($id, $date, $time, $venue){
-        $rescheduleDA = new ClassReschedulingDA($this->con);
-        $record = $rescheduleDA->getApprovalRequest($id);
-        $dt = new DateTime($date. " ". $time);
-        $today = new DateTime();
-        $dt->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
-        $today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
-        $i = $today->diff($dt);
-        $cannotCreate = ($i->format("%R") == "-");
-        if($cannotCreate){
-            throw new \Exception("Cannot update class schedule, date has already passed.");
-        }
+	$rescheduleDA = new ClassReschedulingDA($this->con);
+	$record = $rescheduleDA->getApprovalRequest($id);
+	$dt = new DateTime($date. " ". $time, new DateTimeZone("Asia/Kuala_Lumpur"));
+	$today = new DateTime();
+	$today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
 
-        $record->setNewDateTime($date, $time);
-        $record->setVenue($venue);
-        $rescheduleDA->save($record);
-        $this->sendMsg("Successfully Updated!");
+	$validDayStart = new DateTime($date . " 05:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
+	$validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
+
+	//$i = $today->diff($dt);
+	//$cannotCreate = ($i->format("%R") == "-");
+	if($dt < $today){
+	    throw new \Exception("Cannot update class schedule, date has already passed.");
+	}
+	if($dt > $validDayEnd || $dt < $validDayStart){
+	    throw new \Exception("Lesson can only take place between 5.30AM to 6PM.");  
+	}
+
+	$record->setNewDateTime($date, $time);
+	$record->setVenue($venue);
+	$rescheduleDA->save($record);
+	$this->sendMsg("Successfully Updated!");
     }
 
 
     public function listLecturers(){
-        $lecturerDA = new LecturerDA($this->con);
-        $in = $lecturerDA->findAll();
-        $out = [];
-        foreach($in as $v){
-            $o['lecturerID'] = $v->getId();
-            $o['lecturerName'] = $v->getName();
-            $out[] = $o;
-        }
-        $this->returnObject($out);
+	$lecturerDA = new LecturerDA($this->con);
+	$in = $lecturerDA->findAll();
+	$out = [];
+	foreach($in as $v){
+	    $o['lecturerID'] = $v->getId();
+	    $o['lecturerName'] = $v->getName();
+	    $out[] = $o;
+	}
+	$this->returnObject($out);
     }
 
+    /**
+     *  Checks for clashes.
+     **/
+    public function findClasses($venue, $date, $time, $duration){
+	$da = new ClassLessonDA($this->con);
+	$lessons = $da->getClassesOnDate($venue, $date);
+	if($lessons == null){
+	    throw new \Exception("No classes found for the given parameters");
+	}
+	
+	$newLesson = new ClassLesson();
+	$newLesson->setDateTime($date, $time);
+	$newLesson->setDuration($duration);
+	$newLesson->venue = $venue;
+	
+	$arr = [];	
+	foreach($lessons as $lesson){	   
+	    $arr []= 
+		[
+		    'id' => $lesson->classID,
+		    'startTime' => $lesson->getDateTime(),
+		    'endTime' => $lesson->getEndTime()->format("Y-m-d h:i:s"),
+		    'duration' => $lesson->getDuration(),
+		    'clash' => $lesson->isClashing($newLesson)
+		];
+	}	
+	$this->returnObject($arr);
+    }
+
+    private function classClash($newLesson){
+	$da = new ClassLessonDA($this->con);
+	$venue = $newLesson->venue;
+	$date = $newLesson->getDate();
+	$lessons = $da->getClassesOnDate($venue, $date);
+
+	if($lessons == null){
+	    return false;
+	}
+	
+	$arr = [];	
+	foreach($lessons as $lesson){
+	    if($lesson->isClashing($newLesson)){
+		throw new \Exception("{$lesson->type} for {$lesson->subjectID} is taking place at {$lesson->venue} at {$lesson->getStrStartTime()} to {$lesson->getStrEndTime()}");
+		return true;
+	    }
+	}
+	return false;
+	
+    }
+    
 }
 ?>
