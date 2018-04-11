@@ -228,7 +228,8 @@ var removeLesson = function(row){
 		    "success" : function(response){
 			lesson.remove();
 			lessonTable.draw();
-      createSuccessAlert("Successfully removed!");
+			lessonTable.ajax.reload(); //quick bugfix
+			createSuccessAlert("Successfully removed!");
 		    }
 		});
 	}else{

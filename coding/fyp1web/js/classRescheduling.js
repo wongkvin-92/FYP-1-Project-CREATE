@@ -126,11 +126,13 @@ console.log(myVar);
         method : "GET",
         dataType : "json",
         success : function(r) {
-
           removeClass(id);
           createSucAlert(r.msg);
-
-        }
+        },
+	error: function(r){
+	    r = r.responseJSON;
+	    alert(r.msg);
+	}
     });
 } else {
     return;

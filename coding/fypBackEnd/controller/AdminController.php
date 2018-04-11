@@ -100,7 +100,9 @@ class AdminController extends MasterController{
         //link to db
 	$da = new ClassReschedulingDA($this->con);
 	$rqApprove = $da->getApprovalRequest($id);
-
+	$venue = $rqApprove->getVenue();
+	if($venue == "" || $venue == "N/A")
+	    throw new \Exception("Please assign a venue first!");
 	if(!$rqApprove->isApproved()){
             $rqApprove->approve();
             $da->save($rqApprove);
