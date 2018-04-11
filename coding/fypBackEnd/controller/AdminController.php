@@ -144,13 +144,23 @@ class AdminController extends MasterController{
 	$today = new DateTime();
         $today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));	
 	$datetime = new DateTime($date . " " . $time, new DateTimeZone("Asia/Kuala_Lumpur"));
-	//validate datetime
+	$validDayStart = new DateTime($date . " 05:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
+	$validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
+	//validate date has not passed
         if($datetime < $today){
 	    $systime = $today->format("d-m-Y H:i:s");
             throw new \Exception("Cannot create a lesson for the passed date. \n Current system date is {$systime}");
         }
+	//validate the time is between 5.30 to 6
+	if($datetime < $validDayStart || $datetime > $validDayEnd){
+	    throw new \Exception("Lesson can only take place between 5:30AM to 06:00PM");
+	}
+	
 	//validate duration
-	//if($duration > 
+	if($duration > 4)
+	    throw new \Exception("Duration cannot be longer than 4 hours.");
+	if($duration < 0)
+	    throw new \Exception("A lesson must atleast be one hour long.");
 
 	
         $subjectDA = new SubjectDA($this->con);
