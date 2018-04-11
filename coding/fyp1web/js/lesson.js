@@ -206,7 +206,8 @@ var saveEditLesson = function(row){
                                 "targets": 3
                        },
             	     ]
-            });
+         });
+       });
 
 
     //select2 for subject code
