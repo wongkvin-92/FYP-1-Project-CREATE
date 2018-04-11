@@ -8,8 +8,64 @@ var backEndUrl='/fypBackEnd',
     duration = $('#duration-field').val();
 
 var subjectCodeModel = {
-  isValid: false,
-  selector: $('.s2')
+    isValid: false,
+    selector: $('.s2'),
+    value: "",
+    container: $('.select2-container'),
+    validate: function(sub){
+	if(!(validateSubject(sub))){
+	    $('.select2-container').css("border", "2px solid #ff0000");
+	}else{
+	    $('.select2-container').css("border", "2px solid #228B22");
+	}
+    }
+};
+
+var lessonCreateViewModel = {
+    subjectCode: subjectCodeModel,
+    subjectName: {
+	selector: $("#subjectName-field")
+    },
+    lecturerName: {
+	selector: $("#lecturerName-field")
+    },
+    room: {
+	selector: $("#venue-field")
+    },
+    type: {
+	selector: $("#type-field")
+    },
+    date: {
+	selector: $("#date-field")
+    },
+    time: {
+	selector: $("#time-field")
+    },
+    duration: {
+	selector: $("#duration-field")
+    },
+    toJSON: function(){
+	return {
+	    subjectCode: this.subjectCode.selector.val(),
+	    lecturerName: this.lecturerName.selector.val(),
+	    subjectName: this.subjectName.selector.val(),
+	    room: this.room.selector.val(),
+	    type: this.type.selector.val(),
+	    duration: this.duration.selector.val(),
+	    date: this.date.selector.val(),
+	    time: this.time.selector.val()
+	};
+    },
+    isAllEmpty: function(){
+	var d = this.toJSON();
+	return d.subjectCode == "" &&
+	    d.lecturerName == "" &&
+	    d.subjectName == "" &&
+	    d.room == "" &&
+	    d.type == "" &&
+	    d.duration == "" &&
+	    d.date == "";
+    }
 };
 
 var dateTimeFormat = "dddd HH:MM";
@@ -216,6 +272,7 @@ $(document).ready(function(){
 
 	]
     });
+});
     //                { "visible": false,  "targets": [ 0 ] } // removes the first column
 
 
@@ -338,28 +395,25 @@ $.ajax({
  */
  $('#subjCode-field').change(function(e){
    var subjectID = $(this).val();
-   if(subjectCodeModel.isValid){
-      	$.ajax({
-           url: "/fypBackEnd/subjects/"+subjectID+"/",
-            dataType: 'json',
-           success: function(r){
-              console.log(r);
-            	$('#subjectName-field').prop('disabled', true);
-            	$('#lecturerName-field').prop('disabled', true);
-            	$('#subjectName-field').val(r.subjectName);
-              $('#lecturerName-field').val(r.lecturerID);
-            },
-          error: function(r){
-              $('#subjectName-field').val("");
-                $('#lecturerName-field').val("");
-              $('#subjectName-field').prop('disabled', false);
-              $('#lecturerName-field').prop('disabled', false);
-              alert("Subject does not exist. \nYou will create a new subject when you add the lesson");
-            }
-        });
-      }else{
-        alert("Invalid subject code.");
-      }
+     $.ajax({
+         url: "/fypBackEnd/subjects/"+subjectID+"/",
+         dataType: 'json',
+         success: function(r){
+             console.log(r);
+	     subjectCodeModel.validate(subjectID);
+             $('#subjectName-field').prop('disabled', true);
+             $('#lecturerName-field').prop('disabled', true);
+             $('#subjectName-field').val(r.subjectName);	     
+             $('#lecturerName-field').val(r.lecturerID);
+         },
+         error: function(r){
+             $('#subjectName-field').val("");
+             $('#lecturerName-field').val("");
+             $('#subjectName-field').prop('disabled', false);
+             $('#lecturerName-field').prop('disabled', false);
+	     alert("Subject does not exist. \nYou will create a new subject when you add the lesson");	     
+         }
+     });
  });
 
 function validateSubject(subjectCode){
@@ -371,29 +425,27 @@ function validateSubject(subjectCode){
 
 function validateLesson(){
 
-  if ($('.select2-container').val()== "" && venue =="" && lecturer =="" && classType =="" && date =="" && duration ==""){
+    if (lessonCreateViewModel.isAllEmpty()){
+	$('.select2-container').css("border", "2px solid #ff0000");
+	$('#venue-field').css("border", "2px solid #ff0000");
+	$('#lecturerName-field').css("border", "2px solid #ff0000");
+	$('#type-field').css("border", "2px solid #ff0000");
+	$('#date-field').css("border", "2px solid #ff0000");
+	$('#time-field').css("border", "2px solid #ff0000");
+	$('#duration-field').css("border", "2px solid #ff0000");
+	createErrorAlert("All entries are empty!");
+	return false;
+/*  } else if (!(validateSubject(subjCode))){
     $('.select2-container').css("border", "2px solid #ff0000");
-    $('#venue-field').css("border", "2px solid #ff0000");
-    $('#lecturerName-field').css("border", "2px solid #ff0000");
-    $('#type-field').css("border", "2px solid #ff0000");
-    $('#date-field').css("border", "2px solid #ff0000");
-    $('#time-field').css("border", "2px solid #ff0000");
-    $('#duration-field').css("border", "2px solid #ff0000");
-    createErrorAlert("All entries are empty!");
-  } else if (!(validateSubject(subjCode))){
-    $('.select2-container').css("border", "2px solid #ff0000");
-      alert("Subject entry is not a valid!");
-  }
+      alert("Subject entry is not a valid!");*/
+    }
+    return true;
 }
 
 $(document).on('keyup', '.select2-search__field', function (e) {
-  var subjCode = $(this).val();
-  subjectCodeModel.value = subjCode;
-  if(!(validateSubject(subjCode))){
-    $('.select2-container').css("border", "2px solid #ff0000");
-  }else{
-    $('.select2-container').css("border", "2px solid #228B22");
-  }
+    var subjCode = $(this).val();
+    subjectCodeModel.value = subjCode;
+    subjectCodeModel.validate(subjCode);
 });
 
 /*
@@ -409,8 +461,7 @@ $('.select2-container').on('keyup', function () { {
  * Add lessons
 */
 $('#add-btn').click(function(){
-
-  var data = {
+  /*var data = {
     venue : $('#venue-field').val(),
     subjCode : $('#subjCode-field').val(),
     classType : $('#type-field').val(),
@@ -419,39 +470,37 @@ $('#add-btn').click(function(){
     duration : $('#duration-field').val(),
     lecturer : $('#lecturerName-field').val(),
     subjName : $('#subjectName-field').val()
-
-  };
+    };*/
+    var data = lessonCreateViewModel.toJSON();
 
   if(validateLesson()){
-  $.ajax({
-    url : backEndUrl+'/lessons/',
-    method : 'POST',
-    dataType : 'json',
-    data : {
-      'venue' : data.venue,
-      'subjectID' : data.subjCode,
-      'type' : data.classType,
-      'date' : data.date,
-      'time' : data.time,
-      'duration' : data.duration,
-      'lecturer' : data.lecturer,
-      'subjectName' : data.subjName
-    },
-    success: function(reply){
-
-      var lecName = $('#lecturer-field option:selected').text();
-	//displayNewLesson(reply.classID, data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subj);
-	lessonTable.ajax.reload();
-    createSuccessAlert("Successfully added!");
-        //apend option
-    },
-    error: function(reply){
-      reply = reply.responseJSON;
-      createErrorAlert(reply.msg);
-    }
-  });
-}
-  console.log(data);
+      $.ajax({
+	  url : backEndUrl+'/lessons/',
+	  method : 'POST',
+	  dataType : 'json',
+	  data : {
+	      'venue' : data.room,
+	      'subjectID' : data.subjectCode,
+	      'type' : data.type,
+	      'date' : data.date,
+	      'time' : data.time,
+	      'duration' : data.duration,
+	      'lecturer' : data.lecturerName,
+	      'subjectName' : data.subjectName
+	  },
+	  success: function(reply){
+	      var lecName = $('#lecturer-field option:selected').text();
+	      //displayNewLesson(reply.classID, data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subj);
+	      lessonTable.ajax.reload();
+	      createSuccessAlert("Successfully added!");
+              //apend option
+	  },
+	  error: function(reply){
+	      reply = reply.responseJSON;
+	      createErrorAlert(reply.msg);
+	  }
+      });
+  }  
 
 });
 
