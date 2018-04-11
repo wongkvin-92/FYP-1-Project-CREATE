@@ -72,6 +72,10 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
     $admin->approveClass($r->id);
   });
 
+  /*$klein->respond('GET', $root.'/test/[*:scode]/[*:type]/', function($r) use ($admin){
+    $admin->testCreateClass($r->scode, $r->type);
+  });*/
+
   $klein->respond('PATCH', $root.'/requests/rescheduling/[i:id]/', function($r) use ($admin){
       $ex = null;
       $date = getData('date');
@@ -142,9 +146,6 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
         throw new \Exception("No query received !");
     }
     });*/
-
-
-
   $klein->respond('POST', $root.'/lessons/', function($r) use ($admin){
       $sid = getPost('subjectID');
       $sname = getPost('subjectName');

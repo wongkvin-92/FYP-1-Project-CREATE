@@ -15,3 +15,29 @@
 
 
 }).call(this);
+
+
+
+var newWarningAlert = function(msg){
+ return `<div class="alert alert-success">
+    `+msg+`
+</div>`;
+}
+
+var newSuccessAlert = function(msg){
+ return `<div class="alert alert-success">
+    `+msg+`
+</div>`;
+}
+
+var newErrorAlert = function(msg){
+ return `<div class="alert alert-danger">
+    `+msg+`
+</div>`;
+}
+
+var newInfoAlert = function(msg){
+  return `    <div class="alert alert-info">
+      `+msg+`
+  </div>`
+}

@@ -32,6 +32,14 @@ class ClassLessonDA extends DataAccessObject{
         return $result;
     }
 
+    public function numExistingClasses($lesson){
+      $code = $lesson->subjectID;
+      $type = $lesson->type;
+      $q = "SELECT count(*) FROM `class_lesson` WHERE subjectID = \"{$code}\" and type = \"{$type}\" ";
+      $result = $this->con->query($q);
+      return $result->fetch_array()[0];
+    }
+
     public function save($o){
       $ret = parent::save($o);
       $o->classID = $this->con->insert_id;

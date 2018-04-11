@@ -76,7 +76,7 @@
           $o['reTime'] = $date[1];
           $o['duration'] = '2';
           $o['venue'] = $entry->getVenue();
-          
+
           $arr[] =$o;
         }
         $this->returnJSON($arr);
@@ -90,7 +90,7 @@
       /*
       public function changeVenue($id, $venue){
           $da = new ClassReschedulingDA($this->con);
-          $rq = $da->getApprovalRequest($id);          
+          $rq = $da->getApprovalRequest($id);
           $rq->setVenue($venue);
           $da->save($rq);
           $this->returnObject($rq);
@@ -124,6 +124,16 @@
        $this->returnObject($subject);
      }
 
+     /*public function testCreateClass($subjCode, $type){
+       $lesson = new ClassLesson();
+       $lesson->subjectID = $subjCode;
+       $lesson->type = $type;
+
+       $da = new ClassLessonDA($this->con);
+       print "Test result = ". $da->numExistingClasses($lesson);
+
+     }*/
+
       /**
        * Creates a new subject if subject does not exist.
        **/
@@ -145,6 +155,12 @@
           }else{
               // print "Lecturer found";
           }
+          $lesson = new ClassLesson();
+          $lesson->subjectID = $subject->subjectID;
+          $lesson->setType($type);
+          if($da->numExistingClasses($lesson) >= 1){
+            throw new \Exception("Cannot create {$type} for subject {$subject->subjectID}. {$type} already exists.");
+          }
 
           if($subject == null){
             //  print "Subject not found";
@@ -158,13 +174,11 @@
             //  print "subject found";
           }
 
-          $lesson = new ClassLesson();
-          $lesson->subjectID = $subject->subjectID;
+
           $lesson->setDateTime($date, $time);
           //$lesson->setRoom($rid);
           $lesson->venue = strtolower($rid);
           $lesson->setDuration($duration);
-          $lesson->setType($type);
           if($da->save($lesson) != true){
               throw new \Exception("Cannot create lesson!");
           }
@@ -372,6 +386,16 @@
       public function updateClassScheduling($id, $date, $time, $venue){
         $rescheduleDA = new ClassReschedulingDA($this->con);
         $record = $rescheduleDA->getApprovalRequest($id);
+        $dt = new DateTime($date. " ". $time);
+        $today = new DateTime();
+        $dt->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
+        $today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
+        $i = $today->diff($dt);
+        $cannotCreate = ($i->format("%R") == "-");
+        if($cannotCreate){
+          throw new \Exception("Cannot update class schedule, date has already passed.");
+        }
+
         $record->setNewDateTime($date, $time);
         $record->setVenue($venue);
         $rescheduleDA->save($record);

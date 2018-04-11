@@ -26,7 +26,7 @@ $('input#pass').keyup(function() {
     }
 });
 
-function validate(e) {
+function validate() {
 
   var email = $("#email").val();
   var pass = $('#pass').val();

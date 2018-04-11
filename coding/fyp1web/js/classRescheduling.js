@@ -52,14 +52,15 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id, 
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         </button>
       </div>
-      <div style="position:relative; z-index:1000; top:-5px; left:20px">
+      <div style="position:relative; z-index:1000; top:-16px; left:20px">
         <h3><span class="left">Code:</span> <span class="right" id="subjectCode"></span></h3>
         <p class="class-reschedule_subject"><span class="left">Subject:</span> <span class="right" id="subjectName"></span></p>
         <p><span class="left">Lecturer:</span> <span class="right" id="lecturer"></span></p>
         <p><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
         <p><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
-        <p><span class="left">Duration:</span> <span class="right" id="duration"></span></p>
-        <p><span class="left">Venue:</span> <span class="right" >`+venue+`</span></p>
+        <p><span class="left">(24h)</span> <span class="right"></span></p>
+        <p><span class="left">Duration:</span><span class="right" id="duration"></span></p>
+        <p><span class="left">Venue:</span> <span class="right venueApprove" >`+venue+`</span></p>
         <!--
         <p><span class="left">Venue:</span>
           <span class="right">
@@ -82,7 +83,7 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id, 
   jqs.find("#lecturer").html(lecturer);
   jqs.find("#reDate").html(rDate);
   jqs.find("#reTime").html(rTime);
-  jqs.find("#duration").html(duration);
+  jqs.find("#duration").html(duration +"hour(s)");
 
   return jqs;
 }
@@ -110,16 +111,15 @@ function findData(items, query){
 }
 
 function approveClass(id){
-  var regexVenue = /(NA)|^(sr)[2]{1}.[1-3]{1}|^(lh)[2]{1}.[1-3]{1}|^(ls)[1-2]{1}|^(tis)$/;
-  var venue = $('#venue').val();
-  if (venue == "" || venue== "NA"){
-    alert("Please enter a class venue!");
+
+//console.log($('.venueApprove')[0].childNodes[0].nodeValue);
+var myVar = $(this).find('.venueApprove').val();
+console.log(myVar);
+//$('.venueApprove')[0].childNodes[0].nodeValue
+  if ($('.venueApprove').val() == "NA"){
+    createErrAlert("Please enter a class venue!");
     return;
-  }else if(!(regexVenue.test(venue))){
-    alert("Venue is invalid!");
-        return;
-  }
-  else{
+  }else{
   if (confirm('Are you sure you approve this Class Reschedulement?')) {
     $.ajax({
         url : backEndUrl+"/classes/"+id+"/approve/",
@@ -128,7 +128,7 @@ function approveClass(id){
         success : function(r) {
 
           removeClass(id);
-          alert(r.msg);
+          createSucAlert(r.msg);
 
         }
     });
@@ -145,6 +145,7 @@ var editBtnClicked = function(id) {
   console.log(el);
   */
   var item = items[id];
+  prevItem = JSON.stringify(item);
 var subjectBox = $('#approval-request-'+id);
 
   var subjCard = `
@@ -185,22 +186,36 @@ var subjectBox = $('#approval-request-'+id);
  * Update the record in the server
  */
 var saveRecheduling = function(id,date, time, venue){
-  $.ajax({
-     "async": true,
-     "crossDomain": true,
-     "url": backEndUrl + "/requests/rescheduling/"+id+"/",
-     "method": "PATCH",
-     "processData": false,
-     "dataType": "json",
-     "data": "{\n\t\"date\": \""+date+"\",\n\t\"venue\": \""+venue+"\",\n\t\"time\": \""+time+"\"\n}",
-     "success": function(response){
-         items[id].reDate = date;
-         items[id].reTime = time;
-         items[id].venue = venue;
-         goBackViewMode(id);
-         alert(response.msg);
-     }
-  });
+  var newItem = items[id];
+  newItem.reDate = date;
+  newItem.reTime = time;
+  newItem.venue = venue;
+  var currentItem = JSON.stringify(newItem);
+  if(currentItem==prevItem){
+    createErrAlert("No changed detected");
+    goBackViewMode(id);
+  }else{
+      $.ajax({
+         "async": true,
+         "crossDomain": true,
+         "url": backEndUrl + "/requests/rescheduling/"+id+"/",
+         "method": "PATCH",
+         "processData": false,
+         "dataType": "json",
+         "data": "{\n\t\"date\": \""+date+"\",\n\t\"venue\": \""+venue+"\",\n\t\"time\": \""+time+"\"\n}",
+         "success": function(response){
+             items[id].reDate = date;
+             items[id].reTime = time;
+             items[id].venue = venue;
+             goBackViewMode(id);
+             createSucAlert(response.msg);
+         },
+         "error": function(r){
+           r = r.responseJSON;
+           createErrAlert(r.msg);
+         }
+      });
+    }
 }
 
 /*
@@ -212,10 +227,10 @@ var saveBtn = function(id){
       date = $('#newDate').val(),
       time = $('#newTime').val();
   if (venue == "" || venue== "na"){
-    alert("Please enter a class venue!");
+    createErrAlert("Please enter a class venue!");
     return;
   }else if(!(regexVenue.test(venue))){
-    alert(venue + " is invalid!");
+    createErrAlert(venue + " is invalid!");
         return;
   }else{
     saveRecheduling(id,date, time, venue);
@@ -396,5 +411,62 @@ $('#searchReplacement').on('change keyup paste',function(){
   }
 });
 
+var prevItem;
 var items = [];
 addData(items);
+
+
+var newWarnAlert = function(msg){
+ return `<div class="alert alert-success">
+    `+msg+`
+</div>`;
+}
+
+var newSuccAlert = function(msg){
+ return `<div class="alert alert-success">
+    `+msg+`
+</div>`;
+}
+
+var newErrAlert = function(msg){
+ return `<div class="alert alert-danger">
+    `+msg+`
+</div>`;
+}
+
+var newInfAlert = function(msg){
+  return `    <div class="alert alert-info">
+      `+msg+`
+  </div>`
+}
+
+var disapMsg = function(){
+    $('#general_msg').html('');
+}
+
+var createSucAlert = function(msg){
+  $('#general_msg').html(newSuccAlert(msg));
+  setTimeout(function(){
+    disapMsg();
+  }, 2000);
+}
+var createWarAlert = function(msg){
+  $('#general_msg').html(newWarnAlert(msg));
+  setTimeout(function(){
+    disapMsg();
+  }, 2000);
+}
+
+var createErrAlert = function(msg){
+  $('#general_msg').html(newErrAlert(msg));
+  setTimeout(function(){
+    disapMsg();
+  }, 2000);
+}
+
+var createInfAlert = function(msg){
+  $('#general_msg').html(newInfAlert(msg));
+  setTimeout(function(){
+    disapMsg();
+  }, 2000);
+}

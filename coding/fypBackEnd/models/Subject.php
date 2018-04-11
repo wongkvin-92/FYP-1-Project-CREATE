@@ -28,7 +28,6 @@ class Subject{
         return $this->time;
         }**/
 
-
 }
 
 ?>

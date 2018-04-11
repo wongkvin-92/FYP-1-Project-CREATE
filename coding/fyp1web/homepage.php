@@ -26,7 +26,9 @@
 
 <div class="wrapper">
 <!-- Dashboard (Parent Block)-->
+
 <div class="dashboard">
+
   <!-- Dashboard Sidebar (Block)-->
   <div class="dashboard-sidebar">
     <!-- Brand (Element)-->
@@ -78,6 +80,7 @@
 
     <!-- Dashboard Content Panel (Home)-->
     <div class="dashboard-content__panel " data-panel-id="class_replacement">
+
       <div class="dashboard-header">
         <!-- Search (Element)-->
         <div class="dashboard-header__search">
@@ -87,6 +90,7 @@
         <div class="dashboard-header__new"><i class="fa fa-search"></i></div>
 
       </div>
+      <div id="general_msg"></div>
       <!-- Dashboard List (Block) -->
       <div class="dashboard-list">
         <!-- Dasboard List Item (Element)-->
@@ -112,6 +116,7 @@
              </div>
             </div>
 
+
           <div class="panel-body " >
             <table id="report-table" class="table table-hover"  width="100%" >
               <thead>
@@ -129,137 +134,8 @@
         </thead>
 
         <tbody>
-            <tr>
-                <td>Winson</td>
-                <td>BMC 308</td>
-                <td>11:00</td>
-                <td>3h</td>
-                <td>2018/01/15</td>
-                <td>2018/02/25</td>
-                <td>12:00</td>
-                <td>sr2.3</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td>Anita</td>
-                <td>BIT 200</td>
-                <td>11:00</td>
-                <td>3h</td>
-                <td>2018/01/15</td>
-                <td>2018/02/25</td>
-                <td>12:00</td>
-                <td>sr2.3</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td>Fong</td>
-                <td>BIT 210</td>
-                <td>11:00</td>
-                <td>3h</td>
-                <td>2018/01/15</td>
-                <td>2018/02/25</td>
-                <td>12:00</td>
-                <td>sr2.3</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td>Seetha</td>
-                <td>BIT 216</td>
-                <td>11:00</td>
-                <td>3h</td>
-                <td>2018/01/15</td>
-                <td>2018/02/25</td>
-                <td>12:00</td>
-                <td>sr2.3</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td>Kok</td>
-                <td>BIT 208</td>
-                <td>11:00</td>
-                <td>3h</td>
-                <td>2018/01/15</td>
-                <td>2018/02/25</td>
-                <td>12:00</td>
-                <td>sr2.3</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td>Dewi</td>
-                <td>BIT 103</td>
-                <td>11:00</td>
-                <td>3h</td>
-                <td>2018/01/15</td>
-                <td>2018/02/25</td>
-                <td>12:00</td>
-                <td>sr2.3</td>
-                <td>Completed</td>
-            <tr>
-              <td>Dewi</td>
-              <td>BIT 103</td>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>Dewi</td>
-              <td>BIT 103</td>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>Dewi</td>
-              <td>BIT 103</td>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>Dewi</td>
-              <td>BIT 103</td>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>Dewi</td>
-              <td>BIT 103</td>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>Dewi</td>
-              <td>BIT 103</td>
-              <td>11:00</td>
-              <td>3h</td>
-              <td>2018/01/15</td>
-              <td>2018/02/25</td>
-              <td>12:00</td>
-              <td>sr2.3</td>
-              <td>Completed</td>
-            </tr>
+
+
         </tbody>
         <tfoot>
         </tfoot>
@@ -268,62 +144,6 @@
    </div>
   </div>
   </div>
-    <!-- Dashboard Content Panel (subject)-->
-    <!--
-    <div class="dashboard-content__panel " data-panel-id="subject">
-      <div class="dashboard-list">
-        <div id="subjects" class="panel panel-primary panel-table subject_view table-responsive" style="border:none;">
-          <div class="panel-heading">
-            <div class="row">
-              <div class="col-md-4 col-xs-6">
-                <h3 class="panel-title">Subject</h3>
-                <br/>
-                <table >
-                  <td class="code">
-                    <input type="hidden" id="id-field" />
-                    <input type="text" id="code-field" placeholder="Code" />
-                  </td>
-                  <td class="name">
-                    <input type="text" id="name-field" placeholder="Name" style="margin-left:10px;"/>
-                  </td>
-                  <td class="lecturer">
-                    <select  id="lecturer-field" style="margin-left:10px;">
-                      <option value="" >Lecturer</option>
-                    </select>
-                  </td>
-                  <td class="add" style="margin-left:10px;">
-                    <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
-                  </td>
-                </table>
-
-                    <button id="printMe">Print me</button>
-              </div>
-            </div>
-          </div>
-          <table class="table  table-hover subjListTb "  id="subjTable" width="100%">
-               <thead>
-                 <tr>
-                   <div class="pull-right searchBar">
-                     <input  class="search" placeholder="Search contact" />
-                   </div>
-                 <tr>
-                   <th >Code</th>
-                   <th>Subj Name</th>
-                   <th>Lecturer Name</th>
-                   <th >Venue</th>
-                   <th>Type</th>
-                   <th colspan="1">Date Time</th>
-                   <th>Duration</th>
-                   <th colspan="2"> actions </th>
-                 </tr>
-               </thead>
-               <tbody  id="subjectData">
-               </tbody>
-             </table>
-           </div>
-         </div>
-       </div>
-     -->
        <!-- Dashboard Content Panel (lesson)-->
        <div class="dashboard-content__panel " data-panel-id="lesson">
          <div class="dashboard-list">
@@ -359,6 +179,7 @@
                      </td>
                      <td class="type">
                        <select  id="type-field" style="margin-left:10px;">
+                         <option value="">Class Type</option>
                          <option value="lecture1" >lecture1</option>
                          <option value="lecture2" >lecture2</option>
                          <option value="tutorial1" >tutorial1</option>
@@ -382,6 +203,7 @@
              </div>
 
              <div class="panel-body table-responsive">
+                   <div id="lesson_table_msg"></div>
                 <table class="table  table-hover subjListTb "  width="100%" id="lesson_datatable">
                   <thead>
                     <tr>
@@ -406,7 +228,7 @@
  </div>
 
 
-  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
@@ -429,6 +251,7 @@ $(document).ready(function() {
 
   } );
 </script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
