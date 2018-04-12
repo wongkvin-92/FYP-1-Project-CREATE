@@ -69,26 +69,225 @@ var lessonCreateViewModel = {
 };
 
 var dateTimeFormat = "dddd HH:MM";
-var lessonTable = null;
+var SQLDateTimeFormat = "YYYY-MM-DD HH:mm:ss";
 
-var changeEditMode = function (row){
-    lesson = fetchLessonByRow(row);
+var lessonTableModel = {
+    inEditMode: false,
+    selectedRow: null,
+    dataTable: null, //initialized later
+    fetchLessonById: function(id){
+	return null;
+    },
+    fetchLessonByRow: function(id){
+	return null;
+    },
+    fetchRow: function(id){
+	return $(this.dataTable.row(id).node());
+    },
+    getPkFromId: function(id){
+	return $(this.dataTable.row(id).node()).find('button')[0].dataset.pk
+    },
+    getCell: function(row, cid){
+	return $($(row.column(cid).nodes(0))[0]);
+    },
+    selectRow: function(rid){
+	var td =$(this.fetchRow(rid));
+	var d = this.dataTable.row(rid).data();
+	//var pk = this.getPkFromId(rid);
+	//var siblings = td
+	var row = this.dataTable.row(rid);
+	var celljqs =  {
+		venue: this.getCell(row, 0),
+		type: this.getCell(row, 1),
+		dateTime: this.getCell(row, 3),
+		duration: this.getCell(row, 4)
+	};
+	var inputVals = null;
+	var dataToSend = null;
+	if(this.inEditMode){
+	    inputVals = {
+		venue: celljqs.venue.find("input").val(),
+		type: celljqs.type.children("select").val(),
+		dateTime: celljqs.dateTime.children("input").val(),
+		duration: celljqs.duration.children("input").val()
+	    };
+	    dataToSend = `{
+              "venue": "`+ inputVals.venue+`",
+              "type": "`+ inputVals.type+`",
+              "dateTime": "`+moment(inputVals.dateTime).format("YYYY-MM-DD HH:mm:ss")+`",
+              "duration": "`+inputVals.duration+`"
+             }`;
+	}
+	
+	this.selectedRow = {
+	    row:  td,
+	    editBtn: td.find(".edit-lesson-btn"),    
+	    removeBtn: td.find(".remove-item-btn"),
+	    data: d,
+	    sendData: dataToSend,
+	    tds: celljqs,
+	    input: inputVals
+	};
+    },
+    setEditMode: function(editBtn, removeBtn, val){
+	var rid = editBtn.data('rid');
+	var tds = this.selectedRow.tds;
+
+	if(val == true){
+	    this.inEditMode = true;
+	    //Change icons
+	    editBtn.children().attr("class", "fa fa-floppy-o");
+	    removeBtn.children().attr("class", "fa fa-times");
+
+	    //Change everything to input fields
+	    //1.Prepare input fields
+	    var inputFields = this.constructInputFields(tds);
+
+	    inputFields.dateTimeInput.datetimepicker({
+    		defaultDate: moment(this.selectedRow.data.dateTime)
+	    });
+
+
+	    //2. Replace td with input fields.
+	    tds.venue.html(inputFields.venueInput);
+	    tds.type.html(inputFields.typeInput);
+	    tds.dateTime.html(inputFields.dateTimeInput);
+	    tds.duration.html(inputFields.durationInput);
+	    
+	    //change event handlers
+	    removeBtn.attr("onclick", "lessonTableModel.stopEdit("+rid+")");
+	    editBtn.attr("onclick", "lessonTableModel.clickSave("+rid+")");
+	}else{
+	    this.inEditMode = false;
+
+	    //Change icons
+	    editBtn.children().attr("class", "fa fa-pencil-square-o");
+	    removeBtn.children().attr("class", "fa fa-trash-o");
+
+	    var inputFields = this.selectedRow.input;
+	    var dateTime = moment(inputFields.dateTime).format(dateTimeFormat);
+	    //Change back cells to the input values
+	    tds.venue.html(inputFields.venue);
+	    tds.type.html(inputFields.type);
+	    tds.dateTime.html(dateTime);
+	    tds.duration.html(inputFields.duration);
+
+	    
+	    //change event handlers
+	    removeBtn.attr("onclick", "lessonTableModel.clickRemove("+rid+")");
+	    editBtn.attr("onclick", "lessonTableModel.startEdit("+rid+")");	    
+	}
+    },
+    startEdit: function(rid){
+	this.selectRow(rid);
+	if(!this.inEditMode){
+ 	    var pk = this.getPkFromId(rid);	    
+	    this.setEditMode(this.selectedRow.editBtn, this.selectedRow.removeBtn, true);
+	    //editBtn.attr
+	}else{
+	    console.log("Already in edit mode");
+	}
+    },
+    stopEdit: function(rid){
+	this.selectRow(rid);
+	var pk = this.getPkFromId(rid);
+	this.setEditMode(this.selectedRow.editBtn, this.selectedRow.removeBtn, false);
+    },
+
+    clickSave: function(rid){
+	if(document.body.style.cursor=="wait")
+	    console.log("Waiting for reply.");
+	document.body.style.cursor="wait"; //change cursor to waiting
+	this.selectRow(rid);
+	var pk = this.selectedRow.editBtn.data('pk');
+	$.ajax({
+	    url: backEndUrl + "/lessons/"+pk+"/",
+	    dataType: 'json',
+	    method: "PATCH",
+	    data: lessonTableModel.selectedRow.sendData,
+	    processData: false,
+	    success: function(r){
+		lessonTableModel.setEditMode(lessonTableModel.selectedRow.editBtn, lessonTableModel.selectedRow.removeBtn, false);
+		alert("Successfully updated!");
+	    },
+	    complete: function(){
+		document.body.style.cursor="";
+	    }
+	});
+
+    },
+    clickRemove: function(rid){
+	this.selectRow(rid);
+	
+	if(!this.inEditMode){	    
+	    if (confirm('Are you sure you want to delete this record?')) {
+		$.ajax(
+		    {
+			"url" : backEndUrl +"/lessons/" + key + "/",
+			"method" : "DELETE",
+			"dataType" : "json",
+			"success" : function(response){
+			    this.selectedRow.tds.remove();
+			    this.dataTable.draw();
+			    //this.dataTable.ajax.reload(); //quick bugfix
+			    createSuccessAlert("Successfully removed!");
+			}
+		    });
+	    }
+	}else{
+	    alert("Cannot remove while editing");
+	}
+    },
+    constructInputFields: function(tds){
+	var o = {};
+	    o.venueInput = '<input type="text" class="venueTest" name="venue" value="' + tds.venue.html() + '" size="4">';
+	    o.typeInput = `<select name="type" value="">
+                    <option value="` + tds.type.html() + `">  `+ tds.type.html() + ` </option>
+                    <option value="lecture1" >lecture1</option>
+                    <option value="lecture2" >lecture2</option>
+                    <option value="tutorial1" >tutorial1</option>
+                    <option value="tutorial2" >tutorial2</option>
+                  </select>`;
+	o.dateTimeInput = $("<input type='text' name='datetime' id='datetimepicker4' />");
+	o.durationInput = $(`<input type="text" name="duration" value="` + tds.duration.html() +`" style="position:relative; left:-10px; text-align:center;" size="2">`);
+	return o;
+    }
+};
+
+lessonTableModel.createEditButton = function(row, data){
+    return `
+         <td class="edit" style="border-left:1px solid #d8d8d8; padding-left:30px"><button id="edit-btn-`+data+`" data-pk="`+data+`" data-rid="`+row+`" class="btn btn-default btn-sm edit-lesson-btn" onClick="lessonTableModel.startEdit(`+row+`)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+`;
 }
 
+lessonTableModel.createRemoveButton = function (row, data){
+    return `<td class="remove" ><button id="remove-btn-`+data+`" class="btn btn-danger btn-sm remove-item-btn" onClick="lessonTableModel.clickRemove(`+row+`)" data-pk="`+data+`" data-rid="`+row+`" ><i class="fa fa-trash-o" aria-hidden="true"></button></td>`;
+}
+
+
+
+
+var changeEditMode = function (row){
+    lesson = fetchLesson(row);
+}
+
+/*
 var fetchLesson = function(id){
     return lessonTable.rows().data().filter( e => e.id == id )[0];
 }
 var fetchLessonByRow = function(row){
     return lessonTable.row(row);
-}
+}*/
 
-var inEditMode = false;
+//var inEditMode = false;
 
 var startEditLesson = function(row){
+    /*
   disappearMsg();
     if(!inEditMode){
 	var editBtn  = $("#edit-btn-"+row) ;
 	var removeBtn = $("#remove-btn-"+row);
+	var model = fetchLesson(row);
 
 	console.log("Editing lesson with row " + row);
 	editBtn.children().attr("class", "fa fa-floppy-o");
@@ -113,7 +312,8 @@ var startEditLesson = function(row){
 	var tdDurationInput = $(`<input type="text" name="duration" value="` + tdDuration.html() +`" style="position:relative; left:-10px; text-align:center;" size="2">`);
 
 	tdDateTimeInput.datetimepicker({
-    	    defaultDate: moment(tdDateTimeInput.data().date)
+    	    defaultDate: moment(model.dateTime)
+	    //moment(tdDateTimeInput.data().date)
 	});
 
 
@@ -128,11 +328,14 @@ var startEditLesson = function(row){
     }else{
 
     }
+*/
 }
 
 var saveEditLesson = function(row){
+    /*
     var editBtn  = $("#edit-btn-"+row) ;
     var removeBtn = $("#remove-btn-"+row);
+    var model = fetchLesson(row);
 
     editBtn.attr("onclick", "startEditLesson("+row+")");
     removeBtn.children().attr("class", "fa fa-trash-o");
@@ -151,8 +354,9 @@ var saveEditLesson = function(row){
     }`;
 
     document.body.style.cursor = "wait";
+    /*
     $.ajax({
-	url: backEndUrl + "/lessons/"+fetchLessonByRow(row).data().id+"/",
+	url: backEndUrl + "/lessons/"+fetchLesson(row).id+"/",
 	dataType: 'json',
 	method: "PATCH",
 	data: dataToSend,
@@ -163,26 +367,27 @@ var saveEditLesson = function(row){
 		var val = inputs[i].children("input").val();
 		if( inputs[i] === tdDateTime ){
 		    val = moment(val).format(dateTimeFormat);
+		    model.dateTime = moment(val).format(SQLDateTimeFormat);
 		}
 		inputs[i].html(val);
 	    }
 	    tdType.html(tdType.children("select").val());
-
+	    
 	    inEditMode = false;
 	    removeBtn.attr("onclick", "removeLesson("+row+")");
 	    editBtn.children().attr("class", "fa fa-pencil-square-o");
-      createSuccessAlert("Successfully updated");
+	    createSuccessAlert("Successfully updated");
 	},
 	complete: function(){
 	    document.body.style.cursor = "";
 	}
     });
 
-
-
+*/
 }
 
 var cancelEditLesson = function(row){
+    /*
     var editBtn  = $("#edit-btn-"+row) ;
     var removeBtn = $("#remove-btn-"+row);
 
@@ -237,11 +442,12 @@ var removeLesson = function(row){
 	}
 
     }
+*/
 }
 
 $(document).ready(function(){
     //datatable for lesson
-    lessonTable = $('#lesson_datatable').DataTable({
+    lessonTableModel.dataTable = $('#lesson_datatable').DataTable({
 	ajax: {
 	    url: backEndUrl+'/lessons/',
 	    dataType: 'json',
@@ -259,7 +465,7 @@ $(document).ready(function(){
 	columnDefs:[
 	    {
                 "render": function ( data, type, row , meta) {
-		    return createEditButton(meta.row) + createRemoveButton(meta.row);
+		    return lessonTableModel.createEditButton(meta.row, data) +  lessonTableModel.createRemoveButton(meta.row, data);
                 },
                 "targets": 6
             },
@@ -328,15 +534,6 @@ function viewRow(id){
     console.log(fetchLesson(id));
 }
 
-function createEditButton(row){
-    return `
-         <td class="edit" style="border-left:1px solid #d8d8d8; padding-left:30px"><button id="edit-btn-`+row+`" class="btn btn-default btn-sm edit-lesson-btn" onClick="startEditLesson(`+row+`)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
-`;
-}
-
-function createRemoveButton(row){
-    return `<td class="remove" ><button id="remove-btn-`+row+`" class="btn btn-danger btn-sm remove-item-btn" onClick="removeLesson(`+row+`)" ><i class="fa fa-trash-o" aria-hidden="true"></button></td>`;
-}
 
 
 
@@ -492,7 +689,8 @@ $('#add-btn').click(function(){
 	  success: function(reply){
 	      var lecName = $('#lecturer-field option:selected').text();
 	      //displayNewLesson(reply.classID, data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subj);
-	      lessonTable.ajax.reload();
+	      
+	      //lessonTableModel.data.ajax.reload();
 	      createSuccessAlert("Successfully added!");
               //apend option
 	  },
