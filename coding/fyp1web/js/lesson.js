@@ -239,9 +239,9 @@ var lessonTableModel = {
 			"method" : "DELETE",
 			"dataType" : "json",
 			"success" : function(response){
-			    lessonTableModel.selectedRow.tds.remove();
-			    lessonTableModel.dataTable.draw();
-			    //this.dataTable.ajax.reload(); //quick bugfix
+			    //lessonTableModel.selectedRow.tds.remove();
+			    //lessonTableModel.dataTable.draw();
+			    lessonTableModel.dataTable.ajax.reload(); //quick bugfix
 			    createSuccessAlert("Successfully removed!");
 			}
 		    });
