@@ -229,17 +229,18 @@ var lessonTableModel = {
     },
     clickRemove: function(rid){
 	this.selectRow(rid);
+	var pk = this.selectedRow.editBtn.data('pk');
 	
 	if(!this.inEditMode){	    
 	    if (confirm('Are you sure you want to delete this record?')) {
 		$.ajax(
 		    {
-			"url" : backEndUrl +"/lessons/" + key + "/",
+			"url" : backEndUrl +"/lessons/" + pk + "/",
 			"method" : "DELETE",
 			"dataType" : "json",
 			"success" : function(response){
-			    this.selectedRow.tds.remove();
-			    this.dataTable.draw();
+			    lessonTableModel.selectedRow.tds.remove();
+			    lessonTableModel.dataTable.draw();
 			    //this.dataTable.ajax.reload(); //quick bugfix
 			    createSuccessAlert("Successfully removed!");
 			}
@@ -701,7 +702,7 @@ $('#add-btn').click(function(){
 	      var lecName = $('#lecturer-field option:selected').text();
 	      //displayNewLesson(reply.classID, data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subj);
 	      
-	      //lessonTableModel.data.ajax.reload();
+	      lessonTableModel.dataTable.ajax.reload();
 	      createSuccessAlert("Successfully added!");
               //apend option
 	  },
