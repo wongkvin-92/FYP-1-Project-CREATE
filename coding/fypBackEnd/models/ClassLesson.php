@@ -25,11 +25,11 @@ class ClassLesson{
     public function getStrEndTime(){
 	return $this->getEndTime()->format("h:i");
     }
-    
+
     public function getRoomID(){
         return $this->roomID;
     }
-    
+
     public function getDuration(){
 	return $this->duration;
     }
@@ -57,7 +57,7 @@ class ClassLesson{
 
     public function isClashing($lesson){
 	$lessonComesBefore = $lesson->getStartTime() < $this->getEndTime();
-	
+
 	if($lessonComesBefore){
 	    $test = $lesson->getEndTime() > $this->getStartTime();
 	}else{
@@ -68,10 +68,10 @@ class ClassLesson{
 
     public function getEndTime(){
 	$date = new DateTime($this->getDateTime(), new DateTimeZone("Asia/Kuala_Lumpur"));
-	$hour = $this->duration;
-	
+	 $hour = $this->duration;
+
 	$hm = explode(".", $this->getDuration());
-	
+
 	$hour = $hm[0];
 	if(isset($hm[1]))
 	    $min = $hm[1];
@@ -79,10 +79,10 @@ class ClassLesson{
 	    $min = 0;
 	if($min == 5)
 	    $min = 30;
-	
+
 	$date->add(new DateInterval("PT{$hour}H{$min}M"));
 	return $date;
     }
-    
+
 }
 ?>

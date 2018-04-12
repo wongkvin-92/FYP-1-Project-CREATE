@@ -9,7 +9,8 @@
     itemId = $(this).children().attr('href');
     $('.dashboard-content__panel').hide();
     $('.dashboard-content__panel[data-panel-id=' + itemId + ']').show();
-
+    if(itemId == "timetable")
+      refreshTimeTable();
     return console.log(itemId);
   });
 

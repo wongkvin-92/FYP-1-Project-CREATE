@@ -65,6 +65,16 @@ var lessonCreateViewModel = {
 	    d.type == "" &&
 	    d.duration == "" &&
 	    d.date == "";
+    },
+    setAllEmpty: function(){
+      this.subjectCode.selector.val(""),
+	    this.lecturerName.selector.val(""),
+	    this.subjectName.selector.val(""),
+	    this.room.selector.val(""),
+	    this.type.selector.val(""),
+	    this.duration.selector.val(""),
+	    this.date.selector.val(""),
+	    this.time.selector.val("")
     }
 };
 
@@ -117,10 +127,10 @@ var lessonTableModel = {
               "duration": "`+inputVals.duration+`"
              }`;
 	}
-	
+
 	this.selectedRow = {
 	    row:  td,
-	    editBtn: td.find(".edit-lesson-btn"),    
+	    editBtn: td.find(".edit-lesson-btn"),
 	    removeBtn: td.find(".remove-item-btn"),
 	    data: d,
 	    sendData: dataToSend,
@@ -131,7 +141,7 @@ var lessonTableModel = {
     setEditMode: function(editBtn, removeBtn, val){
 	var rid = editBtn.data('rid');
 	var tds = this.selectedRow.tds;
-	
+
 	if(val == true){
 	    this.inEditMode = true;
 	    //Change icons
@@ -152,7 +162,7 @@ var lessonTableModel = {
 	    tds.type.html(inputFields.typeInput);
 	    tds.dateTime.html(inputFields.dateTimeInput);
 	    tds.duration.html(inputFields.durationInput);
-	    
+
 	    //change event handlers
 	    removeBtn.attr("onclick", "lessonTableModel.stopEdit("+rid+")");
 	    editBtn.attr("onclick", "lessonTableModel.clickSave("+rid+")");
@@ -172,17 +182,17 @@ var lessonTableModel = {
 	    //tds.dateTime.html(dateTime);
 	    tds.dateTime.html($(`<td  class="datetime" >`+dateTime+`<span data-date="`+dateTimeSQL+`"></span></td>`));
 	    tds.duration.html(inputFields.duration);
-			      
+
 	    //change event handlers
 	    removeBtn.attr("onclick", "lessonTableModel.clickRemove("+rid+")");
-	    editBtn.attr("onclick", "lessonTableModel.startEdit("+rid+")");	    
+	    editBtn.attr("onclick", "lessonTableModel.startEdit("+rid+")");
 	}
     },
     startEdit: function(rid){
-	this.selectRow(rid);	
-	
+	this.selectRow(rid);
+
 	if(!this.inEditMode){
- 	    var pk = this.getPkFromId(rid);	    
+ 	    var pk = this.getPkFromId(rid);
 	    this.setEditMode(this.selectedRow.editBtn, this.selectedRow.removeBtn, true);
 	    this.selectRow(rid);
 	    this.oldInput = this.selectedRow.input;
@@ -230,8 +240,8 @@ var lessonTableModel = {
     clickRemove: function(rid){
 	this.selectRow(rid);
 	var pk = this.selectedRow.editBtn.data('pk');
-	
-	if(!this.inEditMode){	    
+
+	if(!this.inEditMode){
 	    if (confirm('Are you sure you want to delete this record?')) {
 		$.ajax(
 		    {
@@ -384,7 +394,7 @@ var saveEditLesson = function(row){
 		inputs[i].html(val);
 	    }
 	    tdType.html(tdType.children("select").val());
-	    
+
 	    inEditMode = false;
 	    removeBtn.attr("onclick", "removeLesson("+row+")");
 	    editBtn.children().attr("class", "fa fa-pencil-square-o");
@@ -576,8 +586,6 @@ function displayNewLesson(id, venue, type, lecturer, datetime, duration, subject
     var dateTimeStr = moment(datetime).format(dateTimeFormat);
 }
 
-
-
 function insertLessonData(data){
   $('#lessonTable').html("");
   for(var i=0; i< data.length; i++){
@@ -613,7 +621,7 @@ $.ajax({
 	     subjectCodeModel.validate(subjectID);
              $('#subjectName-field').prop('disabled', true);
              $('#lecturerName-field').prop('disabled', true);
-             $('#subjectName-field').val(r.subjectName);	     
+             $('#subjectName-field').val(r.subjectName);
              $('#lecturerName-field').val(r.lecturerID);
          },
          error: function(r){
@@ -621,7 +629,7 @@ $.ajax({
              $('#lecturerName-field').val("");
              $('#subjectName-field').prop('disabled', false);
              $('#lecturerName-field').prop('disabled', false);
-	     alert("Subject does not exist. \nYou will create a new subject when you add the lesson");	     
+	     alert("Subject does not exist. \nYou will create a new subject when you add the lesson");
          }
      });
  });
@@ -632,6 +640,34 @@ function validateSubject(subjectCode){
   subjectCodeModel.isValid =  regexSubjCode.test(subjectCode);
   return subjectCodeModel.isValid;
 }
+
+function validateVenue(venue){
+  var  regexVenue = /^(sr[2]\.[1-3])$|(lh[2]\.[1-3])$|(ls[1-2])$|(tis)$/;
+    return regexVenue.test(venue);
+}
+
+function validateDuration(duration){
+  var  regexDu = /^[1-4](\.[5])*$/;
+    return regexDu.test(duration);
+
+}
+
+  $('input#duration-field').keyup(function() {
+      var du = $('#duration-field').val().toLowerCase();
+    if(!(validateDuration(du))){
+      $('#duration-field').css("border", "2px solid #ff0000");
+    }else{
+      $('#duration-field').css("border", "2px solid #228B22");
+    }
+  });
+$('input#venue-field').keyup(function() {
+    var venue = $('#venue-field').val().toLowerCase();
+  if(!(validateVenue(venue))){
+    $('#venue-field').css("border", "2px solid #ff0000");
+  }else{
+    $('#venue-field').css("border", "2px solid #228B22");
+  }
+});
 
 function validateLesson(){
 
@@ -657,6 +693,8 @@ $(document).on('keyup', '.select2-search__field', function (e) {
     subjectCodeModel.value = subjCode;
     subjectCodeModel.validate(subjCode);
 });
+
+
 
 /*
 $('.select2-container').on('keyup', function () { {
@@ -701,9 +739,10 @@ $('#add-btn').click(function(){
 	  success: function(reply){
 	      var lecName = $('#lecturer-field option:selected').text();
 	      //displayNewLesson(reply.classID, data.venue, reply.type, reply.lecturerName, reply.dateTime, data.duration, data.subj);
-	      
+
 	      lessonTableModel.dataTable.ajax.reload();
 	      createSuccessAlert("Successfully added!");
+        lessonCreateViewModel.setAllEmpty();
               //apend option
 	  },
 	  error: function(reply){
@@ -711,7 +750,7 @@ $('#add-btn').click(function(){
 	      createErrorAlert(reply.msg);
 	  }
       });
-  }  
+  }
 
 });
 

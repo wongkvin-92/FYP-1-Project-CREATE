@@ -224,7 +224,7 @@ var saveRecheduling = function(id,date, time, venue){
  * Save edited data and validate them
  */
 var saveBtn = function(id){
-  var regexVenue = /^(sr)[2]{1}.[1-3]{1}|^(lh)[2]{1}.[1-3]{1}|^(ls)[1-2]{1}|^(tis)$/;
+  var    regexVenue = /^(sr[2]\.[1-3])$|(lh[2]\.[1-3])$|(ls[1-2])$|(tis)$/;
   var venue = $('#newVenue').val().toLowerCase(),
       date = $('#newDate').val(),
       time = $('#newTime').val();

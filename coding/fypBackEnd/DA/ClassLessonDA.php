@@ -11,7 +11,7 @@ class ClassLessonDA extends DataAccessObject{
     }
 
     public function getAllVenues(){
-	$q = "select venue from class_lesson;";
+	$q = "select DISTINCT(venue) from class_lesson;";
 	$result =$this->con->query($q);
 	$arr = [];
 	while($o = $result->fetch_array(MYSQLI_NUM)){
@@ -26,15 +26,15 @@ class ClassLessonDA extends DataAccessObject{
 	$query = "select * from class_lesson where dateTime BETWEEN '{$date} 00:00:00' AND '{$date} 23:59:59';";
 	$result = $this->con->query($query);
 	$arr = [];
-	
+
 	while($o = $result->fetch_object("ClassLesson")){
-	    $d['start'] = $o->getStartTime()->format("Y-m-d h:i:00");
-	    $d['end']   = $o->getEndTime()->format("Y-m-d h:i:00");
+	    $d['start'] = $o->getStartTime()->format("Y-m-d H:i:00");
+	    $d['end']   = $o->getEndTime()->format("Y-m-d H:i:00");
 	    $d['venue']   = $o->venue;
 	    $d['code'] = $o->subjectID;
-	    $arr []= $d;	    
+	    $arr []= $d;
 	}
-	return $arr;		
+	return $arr;
     }
 
     public function getClassesOnDate($venue, $inDate){
@@ -46,10 +46,10 @@ class ClassLessonDA extends DataAccessObject{
 	while($o = $result->fetch_object("ClassLesson")){
 	    $arr []= $o;
 	}
-	return $arr;	
+	return $arr;
 	//return $result->fetch_all(MYSQLI_ASSOC);
     }
-    
+
     public function getClassesBySubject(Subject $s){
         $fk = $s->getSubId();
         return  $this->getListByAttribute('id', $fk);
