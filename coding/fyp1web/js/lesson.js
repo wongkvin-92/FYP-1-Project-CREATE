@@ -88,14 +88,13 @@ var lessonTableModel = {
 	return $(this.dataTable.row(id).node()).find('button')[0].dataset.pk
     },
     getCell: function(row, cid){
-	return $($(row.column(cid).nodes(0))[0]);
+	return $(lessonTableModel.dataTable.cell(row,cid).node());
     },
     selectRow: function(rid){
 	var td =$(this.fetchRow(rid));
 	var d = this.dataTable.row(rid).data();
-	//var pk = this.getPkFromId(rid);
-	//var siblings = td
-	var row = this.dataTable.row(rid);
+
+	var row = rid;
 	var celljqs =  {
 		venue: this.getCell(row, 0),
 		type: this.getCell(row, 1),
@@ -132,7 +131,7 @@ var lessonTableModel = {
     setEditMode: function(editBtn, removeBtn, val){
 	var rid = editBtn.data('rid');
 	var tds = this.selectedRow.tds;
-
+	
 	if(val == true){
 	    this.inEditMode = true;
 	    //Change icons
@@ -142,9 +141,9 @@ var lessonTableModel = {
 	    //Change everything to input fields
 	    //1.Prepare input fields
 	    var inputFields = this.constructInputFields(tds);
-
+	    //console.log(this.selectedRow.tds.dateTime.children().data().date);
 	    inputFields.dateTimeInput.datetimepicker({
-    		defaultDate: moment(this.selectedRow.data.dateTime)
+    		defaultDate: moment(this.selectedRow.tds.dateTime.children().data('date'))
 	    });
 
 
@@ -165,31 +164,39 @@ var lessonTableModel = {
 	    removeBtn.children().attr("class", "fa fa-trash-o");
 
 	    var inputFields = this.selectedRow.input;
+	    var dateTimeSQL = moment(inputFields.dateTime).format(SQLDateTimeFormat);
 	    var dateTime = moment(inputFields.dateTime).format(dateTimeFormat);
 	    //Change back cells to the input values
 	    tds.venue.html(inputFields.venue);
 	    tds.type.html(inputFields.type);
-	    tds.dateTime.html(dateTime);
+	    //tds.dateTime.html(dateTime);
+	    tds.dateTime.html($(`<td  class="datetime" >`+dateTime+`<span data-date="`+dateTimeSQL+`"></span></td>`));
 	    tds.duration.html(inputFields.duration);
-
-	    
+			      
 	    //change event handlers
 	    removeBtn.attr("onclick", "lessonTableModel.clickRemove("+rid+")");
 	    editBtn.attr("onclick", "lessonTableModel.startEdit("+rid+")");	    
 	}
     },
     startEdit: function(rid){
-	this.selectRow(rid);
+	this.selectRow(rid);	
+	
 	if(!this.inEditMode){
  	    var pk = this.getPkFromId(rid);	    
 	    this.setEditMode(this.selectedRow.editBtn, this.selectedRow.removeBtn, true);
-	    //editBtn.attr
+	    this.selectRow(rid);
+	    this.oldInput = this.selectedRow.input;
+
 	}else{
 	    console.log("Already in edit mode");
 	}
     },
+    revertInput: function(){
+	this.selectedRow.input = this.oldInput;
+    },
     stopEdit: function(rid){
 	this.selectRow(rid);
+	this.revertInput();
 	var pk = this.getPkFromId(rid);
 	this.setEditMode(this.selectedRow.editBtn, this.selectedRow.removeBtn, false);
     },
@@ -209,6 +216,10 @@ var lessonTableModel = {
 	    success: function(r){
 		lessonTableModel.setEditMode(lessonTableModel.selectedRow.editBtn, lessonTableModel.selectedRow.removeBtn, false);
 		alert("Successfully updated!");
+	    },
+	    error: function(r){
+		var reply = r.responseJSON;
+		createErrorAlert(reply.msg);
 	    },
 	    complete: function(){
 		document.body.style.cursor="";
@@ -472,7 +483,7 @@ $(document).ready(function(){
 	    {
                 "render": function ( data, type, row , meta) {
 		    var dateTimeStr = moment(data).format(dateTimeFormat);
-		    return `<td  class="datetime"  data-date="`+data+`" >`+dateTimeStr+`</td>`;
+		    return `<td  class="datetime" >`+dateTimeStr+`<span data-date="`+data+`"></span></td>`;
                 },
                 "targets": 3
             },
