@@ -163,7 +163,6 @@ class AdminController extends MasterController{
 	    throw new \Exception("Duration cannot be longer than 6 hours.");
 	if($duration < 0)
 	    throw new \Exception("A lesson must atleast be one hour long.");
-
 	
         $subjectDA = new SubjectDA($this->con);
         $lecturerDA = new LecturerDA($this->con);	  
@@ -412,6 +411,36 @@ class AdminController extends MasterController{
 	$lesson->type = $type;
 	$lesson->dateTime = $dateTime;
 	$lesson->duration= $duration;
+
+	//Do validation here.
+	$today = new DateTime();
+        $today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));	
+	$datetime = new DateTime($dateTime, new DateTimeZone("Asia/Kuala_Lumpur"));
+	$date = $datetime->format("Y-m-d");
+	$validDayStart = new DateTime($date . " 08:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
+	$validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
+	if($datetime < $today){
+	    $systime = $today->format("d-m-Y H:i:s");
+            throw new \Exception("The given date/time has already passed.. \n Current system date/time is {$systime}");
+        }
+	//validate the time is between 5.30 to 6
+	if($datetime < $validDayStart || $datetime > $validDayEnd){
+	    throw new \Exception("Lesson can only take place between 8:30AM to 06:00PM ");
+	}
+
+	//validate duration
+	if($lesson->duration > 6)
+	    throw new \Exception("Duration cannot be longer than 6 hours.");
+	if($lesson->duration < 0)
+	    throw new \Exception("A lesson must atleast be one hour long.");
+
+	if($this->classClash($lesson)){
+	    throw new \Exception("Cannot create lesson for that time. Another class is taking place at the same venue, in the given time range");
+	}
+
+
+
+	
 	$lessonDA->save($lesson);
 	$this->sendMsg("Successfully Updated!");
     }
@@ -423,7 +452,7 @@ class AdminController extends MasterController{
 	$today = new DateTime();
 	$today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
 
-	$validDayStart = new DateTime($date . " 05:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
+	$validDayStart = new DateTime($date . " 08:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
 	$validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
 
 	//$i = $today->diff($dt);

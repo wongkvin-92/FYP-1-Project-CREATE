@@ -186,8 +186,6 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
 	$dateTime = getData('dateTime');
 	$duration = getData('duration');
 	$admin->editLesson($id, $venue, $type, $dateTime, $duration);
-
-
     });
 
 
