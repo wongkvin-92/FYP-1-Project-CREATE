@@ -1,4 +1,4 @@
-
+var backEndUrl='/fypBackEnd';
 
 (function() {
   $('.dashboard-nav__item').on('click', function(e) {
@@ -17,6 +17,14 @@
 
 }).call(this);
 
+$.ajax({
+  url:backEndUrl + "/classes/pending/count/",
+  method: "GET",
+  dataType: "json",
+  success: function(a){
+    $('#countRequest').html(a.count);
+  }
+});
 
 
 var newWarningAlert = function(msg){

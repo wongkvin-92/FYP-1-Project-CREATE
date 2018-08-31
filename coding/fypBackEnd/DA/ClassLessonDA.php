@@ -11,43 +11,43 @@ class ClassLessonDA extends DataAccessObject{
     }
 
     public function getAllVenues(){
-	$q = "select DISTINCT(venue) from class_lesson;";
-	$result =$this->con->query($q);
-	$arr = [];
-	while($o = $result->fetch_array(MYSQLI_NUM)){
-	    $arr []=$o[0];
-	}
-	return $arr;
+    	$q = "select DISTINCT(venue) from class_lesson;";
+    	$result =$this->con->query($q);
+    	$arr = [];
+    	while($o = $result->fetch_array(MYSQLI_NUM)){
+    	    $arr []=$o[0];
+	    }
+	    return $arr;
     }
 
     public function getScheduleForDate($inDate){
         $dateTime = new DateTime($inDate);
-	$date = $dateTime->format("Y-m-d");
-	$query = "select * from class_lesson where dateTime BETWEEN '{$date} 00:00:00' AND '{$date} 23:59:59';";
-	$result = $this->con->query($query);
-	$arr = [];
+      	$date = $dateTime->format("Y-m-d");
+      	$query = "select * from class_lesson where dateTime BETWEEN '{$date} 00:00:00' AND '{$date} 23:59:59';";
+      	$result = $this->con->query($query);
+      	$arr = [];
 
-	while($o = $result->fetch_object("ClassLesson")){
-	    $d['start'] = $o->getStartTime()->format("Y-m-d H:i:00");
-	    $d['end']   = $o->getEndTime()->format("Y-m-d H:i:00");
-	    $d['venue']   = $o->venue;
-	    $d['code'] = $o->subjectID;
-	    $arr []= $d;
-	}
-	return $arr;
+      	while($o = $result->fetch_object("ClassLesson")){
+      	    $d['start'] = $o->getStartTime()->format("Y-m-d H:i:00");
+      	    $d['end']   = $o->getEndTime()->format("Y-m-d H:i:00");
+      	    $d['venue']   = $o->venue;
+      	    $d['code'] = $o->subjectID;
+      	    $arr []= $d;
+	      }
+	      return $arr;
     }
 
     public function getClassesOnDate($venue, $inDate){
         $dateTime = new DateTime($inDate);
-	$date = $dateTime->format("Y-m-d");
-	$query = "select * from class_lesson where dateTime BETWEEN '{$date} 00:00:00' AND '{$date} 23:59:59' AND venue = '{$venue}';";
-	$result = $this->con->query($query);
-	$arr = [];
-	while($o = $result->fetch_object("ClassLesson")){
-	    $arr []= $o;
-	}
-	return $arr;
-	//return $result->fetch_all(MYSQLI_ASSOC);
+      	$date = $dateTime->format("Y-m-d");
+      	$query = "select * from class_lesson where dateTime BETWEEN '{$date} 00:00:00' AND '{$date} 23:59:59' AND venue = '{$venue}';";
+      	$result = $this->con->query($query);
+      	$arr = [];
+      	while($o = $result->fetch_object("ClassLesson")){
+      	    $arr []= $o;
+  	}
+	   return $arr;
+	    //return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getClassesBySubject(Subject $s){
@@ -73,17 +73,17 @@ class ClassLessonDA extends DataAccessObject{
     }
 
     public function numExistingClasses($lesson){
-	$code = $lesson->subjectID;
-	$type = $lesson->type;
-	$q = "SELECT count(*) FROM `class_lesson` WHERE subjectID = \"{$code}\" and type = \"{$type}\" ";
-	$result = $this->con->query($q);
-	return $result->fetch_array()[0];
+    	$code = $lesson->subjectID;
+    	$type = $lesson->type;
+    	$q = "SELECT count(*) FROM `class_lesson` WHERE subjectID = \"{$code}\" and type = \"{$type}\" ";
+    	$result = $this->con->query($q);
+    	return $result->fetch_array()[0];
     }
 
     public function save($o){
-	$ret = parent::save($o);
-	$o->classID = $this->con->insert_id;
-	return $ret;
+    	$ret = parent::save($o);
+    	$o->classID = $this->con->insert_id;
+    	return $ret;
     }
 
 }

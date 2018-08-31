@@ -556,9 +556,6 @@ function viewRow(id){
     console.log(fetchLesson(id));
 }
 
-
-
-
 $.ajax({
 
   url: backEndUrl +'/lecturers/',
@@ -672,18 +669,18 @@ $('input#venue-field').keyup(function() {
 function validateLesson(){
 
     if (lessonCreateViewModel.isAllEmpty()){
-	$('.select2-container').css("border", "2px solid #ff0000");
-	$('#venue-field').css("border", "2px solid #ff0000");
-	$('#lecturerName-field').css("border", "2px solid #ff0000");
-	$('#type-field').css("border", "2px solid #ff0000");
-	$('#date-field').css("border", "2px solid #ff0000");
-	$('#time-field').css("border", "2px solid #ff0000");
-	$('#duration-field').css("border", "2px solid #ff0000");
-	createErrorAlert("All entries are empty!");
-	return false;
-/*  } else if (!(validateSubject(subjCode))){
-    $('.select2-container').css("border", "2px solid #ff0000");
-      alert("Subject entry is not a valid!");*/
+    	$('.select2-container').css("border", "2px solid #ff0000");
+    	$('#venue-field').css("border", "2px solid #ff0000");
+    	$('#lecturerName-field').css("border", "2px solid #ff0000");
+    	$('#type-field').css("border", "2px solid #ff0000");
+    	$('#date-field').css("border", "2px solid #ff0000");
+    	$('#time-field').css("border", "2px solid #ff0000");
+    	$('#duration-field').css("border", "2px solid #ff0000");
+    	createErrorAlert("All entries are empty!");
+    	return false;
+    /*  } else if (!(validateSubject(subjCode))){
+        $('.select2-container').css("border", "2px solid #ff0000");
+          alert("Subject entry is not a valid!");*/
     }
     return true;
 }

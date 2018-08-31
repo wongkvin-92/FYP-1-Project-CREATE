@@ -565,6 +565,19 @@ border-radius: 0 18px 18px 0;
     font-size: 30px;
   }
 }
+
+table.dataTable tbody th, table.dataTable tbody td {
+    padding: 0px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  padding-top: 1%;
+  padding-bottom: 1%;
+  line-height: 1.42857143;
+  vertical-align: middle;
+  text-align: center;
+}
 @media screen and (min-width:1500px) and (max-width: 1599px){
   .inner-row-content{
     padding:5px;

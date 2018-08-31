@@ -27,7 +27,6 @@ class Subject{
     public function getTime(){
         return $this->time;
         }**/
-
 }
 
 ?>

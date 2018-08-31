@@ -49,7 +49,7 @@ function validate() {
             $('#pass').css("border-bottom", "2px solid #ff0000");
           }
         }else if(pass.length<6){
-          alert("Password should be more than 6 characters!");
+          alert("Password should be more than 5 characters!");
         }
          else {
 

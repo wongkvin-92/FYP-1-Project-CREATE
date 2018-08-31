@@ -30,8 +30,7 @@
 
 
 function refreshTimeTable(){
-  var renderer = new Timetable.Renderer(timetable);
-  renderer.draw(".timetable");
+  timetableController.showDate(moment(new Date).format(timetableController.timetableDateFormat));
 }
 
 

@@ -67,8 +67,8 @@
           <ul class="flex cards">
             <li>
               <h2>No. of Class Rescheduling Request</h2>
-              <p>
-                10
+              <p id="countRequest">
+
               </p>
             </li>
           </ul>
@@ -134,6 +134,267 @@
                 </thead>
 
                 <tbody>
+                  <tr>
+                    <td>
+                      Koon
+                    </td>
+                    <td>
+                      bmc308
+                    </td>
+                    <td>
+                      11:00
+                    </td>
+                    <td>
+                      2
+                    </td>
+                    <td>
+                      2018-03-11
+                    </td>
+                    <td>
+                      2018-04-11
+                    </td>
+                    <td>
+                      13:00
+                    </td>
+                    <td>
+                      sr2.3
+                    </td>
+                    <td>
+                      pending
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Fong
+                    </td>
+                    <td>
+                      bit310
+                    </td>
+                    <td>
+                      11:00
+                    </td>
+                    <td>
+                      2
+                    </td>
+                    <td>
+                      2018-03-15
+                    </td>
+                    <td>
+                      2018-04-03
+                    </td>
+                    <td>
+                      11:00
+                    </td>
+                    <td>
+                      ls2
+                    </td>
+                    <td>
+                      pending
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Anita
+                    </td>
+                    <td>
+                      bit200
+                    </td>
+                    <td>
+                      10:00
+                    </td>
+                    <td>
+                      2
+                    </td>
+                    <td>
+                      2018-03-09
+                    </td>
+                    <td>
+                      2018-04-02
+                    </td>
+                    <td>
+                      12:00
+                    </td>
+                    <td>
+                      tis
+                    </td>
+                    <td>
+                      approved
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Anita
+                    </td>
+                    <td>
+                      bit200
+                    </td>
+                    <td>
+                      11:00
+                    </td>
+                    <td>
+                      2
+                    </td>
+                    <td>
+                      2018-02-10
+                    </td>
+                    <td>
+                      2018-03-10
+                    </td>
+                    <td>
+                      14:00
+                    </td>
+                    <td>
+                      lh2.1
+                    </td>
+                    <td>
+                      approved
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Seetha
+                    </td>
+                    <td>
+                      bit216
+                    </td>
+                    <td>
+                      08:30
+                    </td>
+                    <td>
+                      2
+                    </td>
+                    <td>
+                      2018-04-08
+                    </td>
+                    <td>
+                      2018-04-16
+                    </td>
+                    <td>
+                      14:00
+                    </td>
+                    <td>
+                      lh2.1
+                    </td>
+                    <td>
+                      approved
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Seetha
+                    </td>
+                    <td>
+                      bit216
+                    </td>
+                    <td>
+                      08:30
+                    </td>
+                    <td>
+                      2
+                    </td>
+                    <td>
+                      2018-03-11
+                    </td>
+                    <td>
+                      2018-04-11
+                    </td>
+                    <td>
+                      14:00
+                    </td>
+                    <td>
+                      lh2.1
+                    </td>
+                    <td>
+                      approved
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Kok
+                    </td>
+                    <td>
+                      bit208
+                    </td>
+                    <td>
+                      08:30
+                    </td>
+                    <td>
+                      2
+                    </td>
+                    <td>
+                      2018-03-11
+                    </td>
+                    <td>
+                      2018-04-11
+                    </td>
+                    <td>
+                      14:00
+                    </td>
+                    <td>
+                      lh2.1
+                    </td>
+                    <td>
+                      approved
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Koon
+                    </td>
+                    <td>
+                      bit216
+                    </td>
+                    <td>
+                      08:30
+                    </td>
+                    <td>
+                      2
+                    </td>
+                    <td>
+                      2018-03-11
+                    </td>
+                    <td>
+                      2018-04-11
+                    </td>
+                    <td>
+                      14:00
+                    </td>
+                    <td>
+                      lh2.1
+                    </td>
+                    <td>
+                      approved
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Seetha
+                    </td>
+                    <td>
+                      bit216
+                    </td>
+                    <td>
+                      08:30
+                    </td>
+                    <td>
+                      2
+                    </td>
+                    <td>
+                      2018-03-11
+                    </td>
+                    <td>
+                      2018-04-11
+                    </td>
+                    <td>
+                      14:00
+                    </td>
+                    <td>
+                      lh2.1
+                    </td>
+                    <td>
+                      approved
+                    </td>
+                  </tr>
                 </tbody>
                 <tfoot>
                 </tfoot>
@@ -163,7 +424,7 @@
                      </td>
                      <td>
                        <select  id="lecturerName-field" style="margin-left:10px;">
-                         <option value="">Lecture Name</option>
+                         <option value="">Lecturer Name</option>
                        </select>
                      </td>
                    </tr>
@@ -210,7 +471,7 @@
                         <th colspan="1">Venue</th>
                         <th colspan="1">Type</th>
                         <th colspan="1">Lecturer</th>
-                        <th colspan="1">Date Time</th>
+                        <th colspan="1">Day Time</th>
                         <th colspan="1">Duration</th>
                         <th colspan="1">Subject</th>
                         <th class="action-title" colspan="1" > Actions </th>
@@ -226,15 +487,22 @@
          </div>
          <!-- Dashboard Content Panel (Element)-->
          <div class="dashboard-content__panel" data-panel-id="timetable">
-           <div id="timetable-input" style="position:relative; margin-top:5em;">
-
+          <div class="dashboard-list">
+            <div class="panel panel-primary panel-table list_view table-responsive lessonPage" style="border:none; ">
+              <div class="panel-heading">
+                <h3 class="panel-title">Daily Timetable</h3>
+             <div id="timetable-input" style="position:relative; margin-top:1em; ">
+             </div>
+             <div style="display:block; margin-top:2.5em; ">
+              <div id="timetable_alert"></div>
+            </div>
+          </div>
+            <div class="panel-body table-responsive">
+              <div class="timetable">
+              </div>
+             </div>
+              </div>
            </div>
-             <div style="display:block; margin-top:2.5em;">
-                   <div id="timetable_alert"></div>
-             <div class="timetable">
-             </div>
-             </div>
-
          </div>
        </div>
      </div>
