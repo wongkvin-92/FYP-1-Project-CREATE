@@ -3,9 +3,12 @@ class ClassRescheduling{
   public $id;
   public $newDateTime;
   public $status;
-  public $subjectID;
+  public $classID;
   public $Venue;
-  private $subject;
+  public $oldDateTime;
+
+    private $lesson;
+    private $subject;
 
 
 
@@ -26,12 +29,12 @@ class ClassRescheduling{
         $this->Venue = $v;
     }
 
-    public function getSubject(){
-      return $this->subject;
+    public function getLesson(){
+      return $this->lesson;
     }
 
-    public function getSubjectID(){
-      return $this->subjectID;
+    public function getClassID(){
+      return $this->classID;
     }
 
      public function getNewDateTime(){
@@ -39,6 +42,9 @@ class ClassRescheduling{
      }
      public function setNewDateTime($date, $time){
        $this->newDateTime = date('Y-m-d H:i:s', strtotime("$date $time"));
+     }
+     public function oldDateTime(){
+       return $this->oldDateTime;
      }
 
      public function getStatus(){
@@ -49,8 +55,8 @@ class ClassRescheduling{
      public function isApproved(){
        return $this->status == "approved";
      }
-     public function setSubject($sub){
-       $this->subject = $sub;
+     public function setLesson($les){
+       $this->lesson = $les;
      }
      //setter
      public function approve(){

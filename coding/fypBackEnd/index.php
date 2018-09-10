@@ -8,6 +8,8 @@ $debug_mode = false;
 $klein = new \Klein\Klein();
 
 $admin  = new AdminController($con);
+$lecturer = new LecturerController($con);
+
 
 $DATA = file_get_contents('php://input');
 //convert string -> object -> array
@@ -44,6 +46,10 @@ $klein->respond('GET', $root.'/', function () {
     return 'index is working';
 });
 
+/***********************
+*  ADMIN ROUTE SECTION *
+************************/
+
 $klein->respond('POST', $root.'/admin/login/', function() use ($admin){
 
     $email = getPost('email');
@@ -52,15 +58,17 @@ $klein->respond('POST', $root.'/admin/login/', function() use ($admin){
     $admin->login($email,$password);
 });
 
-$klein->respond('GET', $root.'/admin/', function() use ($admin){
-    if($admin->checkLoginState()){
-	$admin->getCredentials();
-    }else{
-	return "false";
-    }
-});
-
 if($admin->checkLoginState()){ //Only perform if I am logged in
+
+
+  $klein->respond('GET', $root.'/admin/', function() use ($admin){
+      if($admin->checkLoginState()){
+  	$admin->getCredentials();
+      }else{
+  	return "false";
+      }
+  });
+
     $klein->respond('GET', $root.'/admin/logout/', function() use ($admin){
 	     $admin->logout();
     });
@@ -222,13 +230,101 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
 	     $admin->deleteSubject($r->id);
     });
 
-
     $klein->respond('PATCH', $root.'/subjects/[a:id]/', function($r) use ($admin){
 	     print("Todo");
     });
+    /*
+    $klein->respond('POST', $root.'/lessons/', function($r) use ($admin){
+    	$sid = getPost('subjectID');
+    	$sname = getPost('subjectName');
+    	$lid = getPost('lecturer');
+    	$rid = getPost('venue');
+    	$date = getPost('date');
+    	$time = getPost('time');
+    	$duration = getPost('duration');
+    	$type = getPost('type');
+    	$admin->addNewSubjectLesson($sid, $rid, $date, $time, $duration, $type, $lid, $sname);
+    });
+    */
+    $klein->respond('GET', $root."/reports/", function($r) use ($admin){
+    	//print(json_encode(["msg" => "test123"]));
+      $admin->viewReport();
+    });
+
+
+
 
 
 }
+
+/*****************************
+* END OF ADMIN ROUTE SECTION *
+******************************/
+
+
+
+/************************
+*  LECTURER ROUTE SECTION *
+*************************/
+
+$klein->respond('POST', $root.'/lecturers/login/', function() use ($lecturer){
+
+    $email = getPost('email');
+    $password = getPost('password');
+
+    $lecturer->login($email,$password);
+});
+
+
+$klein->respond('GET', $root.'/login/lecturers/', function() use ($lecturer){
+    if($lecturer->checkLoginState()){
+	     $lecturer->getCredentials();
+    }else{
+	return "false";
+    }
+});
+
+
+if($lecturer->checkLoginState()){
+
+  $klein->respond('GET', $root.'/lecturers/logout/', function() use ($lecturer){
+     $lecturer->logout();
+  });
+
+
+  $klein->respond('PATCH', $root.'/cancellation/[i:id]/', function($r) use ($lecturer){
+    $date = getData('date');
+    $time = getData('time');
+
+    $lecturer->createCancellation($r->id, $date, $time);
+  });
+
+  $klein->respond('DELETE', $root.'/cancellation/[i:id]/', function($r) use ($lecturer){
+    $lecturer->deleteCancellation($r->id);
+  });
+
+  $klein->respond('GET', $root.'/lessons/', function($r) use ($lecturer){
+    $id = $lecturer->getLecturerID();
+     $lecturer->listLessonByLecturer($id);
+  });
+
+
+  $klein->respond('GET', $root.'/week/[i:weeknNumber]/lessons/', function($r) use ($lecturer){
+      $id = $lecturer->getLecturerID();
+       $lecturer->listConfirmedLessons($id, $r->weeknNumber);
+    });
+
+}
+
+
+/********************************
+* END OF LECTURER ROUTE SECTION *
+*********************************/
+
+
+
+
+
 
 $klein->onHttpError(function(){
     print("ERROR OCCURED!");

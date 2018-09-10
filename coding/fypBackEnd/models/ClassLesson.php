@@ -10,6 +10,10 @@ class ClassLesson{
     public $venue;
     public $subjectID;
 
+    private $subject;
+
+
+
     public function getDateTime(){
         return $this->dateTime;
     }
@@ -34,8 +38,25 @@ class ClassLesson{
 	     return $this->duration;
     }
 
-    public function setSubject($subjectID){
+    public function getType(){
+       return $this->type;
+    }
+
+    public function getSubjectId(){
+       return $this->subjectID;
+    }
+
+    public function getSubject(){
+       return $this->subject;
+    }
+
+
+    public function setSubjectID($subjectID){
 	     $this->subjectID = $subjectID;
+    }
+
+    public function setSubject($subject){
+	     $this->subject = $subject;
     }
 
     public function setRoom($roomID){
@@ -44,6 +65,7 @@ class ClassLesson{
     public function setDuration($duration){
 	     $this->duration = $duration;
     }
+
     public function setType($type){
 	     $this->type = $type;
     }
@@ -70,14 +92,14 @@ class ClassLesson{
     	$date = new DateTime($this->getDateTime(), new DateTimeZone("Asia/Kuala_Lumpur"));
     	 $hour = $this->duration;
 
-    	$hm = explode(".", $this->getDuration());
+    	 $hm = explode(".", $this->getDuration());
 
-    	$hour = $hm[0];
-    	if(isset($hm[1]))
+    	 $hour = $hm[0];
+    	 if(isset($hm[1]))
     	    $min = $hm[1];
-    	else
+    	 else
     	    $min = 0;
-    	if($min == 5)
+    	 if($min == 5)
     	    $min = 30;
 
     	$date->add(new DateInterval("PT{$hour}H{$min}M"));

@@ -5,6 +5,10 @@ class AdminController extends MasterController{
 	     $this->con = $con;
     }
 
+    /**********************
+    * ADMIN LOGIN SECTION *
+    ***********************/
+
     function login($email, $pass){
       	$userda = new UserDA($this->con);
 
@@ -58,40 +62,94 @@ class AdminController extends MasterController{
 	     return $_SESSION['credentials']['user'];
     }
 
+    /*****************************
+    * END OF ADMIN LOGIN SECTION *
+    ******************************/
+
+    /***********************
+    * RESCHEDULING SECTION *
+    ************************/
+
+
     public function countPendingRequest(){
       $da = new ClassReschedulingDA($this->con);
       $num = $da->getCountPending();
       print json_encode(['count' => $num]);
 
     }
-
+/*
     public function viewPendingRequest(){
-    	$da = new ClassReschedulingDA($this->con);
-    	$result = $da->getPendingRequest();
-    	if($result != false){
+      $da = new ClassReschedulingDA($this->con);
+      $result = $da->getPendingRequest();
+      if($result != false){
                 $arr = [];
                 ///entry is an object of the ClassRescheduling
 
         foreach ($result as $entry) {
-        		$o['id'] = $entry->getId();
-        		$o['subjectCode'] = $entry->getSubject()->getSubId();
-        		$o['subjectName'] = $entry->getSubject()->getSubName();
-        		$o['lecturer'] = $entry->getSubject()->getLecturer()->getName();
-        		//explode = split string(timestamp)
-        		$date = explode(" ", $entry->getNewDateTime());
-        		$o['reDate'] = $date[0];
-        		$o['reTime'] = $date[1];
-        		$o['duration'] = '2';
-        		$o['venue'] = $entry->getVenue();
+            $o['id'] = $entry->getId();
+            $o['subjectCode'] = $entry->getSubject()->getSubId();
+            $o['subjectName'] = $entry->getSubject()->getSubName();
+            $o['lecturer'] = $entry->getSubject()->getLecturer()->getName();
+            //explode = split string(timestamp)
+            $date = explode(" ", $entry->getNewDateTime());
+            $o['reDate'] = $date[0];
+            $o['reTime'] = $date[1];
+            $o['duration'] = '2';
+            $o['venue'] = $entry->getVenue();
 
-        		$arr[] =$o;
+            $arr[] =$o;
                     }
                     $this->returnJSON($arr);
                     //print json encode data
                     //$this->returnObject($result);
-    	 } else{
+       } else{
             throw new \Exception("No Pending Request!");
        }
+    }
+*/
+    public function viewPendingRequest(){
+
+      $rescheduleDA = new ClassReschedulingDA($this->con);
+
+      $list = $rescheduleDA->findAll();
+
+      $in = $list;
+      $out = [];
+      foreach($in as $v){
+
+        $lessonDA = new ClassLessonDA($this->con);
+        $lesson = $lessonDA->fetchLessonById($v->classID);
+        if($lesson == null){
+          throw new \Exception("System error: The lesson not found with id" . $v->classID);
+        }
+
+        $sda = new SubjectDA($this->con);
+        $subject = $sda->fetchSubjectById($lesson->subjectID);
+        if($subject == null){
+          throw new \Exception("System error: The subject not found for lesson" . $lesson->subjectID);
+        }
+
+        $lda = new LecturerDA($this->con);
+        $lecturer = $lda->fetchLecturerById($subject->lecturerID);
+        if($lecturer == null){
+          throw new \Exception("System error: The lecturer not found for subject" . $subject->lecturerID);
+        }
+
+        $o['id'] = $v->getId();
+        $o['subjectCode'] = $subject->getSubId();
+        $o['subjectName'] = $subject->getSubName();
+        $o['type'] = $lesson->getType();
+        $o['lecturer'] = $lecturer->getName();
+        //explode = split string(timestamp)
+        $date = explode(" ", $v->getNewDateTime());
+        $o['reDate'] = $date[0];
+        $o['reTime'] = $date[1];
+        $o['duration'] = '2';
+        $o['venue'] = $v->getVenue();
+        $out[] = $o;
+      }
+      $this->returnObject($out);
+
     }
 
     /*
@@ -133,6 +191,12 @@ class AdminController extends MasterController{
     	$this->returnObject($subject);
     }
 
+
+    /******************************
+    * END OF RESCHEDULING SECTION *
+    *******************************/
+
+
     /*public function testCreateClass($subjCode, $type){
        $lesson = new ClassLesson();
        $lesson->subjectID = $subjCode;
@@ -143,12 +207,28 @@ class AdminController extends MasterController{
 
        }*/
 
-    /**
-     * Creates a new subject if subject does not exist.
-     * Creates a new lecturer if lecturer name does not exist.
-     * Creates a new Lesson.
-     **/
 
+
+     /***********************
+     * CLASS LESSON SECTION *
+     ************************/
+
+     /**
+        * Create new lesson and subject
+        * Creates a new subject if subject does not exist.
+        * Creates a new lecturer if lecturer name does not exist.
+        * Creates a new Lesson.
+        * @param $sid varchar subject ID,
+        * @param $rid  varchar venue,
+        * @param $date DateTime date,
+        * @param $time DateTime time,
+        * @param $duration int duration,
+        * @param $type varchar type of class lesson,
+        * @param $lid int lecturer id,
+        * @param $sname varchaar subject name,
+        *
+        *$rid
+      **/
     public function addNewSubjectLesson($sid, $rid, $date, $time, $duration, $type, $lid, $sname){
 
       	$today = new DateTime();
@@ -224,6 +304,7 @@ class AdminController extends MasterController{
         //$lesson
         $this->returnObject($lesson);
     }
+
     /*
       public function addClass($subjectId, $roomId, $date, $time, $duration, $type){
       	$da = new ClassLessonDA($this->con);
@@ -257,7 +338,8 @@ class AdminController extends MasterController{
       	}
       }
     */
-    /**
+
+   /**
      * Search through the lesson table and returns
      * list of lessons in a
      * presentable format.
@@ -299,12 +381,12 @@ class AdminController extends MasterController{
 
       public function getLesson($id){
       	$lessonDA = new ClassLessonDA($this->con);
-      	$this->returnObject($lessonDA->getClassById($id));
-          }
+      	$this->returnObject($lessonDA->fetchClassById($id));
+      }
 
       public function deleteLesson($id){
       	$lessonDA = new ClassLessonDA($this->con);
-      	$lesson = $lessonDA->getClassById($id);
+      	$lesson = $lessonDA->fetchClassById($id);
       	$success = $lessonDA->remove($lesson);
       	print $success;
       }
@@ -326,13 +408,13 @@ class AdminController extends MasterController{
       	    $sda = new SubjectDA($this->con);
       	    $subject = $sda->fetchSubjectById($v->subjectID);
       	    if($subject == null){
-      		throw new \Exception("System error: The subject not found with id " . $v->subjectID);
+      		      throw new \Exception("System error: The subject not found with id " . $v->subjectID);
       	    }
 
       	    $lda = new LecturerDA($this->con);
       	    $lecturer = $lda->fetchLecturerById($subject->lecturerID);
       	    if($lecturer == null){
-      		throw new \Exception("System error: The lecturer not found for subject "+ $subject->getId());
+      		      throw new \Exception("System error: The lecturer not found for subject "+ $subject->getId());
       	    }
       	    $o['id'] = $v->classID;
       	    $o['venue'] = $v->venue;
@@ -349,184 +431,219 @@ class AdminController extends MasterController{
           $this->returnObject($out);
       }
 
-      /**
-       * Returns all Lessons
-       * for testing purpose
-       **/
-      public function listSubjects(){
-      	$subjectDA = new SubjectDA($this->con);
+      /*
+         public function updateSubject($id, $name, Lecturer $lecturer){
 
-      	$list = $subjectDA->findAll();
-      	$arr = [];
-      	foreach($list as $k => $v){
-      	    $lda = new LecturerDA($this->con);
-      	    $lecturer = $lda->fetchLecturerById($v->lecturerID);
-      	    $v->setLecturer($lecturer);
+      }*/
 
-      	    $o['subjectID'] = $v->subjectID;
-      	    $o['subjectName'] = $v->getSubName();
-      	    $o['lecturerID'] = $v->getLecturer()->getId();
-      	    $o['lecturerName'] = $v->getLecturer()->getName();
+      public function editLesson($id, $venue, $type, $dateTime, $duration){
+      	$lessonDA = new ClassLessonDA($this->con);
+      	$lesson = $lessonDA->fetchClassById($id);
+      	if($lesson == null){
+      	    throw new Exception("Lesson not found!");
+  	    }
+  	    //setters for lesson object
+      	$lesson->venue = $venue;
+      	$lesson->type = $type;
+      	$lesson->dateTime = $dateTime;
+      	$lesson->duration= $duration;
 
-      	    $arr[] = $o;
+      	//Do validation here.
+      	$today = new DateTime();
+        $today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
+      	$datetime = new DateTime($dateTime, new DateTimeZone("Asia/Kuala_Lumpur"));
+      	$date = $datetime->format("Y-m-d");
+      	$validDayStart = new DateTime($date . " 08:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
+      	$validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
+      	if($datetime < $today){
+      	    $systime = $today->format("d-m-Y H:i:s");
+                  throw new \Exception("The given date/time has already passed.. \n Current system date/time is {$systime}");
+              }
+      	//validate the time is between 5.30 to 6
+      	if($datetime < $validDayStart || $datetime > $validDayEnd){
+      	    throw new \Exception("Lesson can only take place between 8:30AM to 06:00PM ");
       	}
-      	$this->returnObject($arr);
+
+      	//validate duration
+      	if($lesson->duration > 6)
+      	    throw new \Exception("Duration cannot be longer than 6 hours.");
+      	if($lesson->duration < 0)
+      	    throw new \Exception("A lesson must atleast be one hour long.");
+
+      	if($this->classClash($lesson)){
+      	    throw new \Exception("Cannot create lesson for that time. Another class is taking place at the same venue, in the given time range");
+      	}
+  	    $lessonDA->save($lesson);
+  	    $this->sendMsg("Successfully Updated!");
+     }
+
+      public function updateClassScheduling($id, $date, $time, $venue){
+      	$rescheduleDA = new ClassReschedulingDA($this->con);
+      	$record = $rescheduleDA->getApprovalRequest($id);
+      	$dt = new DateTime($date. " ". $time, new DateTimeZone("Asia/Kuala_Lumpur"));
+      	$today = new DateTime();
+      	$today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
+
+      	$validDayStart = new DateTime($date . " 08:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
+      	$validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
+
+      	//$i = $today->diff($dt);
+      	//$cannotCreate = ($i->format("%R") == "-");
+      	if($dt < $today){
+      	    throw new \Exception("Cannot update class schedule, date has already passed.");
+      	}
+      	if($dt > $validDayEnd || $dt < $validDayStart){
+      	    throw new \Exception("Lesson can only take place between 8.30AM to 6PM.");
+      	}
+
+      	$record->setNewDateTime($date, $time);
+      	$record->setVenue($venue);
+      	$rescheduleDA->save($record);
+      	$this->sendMsg("Successfully Updated!");
       }
 
-      public function addSubject($id, $name, Lecturer $lecturer){
-      	$subjectDA = new SubjectDA($this->con);
-      	$subject = new Subject();
-      	$subject->subjectID = $id;
-      	$subject->lecturerID = $lecturer->lecturerID;
-      	$subject->subjectName = $name;
 
-      	$subjectDA->save($subject);
-      	$this->sendMsg("Successfully Created!");
+    public function listLecturers(){
+    	$lecturerDA = new LecturerDA($this->con);
+    	$in = $lecturerDA->findAll();
+    	$out = [];
+    	foreach($in as $v){
+    	    $o['lecturerID'] = $v->getId();
+    	    $o['lecturerName'] = $v->getName();
+    	    $out[] = $o;
+    	}
+    	$this->returnObject($out);
+    }
+
+    /**
+     *  Checks for clashes.
+     **/
+    public function findClasses($venue, $date, $time, $duration){
+    	$da = new ClassLessonDA($this->con);
+    	$lessons = $da->getClassesOnDate($venue, $date);
+    	if($lessons == null){
+    	    throw new \Exception("No classes found for the given parameters");
+    	}
+
+    	$newLesson = new ClassLesson();
+    	$newLesson->setDateTime($date, $time);
+    	$newLesson->setDuration($duration);
+    	$newLesson->venue = $venue;
+
+    	$arr = [];
+    	foreach($lessons as $lesson){
+    	    $arr []=
+    		[
+    		    'id' => $lesson->classID,
+    		    'startTime' => $lesson->getDateTime(),
+    		    'endTime' => $lesson->getEndTime()->format("Y-m-d h:i:s"),
+    		    'duration' => $lesson->getDuration(),
+    		    'clash' => $lesson->isClashing($newLesson)
+    		];
+    	}
+    	$this->returnObject($arr);
+    }
+
+    /******************************
+    * END OF CLASS LESSON SECTION *
+    *******************************/
+
+
+    /******************
+    * SUBJECT SECTION *
+    *******************/
+
+    /**
+     * Returns all Subject
+     * for testing purpose
+     **/
+
+    public function listSubjects(){
+      $subjectDA = new SubjectDA($this->con);
+
+      $list = $subjectDA->findAll();
+      $arr = [];
+      foreach($list as $k => $v){
+          $lda = new LecturerDA($this->con);
+          $lecturer = $lda->fetchLecturerById($v->lecturerID);
+          $v->setLecturer($lecturer);
+
+          $o['subjectID'] = $v->subjectID;
+          $o['subjectName'] = $v->getSubName();
+          $o['lecturerID'] = $v->getLecturer()->getId();
+          $o['lecturerName'] = $v->getLecturer()->getName();
+
+          $arr[] = $o;
       }
+      $this->returnObject($arr);
+    }
+
+    public function addSubject($id, $name, Lecturer $lecturer){
+      $subjectDA = new SubjectDA($this->con);
+      $subject = new Subject();
+      $subject->subjectID = $id;
+      $subject->lecturerID = $lecturer->lecturerID;
+      $subject->subjectName = $name;
+
+      $subjectDA->save($subject);
+      $this->sendMsg("Successfully Created!");
+    }
 
     public function deleteSubject($id){
-    	$subjectDA = new SubjectDA($this->con);
+      $subjectDA = new SubjectDA($this->con);
 
-    	if ($subjectDA->remove($id) == true){
-    	    $this->sendMsg("Successfully Deleted!");
-    	}
-    	else
-    	    throw new Exception("Error! Failed to delete subject!");
-    }
-
-    /*
-       public function updateSubject($id, $name, Lecturer $lecturer){
-
-    }*/
-
-    public function editLesson($id, $venue, $type, $dateTime, $duration){
-    	$lessonDA = new ClassLessonDA($this->con);
-    	$lesson = $lessonDA->getClassById($id);
-    	if($lesson == null){
-    	    throw new Exception("Lesson not found!");
-	    }
-	    //setters for lesson object
-    	$lesson->venue = $venue;
-    	$lesson->type = $type;
-    	$lesson->dateTime = $dateTime;
-    	$lesson->duration= $duration;
-
-    	//Do validation here.
-    	$today = new DateTime();
-      $today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
-    	$datetime = new DateTime($dateTime, new DateTimeZone("Asia/Kuala_Lumpur"));
-    	$date = $datetime->format("Y-m-d");
-    	$validDayStart = new DateTime($date . " 08:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
-    	$validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
-    	if($datetime < $today){
-    	    $systime = $today->format("d-m-Y H:i:s");
-                throw new \Exception("The given date/time has already passed.. \n Current system date/time is {$systime}");
-            }
-    	//validate the time is between 5.30 to 6
-    	if($datetime < $validDayStart || $datetime > $validDayEnd){
-    	    throw new \Exception("Lesson can only take place between 8:30AM to 06:00PM ");
-    	}
-
-    	//validate duration
-    	if($lesson->duration > 6)
-    	    throw new \Exception("Duration cannot be longer than 6 hours.");
-    	if($lesson->duration < 0)
-    	    throw new \Exception("A lesson must atleast be one hour long.");
-
-    	if($this->classClash($lesson)){
-    	    throw new \Exception("Cannot create lesson for that time. Another class is taking place at the same venue, in the given time range");
-    	}
-	    $lessonDA->save($lesson);
-	    $this->sendMsg("Successfully Updated!");
+      if ($subjectDA->remove($id) == true){
+          $this->sendMsg("Successfully Deleted!");
+      }
+      else
+          throw new Exception("Error! Failed to delete subject!");
    }
 
-    public function updateClassScheduling($id, $date, $time, $venue){
-    	$rescheduleDA = new ClassReschedulingDA($this->con);
-    	$record = $rescheduleDA->getApprovalRequest($id);
-    	$dt = new DateTime($date. " ". $time, new DateTimeZone("Asia/Kuala_Lumpur"));
-    	$today = new DateTime();
-    	$today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
+    /*************************
+    * END OF SUBJECT SECTION *
+    **************************/
 
-    	$validDayStart = new DateTime($date . " 08:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
-    	$validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
 
-    	//$i = $today->diff($dt);
-    	//$cannotCreate = ($i->format("%R") == "-");
-    	if($dt < $today){
-    	    throw new \Exception("Cannot update class schedule, date has already passed.");
-    	}
-    	if($dt > $validDayEnd || $dt < $validDayStart){
-    	    throw new \Exception("Lesson can only take place between 8.30AM to 6PM.");
-    	}
+    /*****************
+    * REPORT SECTION *
+    ******************/
 
-    	$record->setNewDateTime($date, $time);
-    	$record->setVenue($venue);
-    	$rescheduleDA->save($record);
-    	$this->sendMsg("Successfully Updated!");
+    public function viewReport(){
+      $reportDA = new ReportDA($this->con);
+      $result = $reportDA->getClassRescheduling();
+      print(json_encode($result));
     }
 
+    /************************
+    * END OF REPORT SECTION *
+    *************************/
 
-  public function listLecturers(){
-  	$lecturerDA = new LecturerDA($this->con);
-  	$in = $lecturerDA->findAll();
-  	$out = [];
-  	foreach($in as $v){
-  	    $o['lecturerID'] = $v->getId();
-  	    $o['lecturerName'] = $v->getName();
-  	    $out[] = $o;
-  	}
-  	$this->returnObject($out);
-  }
+    /****************************
+    * PRIVATE FUNCTIONs SECTION *
+    *****************************/
 
-  /**
-   *  Checks for clashes.
-   **/
-  public function findClasses($venue, $date, $time, $duration){
-  	$da = new ClassLessonDA($this->con);
-  	$lessons = $da->getClassesOnDate($venue, $date);
-  	if($lessons == null){
-  	    throw new \Exception("No classes found for the given parameters");
-  	}
+    private function classClash($newLesson){
+    	$da = new ClassLessonDA($this->con);
+    	$venue = $newLesson->venue;
+    	$date = $newLesson->getDate();
+    	$lessons = $da->getClassesOnDate($venue, $date);
 
-  	$newLesson = new ClassLesson();
-  	$newLesson->setDateTime($date, $time);
-  	$newLesson->setDuration($duration);
-  	$newLesson->venue = $venue;
+    	if($lessons == null){
+    	    return false;
+    	}
 
-  	$arr = [];
-  	foreach($lessons as $lesson){
-  	    $arr []=
-  		[
-  		    'id' => $lesson->classID,
-  		    'startTime' => $lesson->getDateTime(),
-  		    'endTime' => $lesson->getEndTime()->format("Y-m-d h:i:s"),
-  		    'duration' => $lesson->getDuration(),
-  		    'clash' => $lesson->isClashing($newLesson)
-  		];
-  	}
-  	$this->returnObject($arr);
-  }
+    	$arr = [];
+    	foreach($lessons as $lesson){
+    	    if($lesson->isClashing($newLesson)){
+        		throw new \Exception("{$lesson->type} for {$lesson->subjectID} is taking place at {$lesson->venue} at {$lesson->getStrStartTime()} to {$lesson->getStrEndTime()}");
+        		return true;
+    	    }
+    	}
+    	return false;
+    }
 
-  private function classClash($newLesson){
-  	$da = new ClassLessonDA($this->con);
-  	$venue = $newLesson->venue;
-  	$date = $newLesson->getDate();
-  	$lessons = $da->getClassesOnDate($venue, $date);
-
-  	if($lessons == null){
-  	    return false;
-  	}
-
-  	$arr = [];
-  	foreach($lessons as $lesson){
-  	    if($lesson->isClashing($newLesson)){
-      		throw new \Exception("{$lesson->type} for {$lesson->subjectID} is taking place at {$lesson->venue} at {$lesson->getStrStartTime()} to {$lesson->getStrEndTime()}");
-      		return true;
-  	    }
-  	}
-  	return false;
-
-      }
-
+    /***********************************
+    * END OF PRIVATE FUNCTIONs SECTION *
+    ************************************/
   }
 ?>

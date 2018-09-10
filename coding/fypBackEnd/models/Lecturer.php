@@ -1,6 +1,6 @@
 <?php
 class Lecturer{
-  public $lecturerID, $lecturerName, $email, $password;
+  public $lecturerID, $lecturerName, $lecturerEmail, $lecturerPassword;
 
   public function getId(){
     return $this->lecturerID;

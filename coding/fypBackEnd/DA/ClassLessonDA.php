@@ -37,6 +37,11 @@ class ClassLessonDA extends DataAccessObject{
 	      return $arr;
     }
 
+    public function fetchLessonById($id){
+          $result = $this->con->query("SELECT * FROM class_lesson WHERE classID='$id'");
+          return $result->fetch_object('ClassLesson');
+    }
+
     public function getClassesOnDate($venue, $inDate){
         $dateTime = new DateTime($inDate);
       	$date = $dateTime->format("Y-m-d");
@@ -55,7 +60,7 @@ class ClassLessonDA extends DataAccessObject{
         return  $this->getListByAttribute('id', $fk);
     }
 
-    public function getClassById($id){
+    public function fetchClassById($id){
         $result = $this->con->query("SELECT * FROM class_lesson WHERE classID = '{$id}';");
         return $result->fetch_object('ClassLesson');
     }
@@ -78,6 +83,45 @@ class ClassLessonDA extends DataAccessObject{
     	$q = "SELECT count(*) FROM `class_lesson` WHERE subjectID = \"{$code}\" and type = \"{$type}\" ";
     	$result = $this->con->query($q);
     	return $result->fetch_array()[0];
+    }
+
+    public function getLessonByLecturer($lecturerID){
+      $query = <<<EOF
+
+      SELECT cl.classID,
+      cl.type as "type",
+      DAYNAME(CAST(cl.dateTime as DATE)) as "day",
+      cl.duration as "duration",
+      subj.subjectName as "subName",
+      cl.subjectID as "title",
+      cl.venue as "venue"
+      FROM `class_lesson`	as cl
+      INNER JOIN `subject` as subj ON cl.subjectID = subj.subjectID
+      WHERE subj.lecturerID = $lecturerID
+
+EOF;
+    return $this->con->query($query)
+                    ->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getLessonByLecturerWithDetail($lecturerID){
+      $query = <<<EOF
+
+      SELECT cl.classID,
+      cl.type as "type",
+      DAYNAME(CAST(cl.dateTime as DATE)) as "day",
+      cl.dateTime as dateTime,
+      cl.duration as "duration",
+      subj.subjectName as "subName",
+      cl.subjectID as "title",
+      cl.venue as "venue"
+      FROM `class_lesson`	as cl
+      INNER JOIN `subject` as subj ON cl.subjectID = subj.subjectID
+      WHERE subj.lecturerID = $lecturerID
+
+EOF;
+    return $this->con->query($query)
+                    ->fetch_all(MYSQLI_ASSOC);
     }
 
     public function save($o){

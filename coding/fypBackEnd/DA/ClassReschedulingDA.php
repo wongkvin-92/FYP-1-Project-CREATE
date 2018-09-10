@@ -2,6 +2,7 @@
   class ClassReschedulingDA extends DataAccessObject{
     //creating sql object outside, to inject inside (create, remove, update..)
     public function __construct($con){
+      parent::__construct($con, "ClassRescheduling");
       if($con == null)
         throw new \Exception("ClassReschedulingDA: No connection received!");
       $this->con = $con;
@@ -15,6 +16,7 @@
       return $result->fetch_array()[0];
     }
 
+    /*
     public function getPendingRequest(){
       $retrieveData = $this->con->query("SELECT * FROM class_rescheduling WHERE status ='pending'");
 
@@ -45,6 +47,7 @@
       }
       return false;
     }
+    */
 
     public function getApprovalRequest($id){
       $result = $this->con->query("SELECT * FROM class_rescheduling WHERE id = '$id';");
@@ -52,6 +55,13 @@
       return $result->fetch_object('ClassRescheduling');
 
     }
+
+
+        public function fetchClassById($id){
+            $result = $this->con->query("SELECT * FROM class_rescheduling WHERE id = '{$id}';");
+            return $result->fetch_object('ClassRescheduling');
+        }
+
 
       /*public function save($o){
       $result = $this->con->query("UPDATE class_rescheduling SET status = '{$o->getStatus()}', newDateTime = '{$o->getNewDateTime()}' WHERE id = '{$o->getId()}' ");
