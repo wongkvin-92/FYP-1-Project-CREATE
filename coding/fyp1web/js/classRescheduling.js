@@ -33,17 +33,18 @@ $.ajax({
       var item = d[i];
       items[item.id] = item;
     }
+    console.log(items);
     addData(items);
   }
 });
 
 //insert Data
 function newReCard(item){
-    return createReCard(item.subjectCode, item.subjectName, item.lecturer, item.reDate, item.reTime, item.duration, item.id, item.venue);
+    return createReCard(item.subjectCode, item.subjectName, item.lecturer, item.type, item.reDate, item.reTime, item.duration, item.id, item.venue);
 }
 
 //create structure of the card
-function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id, venue){
+function createReCard(subjectCode, subjectName, lecturer, type, rDate, rTime, duration, id, venue){
   var replacementCard = `
     <div class="content-layout" id="approval-request-`+id+`">
       <div style="padding-bottom:10px; position:relative; z-index:9999">
@@ -55,10 +56,11 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id, 
       <div style="position:relative; z-index:1000; top:-16px; left:20px">
         <h3><span class="left">Code:</span> <span class="right" id="subjectCode"></span></h3>
         <p class="class-reschedule_subject"><span class="left">Subject:</span> <span class="right" id="subjectName"></span></p>
+        <p><span class="left">Type:</span> <span class="right" id="type"></span></p>
         <p><span class="left">Lecturer:</span> <span class="right" id="lecturer"></span></p>
         <p><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
         <p><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
-        <p><span class="left">(24h)</span> <span class="right"></span></p>
+
         <p><span class="left">Duration:</span><span class="right" id="duration"></span></p>
         <p><span class="left">Venue:</span> <span class="right venueApprove" >`+venue+`</span></p>
         <!--
@@ -78,8 +80,9 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id, 
   //jQueryselector
   var jqs = $(replacementCard);
 
-  jqs.find("#subjectCode").html(subjCode);
-  jqs.find("#subjectName").html(subjName);
+  jqs.find("#subjectCode").html(subjectCode);
+  jqs.find("#subjectName").html(subjectName);
+  jqs.find("#type").html(type);
   jqs.find("#lecturer").html(lecturer);
   jqs.find("#reDate").html(rDate);
   jqs.find("#reTime").html(rTime);
@@ -89,7 +92,7 @@ function createReCard(subjCode, subjName, lecturer, rDate, rTime, duration, id, 
 }
 
 function addData(itemArray){
-   $('#reContainer').html("");
+   $('#reContainer').html(""); //clear the container
    for(var i=0; i< items.length; i++){
      var item = itemArray[i];
      if(item === undefined)
@@ -110,34 +113,34 @@ function findData(items, query){
 }
 
 function approveClass(id){
+  console.log(id);
+  //console.log($('.venueApprove')[0].childNodes[0].nodeValue);
+    var myVar = $(this).find('.venueApprove').val();
+    console.log(myVar);
+    //$('.venueApprove')[0].childNodes[0].nodeValue
+      if ($('.venueApprove').val() == "NA"){
+        createErrAlert("Please enter a class venue!");
+        return;
+      }else{
+      if (confirm('Are you sure you approve this Class Reschedulement?')) {
+        $.ajax({
+            url : backEndUrl+"/classes/"+id+"/approve/",
+            method : "GET",
+            dataType : "json",
+            success : function(r) {
+              removeClass(id);
+              createSucAlert(r.msg);
 
-//console.log($('.venueApprove')[0].childNodes[0].nodeValue);
-var myVar = $(this).find('.venueApprove').val();
-console.log(myVar);
-//$('.venueApprove')[0].childNodes[0].nodeValue
-  if ($('.venueApprove').val() == "NA"){
-    createErrAlert("Please enter a class venue!");
-    return;
-  }else{
-  if (confirm('Are you sure you approve this Class Reschedulement?')) {
-    $.ajax({
-        url : backEndUrl+"/classes/"+id+"/approve/",
-        method : "GET",
-        dataType : "json",
-        success : function(r) {
-          removeClass(id);
-          createSucAlert(r.msg);
-
-        },
-	error: function(r){
-	    r = r.responseJSON;
-	    alert(r.msg);
-	}
-    });
-} else {
-    return;
-  }
-}
+            },
+    	error: function(r){
+    	    r = r.responseJSON;
+    	    alert(r.msg);
+    	}
+        });
+    } else {
+        return;
+      }
+    }
 }
 
 var editBtnClicked = function(id) {
@@ -187,7 +190,7 @@ var subjectBox = $('#approval-request-'+id);
 /*
  * Update the record in the server
  */
-var saveRecheduling = function(id,date, time, venue){
+var saveRecheduling = function(id ,date, time, venue){
   var newItem = items[id];
   newItem.reDate = date;
   newItem.reTime = time;
@@ -235,7 +238,7 @@ var saveBtn = function(id){
     createErrAlert(venue + " is invalid!");
         return;
   }else{
-    saveRecheduling(id,date, time, venue);
+    saveRecheduling(id, date, time, venue);
     return;
   }
 }

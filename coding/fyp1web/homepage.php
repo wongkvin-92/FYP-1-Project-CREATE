@@ -118,7 +118,7 @@
               </div>
 
             <div class="panel-body " >
-              <table id="report-table" class="table table-hover"  width="100%" >
+              <table class="table table-hover"  width="100%" id="report_datatable">
                 <thead>
                   <tr>
                   <th>Lecturer</th>
@@ -133,271 +133,8 @@
                   </tr>
                 </thead>
 
-                <tbody>
-                  <tr>
-                    <td>
-                      Koon
-                    </td>
-                    <td>
-                      bmc308
-                    </td>
-                    <td>
-                      11:00
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      2018-03-11
-                    </td>
-                    <td>
-                      2018-04-11
-                    </td>
-                    <td>
-                      13:00
-                    </td>
-                    <td>
-                      sr2.3
-                    </td>
-                    <td>
-                      pending
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Fong
-                    </td>
-                    <td>
-                      bit310
-                    </td>
-                    <td>
-                      11:00
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      2018-03-15
-                    </td>
-                    <td>
-                      2018-04-03
-                    </td>
-                    <td>
-                      11:00
-                    </td>
-                    <td>
-                      ls2
-                    </td>
-                    <td>
-                      pending
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Anita
-                    </td>
-                    <td>
-                      bit200
-                    </td>
-                    <td>
-                      10:00
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      2018-03-09
-                    </td>
-                    <td>
-                      2018-04-02
-                    </td>
-                    <td>
-                      12:00
-                    </td>
-                    <td>
-                      tis
-                    </td>
-                    <td>
-                      approved
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Anita
-                    </td>
-                    <td>
-                      bit200
-                    </td>
-                    <td>
-                      11:00
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      2018-02-10
-                    </td>
-                    <td>
-                      2018-03-10
-                    </td>
-                    <td>
-                      14:00
-                    </td>
-                    <td>
-                      lh2.1
-                    </td>
-                    <td>
-                      approved
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Seetha
-                    </td>
-                    <td>
-                      bit216
-                    </td>
-                    <td>
-                      08:30
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      2018-04-08
-                    </td>
-                    <td>
-                      2018-04-16
-                    </td>
-                    <td>
-                      14:00
-                    </td>
-                    <td>
-                      lh2.1
-                    </td>
-                    <td>
-                      approved
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Seetha
-                    </td>
-                    <td>
-                      bit216
-                    </td>
-                    <td>
-                      08:30
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      2018-03-11
-                    </td>
-                    <td>
-                      2018-04-11
-                    </td>
-                    <td>
-                      14:00
-                    </td>
-                    <td>
-                      lh2.1
-                    </td>
-                    <td>
-                      approved
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Kok
-                    </td>
-                    <td>
-                      bit208
-                    </td>
-                    <td>
-                      08:30
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      2018-03-11
-                    </td>
-                    <td>
-                      2018-04-11
-                    </td>
-                    <td>
-                      14:00
-                    </td>
-                    <td>
-                      lh2.1
-                    </td>
-                    <td>
-                      approved
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Koon
-                    </td>
-                    <td>
-                      bit216
-                    </td>
-                    <td>
-                      08:30
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      2018-03-11
-                    </td>
-                    <td>
-                      2018-04-11
-                    </td>
-                    <td>
-                      14:00
-                    </td>
-                    <td>
-                      lh2.1
-                    </td>
-                    <td>
-                      approved
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Seetha
-                    </td>
-                    <td>
-                      bit216
-                    </td>
-                    <td>
-                      08:30
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      2018-03-11
-                    </td>
-                    <td>
-                      2018-04-11
-                    </td>
-                    <td>
-                      14:00
-                    </td>
-                    <td>
-                      lh2.1
-                    </td>
-                    <td>
-                      approved
-                    </td>
-                  </tr>
+                <tbody id="reportTable">
                 </tbody>
-                <tfoot>
-                </tfoot>
               </table>
             </div>
      </div>
@@ -491,12 +228,13 @@
             <div class="panel panel-primary panel-table list_view table-responsive lessonPage" style="border:none; ">
               <div class="panel-heading">
                 <h3 class="panel-title">Daily Timetable</h3>
-             <div id="timetable-input" style="position:relative; margin-top:1em; ">
-             </div>
-             <div style="display:block; margin-top:2.5em; ">
-              <div id="timetable_alert"></div>
-            </div>
+
           </div>
+          <div id="timetable-input" style="position:relative; margin-top:1em; color: "black";">
+          </div>
+          <div style="display:block; margin-top:2.5em; ">
+           <div id="timetable_alert"></div>
+         </div>
             <div class="panel-body table-responsive">
               <div class="timetable">
               </div>
@@ -515,7 +253,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.16/b-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/kt-2.3.2/datatables.min.js"></script>
 
-
+<!--
 <script type="text/javascript">
 $(document).ready(function() {
   dbg = $('#report-table').DataTable( {
@@ -532,13 +270,14 @@ $(document).ready(function() {
 
   } );
 </script>
-
+-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script  src="js/homepage.js"></script>
 <script src='js/classRescheduling.js'></script>
 <script src='js/lesson.js'></script>
+<script src='js/report.js'></script>
 <script src="bower_components/timetable.js/dist/scripts/timetable.js"></script>
 <script src="bower_components/jqueryui-datepicker/datepicker.js"></script>
 <script src='js/timetable.js'></script>

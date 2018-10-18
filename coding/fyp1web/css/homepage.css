@@ -50,6 +50,11 @@ body::after {
     animation-name: bounceInDown;
 }
 
+#timetable-input{
+  position:relative; margin-top:1em; color: "black";
+
+}
+
 /* Safari 6.1+ */
 .dashboard .dashboard-sidebar:nth-of-type(1) {-webkit-flex-grow: 1;}
 .dashboard .dashboard-content:nth-of-type(2) {-webkit-flex-grow: 5;}
@@ -155,15 +160,15 @@ body::after {
   margin: 10px;
 }
 
-#report-table th{
+#report_datatable th{
     text-align: center;
 }
 
-#report-table tr{
+#report_datatable tr{
   color: black;
 }
 
-#report-table td{
+#report_datatable td{
   text-align: center;
 }
 
