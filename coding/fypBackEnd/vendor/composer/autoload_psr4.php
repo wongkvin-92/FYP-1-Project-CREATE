@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Klein\\' => array($vendorDir . '/klein/klein/src/Klein'),
+    'HemiFrame\\' => array($vendorDir . '/hemiframe/php-websocket/src/HemiFrame'),
 );

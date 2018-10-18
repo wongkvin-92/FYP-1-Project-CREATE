@@ -92,7 +92,7 @@ class ClassLessonDA extends DataAccessObject{
       cl.type as "type",
       DAYNAME(CAST(cl.dateTime as DATE)) as "day",
       cl.duration as "duration",
-      subj.subjectName as "subName",
+      subj.subjectName as "subjectName",
       cl.subjectID as "title",
       cl.venue as "venue"
       FROM `class_lesson`	as cl
@@ -104,15 +104,40 @@ EOF;
                     ->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getLecturerScheduleByDate($lecturerID, $dayname, $sqlDate){
+      //TODO: CHeck for class cancellation and remove.
+      $sql = <<<EOF
+      SELECT  cl.classID,
+		cl.type,
+        cl.subjectID,
+        subj.subjectName as "subjectName"
+        , CAST(cl.dateTime AS TIME) as startTime
+        , CAST( date_add(cl.dateTime, INTERVAL cl.duration HOUR) AS TIME) as endTime,
+        (clre.oldDateTime is not NULL) as "isCancelled",
+        "{$sqlDate}" as curDate
+       FROM `class_lesson` as cl
+        INNER JOIN `subject` as subj
+       		ON cl.subjectID = subj.subjectID
+        LEFT JOIN `class_rescheduling` as clre
+         	ON clre.classID = cl.classID AND clre.oldDateTime = "{$sqlDate}"
+        WHERE subj.lecturerID = '{$lecturerID}'
+        and DAYNAME(cl.dateTime) = "{$dayname}"
+        ;
+EOF;
+
+    return $this->con->query($sql)
+                ->fetch_all(MYSQLI_ASSOC);
+
+    }
+
     public function getLessonByLecturerWithDetail($lecturerID){
       $query = <<<EOF
-
       SELECT cl.classID,
       cl.type as "type",
       DAYNAME(CAST(cl.dateTime as DATE)) as "day",
       cl.dateTime as dateTime,
       cl.duration as "duration",
-      subj.subjectName as "subName",
+      subj.subjectName as "name",
       cl.subjectID as "title",
       cl.venue as "venue"
       FROM `class_lesson`	as cl

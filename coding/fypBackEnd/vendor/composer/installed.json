@@ -1,5 +1,51 @@
 [
     {
+        "name": "hemiframe/php-websocket",
+        "version": "1.5.3",
+        "version_normalized": "1.5.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/heminei/php-websocket.git",
+            "reference": "72ba4f6184bcf57acd32013fbb59c9601735719c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/heminei/php-websocket/zipball/72ba4f6184bcf57acd32013fbb59c9601735719c",
+            "reference": "72ba4f6184bcf57acd32013fbb59c9601735719c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0"
+        },
+        "time": "2018-07-04T19:46:30+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "HemiFrame\\": "src/HemiFrame"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Martin",
+                "email": "heminei@heminei.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "PHP WebSocket server and client library",
+        "keywords": [
+            "WebSockets",
+            "client",
+            "php",
+            "server",
+            "websocket"
+        ]
+    },
+    {
         "name": "klein/klein",
         "version": "v2.1.2",
         "version_normalized": "2.1.2.0",

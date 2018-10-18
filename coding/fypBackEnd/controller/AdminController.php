@@ -107,6 +107,7 @@ class AdminController extends MasterController{
        }
     }
 */
+/*
     public function viewPendingRequest(){
 
       $rescheduleDA = new ClassReschedulingDA($this->con);
@@ -151,7 +152,14 @@ class AdminController extends MasterController{
       $this->returnObject($out);
 
     }
+*/
 
+public function viewPendingRequest(){
+  $rescheduleDA = new ClassReschedulingDA($this->con);
+
+  $list = $rescheduleDA->getPendingList();
+    $this->returnObject($list);
+}
     /*
        public function changeVenue($id, $venue){
        $da = new ClassReschedulingDA($this->con);
@@ -160,6 +168,8 @@ class AdminController extends MasterController{
        $da->save($rq);
        $this->returnObject($rq);
        }*/
+
+
 
     public function approveClass($id){
         //link to db

@@ -22,11 +22,11 @@ class ClassRescheduling{
   }*/
 
     public function getVenue(){
-        return $this->Venue;
+        return $this->newVenue;
     }
 
     public function setVenue($v){
-        $this->Venue = $v;
+        $this->newVenue = $v;
     }
 
     public function getLesson(){

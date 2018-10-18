@@ -11,12 +11,20 @@ class ComposerStaticInit16ab9159d19a100bbe7a97409064fead
         array (
             'Klein\\' => 6,
         ),
+        'H' => 
+        array (
+            'HemiFrame\\' => 10,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Klein\\' => 
         array (
             0 => __DIR__ . '/..' . '/klein/klein/src/Klein',
+        ),
+        'HemiFrame\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hemiframe/php-websocket/src/HemiFrame',
         ),
     );
 
