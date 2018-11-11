@@ -18,6 +18,8 @@ class ClassLesson{
         return $this->dateTime;
     }
 
+    
+    
     public function getDate(){
 	     return $this->getStartTime()->format("Y-m-d");
     }

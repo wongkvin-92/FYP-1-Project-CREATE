@@ -128,7 +128,6 @@ class DataAccessObject{
         if($result == false){
             throw new \Exception("Failed to create new {$this->className}: Query '{$q}' failed" );
         }
-
         return true;
     }
 }

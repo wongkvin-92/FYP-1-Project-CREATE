@@ -2,24 +2,24 @@
 class ClassReschedulingDA extends DataAccessObject{
     //creating sql object outside, to inject inside (create, remove, update..)
     public function __construct($con){
-	parent::__construct($con, "ClassRescheduling");
-	if($con == null)
-            throw new \Exception("ClassReschedulingDA: No connection received!");
-	$this->con = $con;
-	$this->setPrimaryKey("id");
-	$this->setTableName("class_rescheduling");
+    	parent::__construct($con, "ClassRescheduling");
+    	if($con == null)
+                throw new \Exception("ClassReschedulingDA: No connection received!");
+    	$this->con = $con;
+    	$this->setPrimaryKey("id");
+    	$this->setTableName("class_rescheduling");
     }
 
     public function getCountPending(){
-	$q = "SELECT COUNT(*) FROM class_rescheduling WHERE status ='pending';";
-	$result = $this->con->query($q);
-	return $result->fetch_array()[0];
+    	$q = "SELECT COUNT(*) FROM class_rescheduling WHERE status ='pending';";
+    	$result = $this->con->query($q);
+    	return $result->fetch_array()[0];
     }
 
     public function getCountApproved(){
-	$q = "SELECT COUNT(*) FROM class_rescheduling WHERE status ='approved';";
-	$result = $this->con->query($q);
-	return $result->fetch_array()[0];
+    	$q = "SELECT COUNT(*) FROM class_rescheduling WHERE status ='approved';";
+    	$result = $this->con->query($q);
+    	return $result->fetch_array()[0];
     }
 
     /*

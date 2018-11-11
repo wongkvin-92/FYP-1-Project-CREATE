@@ -16,8 +16,8 @@ class ClassLessonDA extends DataAccessObject{
     	$arr = [];
     	while($o = $result->fetch_array(MYSQLI_NUM)){
     	    $arr []=$o[0];
-	    }
-	    return $arr;
+	}
+	return $arr;
     }
 
     public function getScheduleForDate($inDate){
@@ -33,13 +33,13 @@ class ClassLessonDA extends DataAccessObject{
       	    $d['venue']   = $o->venue;
       	    $d['code'] = $o->subjectID;
       	    $arr []= $d;
-	      }
-	      return $arr;
+	}
+	return $arr;
     }
 
     public function fetchLessonById($id){
-          $result = $this->con->query("SELECT * FROM class_lesson WHERE classID='$id'");
-          return $result->fetch_object('ClassLesson');
+        $result = $this->con->query("SELECT * FROM class_lesson WHERE classID='$id'");
+        return $result->fetch_object('ClassLesson');
     }
 
     public function getClassesOnDate($venue, $inDate){
@@ -51,8 +51,8 @@ class ClassLessonDA extends DataAccessObject{
       	while($o = $result->fetch_object("ClassLesson")){
       	    $arr []= $o;
   	}
-	   return $arr;
-	    //return $result->fetch_all(MYSQLI_ASSOC);
+	return $arr;
+	//return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getClassesBySubject(Subject $s){
@@ -86,7 +86,7 @@ class ClassLessonDA extends DataAccessObject{
     }
 
     public function getLessonByLecturer($lecturerID){
-      $query = <<<EOF
+	$query = <<<EOF
 
       SELECT cl.classID,
       cl.type as "type",
@@ -100,13 +100,13 @@ class ClassLessonDA extends DataAccessObject{
       WHERE subj.lecturerID = $lecturerID
 
 EOF;
-    return $this->con->query($query)
+	return $this->con->query($query)
                     ->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getLecturerScheduleByDate($lecturerID, $dayname, $sqlDate){
-      //TODO: CHeck for class cancellation and remove.
-      $sql = <<<EOF
+	//TODO: CHeck for class cancellation and remove.
+	$sql = <<<EOF
       SELECT  cl.classID,
 		cl.type,
         cl.subjectID,
@@ -125,9 +125,36 @@ EOF;
         ;
 EOF;
 
-    return $this->con->query($sql)
-                ->fetch_all(MYSQLI_ASSOC);
+	return $this->con->query($sql)
+                    ->fetch_all(MYSQLI_ASSOC);
 
+    }
+
+    public function getStudentScheduleByDate($date, $dayname, $subjectList){
+    	for($i=0; $i< count($subjectList); $i++){
+    	    $subjectList[$i] = "'{$subjectList[$i]}'";
+    	}
+    	$subjStr = implode(", ", $subjectList);
+    	$subjStr = "({$subjStr})";
+      $query = <<<EOF
+        SELECT  cl.classID,
+      		cl.type,
+              cl.subjectID,
+              subj.subjectName as "subjectName"
+              , CAST(cl.dateTime AS TIME) as startTime
+              , CAST( date_add(cl.dateTime, INTERVAL cl.duration HOUR) AS TIME) as endTime,
+              (clre.oldDateTime is not NULL) as "isCancelled",
+              "$date" as curDate
+             FROM `class_lesson` as cl
+              INNER JOIN `subject` as subj
+             		ON cl.subjectID = subj.subjectID
+              LEFT JOIN `class_rescheduling` as clre
+               	ON clre.classID = cl.classID AND clre.oldDateTime = "$date"
+              WHERE subj.subjectID in {$subjStr}
+              and DAYNAME(cl.dateTime) = "$dayname"
+EOF;
+
+      return $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getLessonByLecturerWithDetail($lecturerID){
@@ -140,13 +167,89 @@ EOF;
       subj.subjectName as "name",
       cl.subjectID as "title",
       cl.venue as "venue"
-      FROM `class_lesson`	as cl
-      INNER JOIN `subject` as subj ON cl.subjectID = subj.subjectID
-      WHERE subj.lecturerID = $lecturerID
+	FROM `class_lesson`	as cl
+	INNER JOIN `subject` as subj ON cl.subjectID = subj.subjectID
+	WHERE subj.lecturerID = $lecturerID
 
 EOF;
-    return $this->con->query($query)
+	return $this->con->query($query)
                     ->fetch_all(MYSQLI_ASSOC);
+    }
+    //todo : change this query
+    public function getEntireScheduleHash($subjectList){
+      for($i=0; $i< count($subjectList); $i++){
+          $subjectList[$i] = "'{$subjectList[$i]}'";
+      }
+      $subjStr = implode(", ", $subjectList);
+    	$subjStr = "({$subjStr})";
+      $query = <<<EOF
+      SELECT MD5(GROUP_CONCAT(CONCAT(classID, startTime, endTime, newDateTime, newVenue))) as "key"  FROM (SELECT  cl.classID,
+            		cl.type,
+                    cl.subjectID,
+                    CAST( (case when clre.newDateTime is NULL then cl.dateTime else clre.newDateTime end) as TIME) as startTime,
+                    CAST( date_add((case when clre.newDateTime is NULL then cl.dateTime else clre.newDateTime end), INTERVAL cl.duration HOUR) AS TIME) as endTime,
+                    DAYNAME((case when clre.newDateTime is NULL then cl.dateTime else clre.newDateTime end)),
+                    clre.status,
+                    clre.newDateTime,
+                    clre.newVenue,
+                    clre.oldDateTime
+                   FROM `class_lesson` as cl
+                    INNER JOIN `subject` as subj
+                   		ON cl.subjectID = subj.subjectID
+                    LEFT JOIN `class_rescheduling` as clre
+                     	ON clre.classID = cl.classID and clre.status = "approved"
+                    WHERE subj.subjectID in {$subjStr}) as  t1
+EOF;
+
+      return $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getEntireSchedule($subjectList){
+      for($i=0; $i< count($subjectList); $i++){
+          $subjectList[$i] = "'{$subjectList[$i]}'";
+      }
+      $subjStr = implode(", ", $subjectList);
+      $subjStr = "({$subjStr})";
+      $query = <<<EOF
+      SELECT
+          cr.classID,
+          cl.type,
+          cl.subjectID,
+          subj.subjectName,
+          CAST( (case when cr.newDateTime is NULL then cl.dateTime else cr.newDateTime end) as TIME) as startTime,
+          CAST( date_add((case when cr.newDateTime is NULL then cl.dateTime else cr.newDateTime end), INTERVAL cl.duration HOUR) AS TIME) as endTime,
+          DAYNAME((case when cr.newDateTime is NULL then cl.dateTime else cr.newDateTime end)) as "day",
+          cr.status,
+          CAST(cr.newDateTime as DATE) as newDateTime,
+      	cr.newVenue,
+      	CAST(cr.oldDateTime as DATE) as oldDateTime
+      FROM `class_rescheduling` as cr
+      JOIN `class_lesson` as cl
+        ON	cr.classID = cl.classID
+      INNER JOIN `subject` as subj
+      	ON subj.subjectID = cl.subjectID
+      WHERE subj.subjectID IN {$subjStr}
+
+      UNION
+
+      SELECT
+      	cl.classID,
+          cl.type,
+          cl.subjectID,
+          subj.subjectName,
+          CAST(cl.dateTime as Time ) as startTime,
+      	CAST( date_add((cl.dateTime), INTERVAL cl.duration HOUR) AS TIME) as endTime,
+          DAYNAME(cl.dateTime) as "day",
+          (NULL) as status,
+          (NULL) as newDateTime,
+      	venue as newVenue,
+      	(NULL) as oldDateTime
+      FROM `class_lesson` as cl
+      INNER JOIN `subject` as subj
+      	ON subj.subjectID = cl.subjectID
+      WHERE subj.subjectID IN {$subjStr}
+EOF;
+    return $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
     }
 
     public function save($o){

@@ -11,8 +11,11 @@ $debug_mode = false;
 $klein = new \Klein\Klein();
 
 $admin  = new AdminController($con);
+$common = new MainControl($con);
 $lecturer = new LecturerController($con);
 $student = new StudentController($con);
+$deviceController = new DeviceController($con);
+$test = new TestController($con);
 
 
 $DATA = file_get_contents('php://input');
@@ -54,6 +57,16 @@ $klein->respond('GET', $root.'/', function () {
  *  ADMIN ROUTE SECTION *
  ************************/
 
+
+$klein->respond('POST', $root.'/admin/semester/', function($r) use ($admin){
+    $data = json_decode($r->body());
+    if($data == NULL)
+	throw new \Exception("Empty data sent from the client");
+    $semStartDate = $data->startDate;
+    $semEndDate = $data->endDate;
+    $admin->updateSemesterDate($semStartDate, $semEndDate);
+});
+
 $klein->respond('POST', $root.'/admin/login/', function() use ($admin){
 
     $email = getPost('email');
@@ -64,6 +77,13 @@ $klein->respond('POST', $root.'/admin/login/', function() use ($admin){
 
 if($admin->checkLoginState()){ //Only perform if I am logged in
 
+
+    $klein->respond('POST', $root.'/test/notify/', function($r) use ($test){
+	$d = json_decode($r->body());
+	$id = $d->lecturerID;
+	$msg= $d->msg;
+	$test->testNotification($id,$msg);
+    });
 
     $klein->respond('GET', $root.'/admin/', function() use ($admin){
 	if($admin->checkLoginState()){
@@ -211,6 +231,7 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
     $klein->respond('GET', $root.'/subjects/', function($r) use ($admin){
 	$admin->listSubjects();
     });
+
     //use ($admin) user control, only admin can use
     $klein->respond('GET', $root.'/subjects/[*:id]/', function($req,$resp) use ($admin){
     	$id = $req->param('id');
@@ -252,7 +273,7 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
      */
     $klein->respond('GET', $root."/reports/", function($r) use ($admin){
     	//print(json_encode(["msg" => "test123"]));
-	     $admin->viewReport();
+	$admin->viewReport();
     });
 
 
@@ -362,9 +383,9 @@ if($lecturer->checkLoginState()){
     });
 
     $klein->respond('POST', $root.'/reschedule/cancel/list/', function($r) use ($lecturer){
-      $d = json_decode($r->body())->data;
-      $lecturer->createCancellationList($d);
-    //  var_dump($d);
+	$d = json_decode($r->body())->data;
+	$lecturer->createCancellationList($d);
+	//  var_dump($d);
     });
 
 
@@ -376,39 +397,181 @@ if($lecturer->checkLoginState()){
  * END OF LECTURER ROUTE SECTION *
  *********************************/
 
- /************************
-  *  STUDENT ROUTE SECTION *
-  *************************/
+/************************
+ *  STUDENT ROUTE SECTION *
+ *************************/
 
-  $klein->respond('POST', $root.'/student/login/', function() use ($student){
+$klein->respond('POST', $root.'/student/login/', function() use ($student){
 
-      $studentID = getPost('studentID');
-      $password = getPost('password');
+    $studentID = getPost('studentID');
+    $password = getPost('password');
 
-      $student->login($studentID,$password);
-  });
+    $student->login($studentID,$password);
+});
 
 
-  $klein->respond('GET', $root.'/state/student/', function() use ($student){
+$klein->respond('GET', $root.'/state/student/', function() use ($student){
     if($student->checkLoginState()){
       	$student->getCredentials();
     }else{
       	return "false";
     }
-  });
+});
 
 
-  if($student->checkLoginState()){
+//TODO: remove  this
+/*$klein->respond('GET', $root.'/test/student/update/', function() use ($student){
+    $student->updateSubjectList(['bit100', 'bit104']);
+});*/
 
+$klein->respond('POST', $root.'/student/schedule/[*:date]', function($r) use ($student){
+    //$id = $student->getStudentID();
+    $subjectList = json_decode($r->body())->subjectList;
+    $student->fetchStudentLessonForDate($subjectList, $r->date);
+});
+
+
+$klein->respond('GET', $root.'/subjects/enrolled/', function() use ($student){
+    $student->getSubjectList();
+});
+
+$klein->respond('GET', $root.'/subjects/', function() use ($student){
+    $student->listSubjects();
+});
+
+$klein->respond('POST', $root.'/student/all/schedule/hash/', function($r) use ($student){
+    $subjectList = json_decode($r->body())->subjectList;
+    $student->fetchAllScheduleHash($subjectList);
+});
+
+$klein->respond('POST', $root.'/student/all/schedule/', function($r) use ($student){
+    $subjectList = json_decode($r->body())->subjectList;
+    $student->fetchAllSchedule($subjectList);
+});
+
+/********************************
+ * END OF STUDENT ROUTE SECTION *
+ *********************************/
+
+
+
+
+/************************
+ *  DEVICE ROUTE SECTION *
+ *************************/
+
+
+$klein->respond('POST', $root.'/device/', function($r) use ($deviceController){
+    $d = json_decode($r->body());
+
+    if(isset($_SESSION['credentials']) && isset($_SESSION['credentials']['type']) ){
+    	$c = $_SESSION['credentials'];
+
+    	$token = $d->token;
+
+	if($token == NULL)
+            throw new \Exception("Empty token received.");
+
+    	$type = $_SESSION['credentials']['type'];
+
+    	$id_key = null;
+
+    	if($type == "student")
+    	    $id_key = "studentID";
+    	else if($type=="lecturer")
+    	    $id_key = "lecturerID";
+
+        if($id_key == null){
+            print(json_encode(["result" => false, "msg" => "Malformed session variable."]));
+            http_response_code(501);
+        }else{
+            $userID = $c['user']->{$id_key};
+
+	    $dev = $deviceController->fetchDevice($type, $userID);
+	    if($dev == NULL){
+		//Create a new device
+        	$deviceController->createDevice($type,$userID,$token);
+	    }else{
+		$deviceController->updateDevice($token, $type, $userID);
+	    }
+    	}
+    }else{
+    	print(json_encode(["result" => false, "msg" => "Request to add device without login session set."]));
+    	http_response_code(501);
+    }
+});
+
+
+
+$klein->respond('GET', $root.'/device/[*:type]/[*:id]/', function($req,$resp) use ($deviceController){
+
+    $type = $req->param('type');
+    $id = $req->param('id');
+
+    $deviceController->listMyDevices($type, $id);
+});
+
+$klein->respond('PATCH', $root.'/device/[*:type]/[*:id]/', function($req, $res) use ($deviceController){
+
+    $type = $req->param('type');
+    $id = $req->param('id');
+    $token = getData('token');
+
+    $deviceController->updateDevice($token,$type,$id);
+});
+
+$klein->respond('DELETE', $root.'/device/remove/[i:id]/', function($req, $res) use ($deviceController){
+    $id = $req->param('id');
+    $deviceController->deleteAllDevice($id);
+});
+
+
+/********************************
+ * END OF DEVICE ROUTE SECTION *
+ *********************************/
+
+
+/**********************
+ * Common routes
+ **********************/
+
+
+if($student->checkLoginState()){
     $klein->respond('GET', $root.'/student/logout/', function() use ($student){
       	$student->logout();
-  });
-
+    });
 }
 
-  /********************************
-   * END OF STUDENT ROUTE SECTION *
-   *********************************/
+$klein->respond('GET', $root.'/login/state/', function($req, $res) use ($common){
+    $cr = $common->getCredentials();
+    if($cr == false){
+	$res->code(401);
+	print(json_encode(["result" => false, "msg" => "No user logged in."]));
+    }else{
+	print(json_encode($cr));
+    }
+});
+
+$klein->respond('GET', $root.'/semester/', function($req, $res) use ($common){
+    $common->getSemesterDate();
+});
+
+$klein->respond('GET', $root.'/logout/', function($req, $res) use ($common){
+    $common->logout();
+});
+
+
+$klein->respond('POST', $root.'/login/', function($req, $res) use ($common){
+    $email = getPost('email');
+    $password = getPost('password');
+    $common->login($email, $password);
+});
+
+
+/*******************
+ * End of common routes
+ ***********************/
+
 
 
 $klein->respond('GET', $root.'/test/', function() use ($lecturer){

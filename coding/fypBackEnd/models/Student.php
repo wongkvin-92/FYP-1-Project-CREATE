@@ -1,6 +1,6 @@
 <?php
 class Student{
-  public $studentID, $studentName, $studentEmail, $sPassword;
+  public $studentID, $studentName, $studentEmail, $studentPassword;
 
   public function getStudentId(){
     return $this->studentID;
@@ -13,7 +13,7 @@ class Student{
     return $this->studentEmail;
   }
   public function getPass(){
-    return $this->sPassword;
+    return $this->studentPassword;
   }
 
 }

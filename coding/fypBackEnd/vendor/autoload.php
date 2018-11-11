@@ -3,14 +3,18 @@
 function autoload1($class_name)
 {
     $controller =   'controller/'.$class_name. ".php";
+    $services = 'services/'.$class_name.".php";
     $da =   'DA/'.$class_name. ".php";
     $model =   'models/'.$class_name. ".php";
     if(file_exists($controller))
-      require $controller;
+	require $controller;   
     if(file_exists($da))
-      require $da;
+	require $da;
     if(file_exists($model))
-      require $model;
+	require $model;
+    if(file_exists($services))
+	require $services;
+    
 }
 spl_autoload_register("autoload1");
 require_once __DIR__ . '/composer/autoload_real.php';

@@ -13,20 +13,19 @@ class LecturerController extends MasterController{
 
       	$lecturer = $lecturerda->fetchLecturerByEmail($email);
       	if ($lecturer != null){
-                  if($lecturer->lecturerPassword == $pass){
-      		$obj = [
-            		    'type' => 'lecturer',
-            		    'user' => $lecturer
-            		];
+            if($lecturer->lecturerPassword == $pass){
+          		$obj = [
+                		    'type' => 'lecturer',
+                		    'user' => $lecturer
+                		];
 
-            		$_SESSION['credentials'] = $obj;
-            		print json_encode(['msg' => 'Login Sucessfully!', 'id'=> $lecturer->lecturerID]);
-
-                  }else{
-      		throw new Exception("Incorrect username/password!");
+        		  $_SESSION['credentials'] = $obj;
+          		print json_encode(['result'=> true, 'msg' => 'Login Sucessfully!', 'id'=> $lecturer->lecturerID]);
+            }else{
+          		throw new Exception("Incorrect username/password!");
                   }
       	}else{
-                  throw new \Exception("Not Found!");
+                  throw new \Exception("User Not Found!");
       	}
       	return;
     }
@@ -155,11 +154,21 @@ class LecturerController extends MasterController{
 
     	$rescheduleDA = new ClassReschedulingDA($this->con);
     	$reschedule = $rescheduleDA->fetchClassById($id);
+      if ($lecturer != null){
     	$reschedule->setNewDateTime($date, $time);
     	$rescheduleDA->save($reschedule);
-    	$this->sendMsg("Successfully Requested Scheduling!");
+    	print json_encode(['result'=> true, 'msg'  => "Successfully Requested Scheduling!"]);
+      }
     }
-
+    /*
+    if ($date != "" || $time !=""){
+      $reschedule->setNewDateTime($date, $time);
+      $rescheduleDA->save($reschedule);
+      print json_encode(['result'=> true, 'msg'  => "Successfully Requested Scheduling!"]);
+    }else{
+      throw new Exception("date or time is empty!");
+    }
+*/
     public function listOfCancellation($id, $filter){
     	$rescheduleDA = new ClassReschedulingDA($this->con);
     	//$list = $resschedulingDA->getListOfCancellation($id);
@@ -225,7 +234,7 @@ class LecturerController extends MasterController{
     }
 
 
-
+    //not using
     public function listConfirmedLessons($lecturerID, $weekNum){
         $lessonDA = new ClassLessonDA($this->con);
         $list = $lessonDA->getLessonByLecturerWithDetail($lecturerID);
