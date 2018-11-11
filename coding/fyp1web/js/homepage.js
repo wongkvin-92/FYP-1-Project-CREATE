@@ -13,9 +13,37 @@ var backEndUrl='/fypBackEnd';
       refreshTimeTable();
     return console.log(itemId);
   });
-
-
 }).call(this);
+
+
+
+$('#submitSemdate').on('click', ()=> {
+  var startSemDay = $('#start-sem-day').val();
+  var endSemDay = $('#end-sem-day').val();
+
+  /**
+  * do validation here
+  **/
+    $.ajax({
+      url:backEndUrl + "/admin/semester/",
+      method: "POST",
+      dataType: "json",
+      data: JSON.stringify({
+        'startDate' : startSemDay,
+        'endDate' : endSemDay
+      }),
+      success: function(a){
+        alert("successfully created");
+        //newSuccessAlert("Successfully added!");
+      },
+    error: function(reply){
+        reply = reply.responseJSON;
+        newErrorAlert(reply.msg);
+    }
+  });
+
+});
+
 
 $.ajax({
   url:backEndUrl + "/classes/pending/count/",
@@ -26,6 +54,11 @@ $.ajax({
   }
 });
 
+
+
+/*
+
+*/
 
 var newWarningAlert = function(msg){
  return `<div class="alert alert-success">

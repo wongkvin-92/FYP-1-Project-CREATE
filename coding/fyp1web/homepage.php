@@ -72,7 +72,22 @@
               </p>
             </li>
           </ul>
-
+          <ul id="set-semester">
+            <h2>Set Semester</h2>
+            <li >
+              <h4>Set Start Date</h4>
+              <p>
+              <input type="date" id="start-sem-day" style="color:'black'; margin-left:10px;"/>
+            </p>
+            </li>
+            <h4>Set End Date</h4>
+            <p>
+            <input type="date" id="end-sem-day" style="color:'black'; margin-left:10px;"/>
+          </p>
+          </ul>
+          <div class="submitSemdate">
+            <button class="btnSubmit" id="submitSemdate" > submit </button>
+          </div>
           </div>
         <div class="buttonLayout">
           <button class="btnSubmit" id="btnLogout"> logout </button>
