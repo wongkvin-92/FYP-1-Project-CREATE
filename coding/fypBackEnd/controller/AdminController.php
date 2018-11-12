@@ -177,10 +177,10 @@ class AdminController extends MasterController{
      */
 
     public function viewPendingRequest(){
-	$rescheduleDA = new ClassReschedulingDA($this->con);
+    	$rescheduleDA = new ClassReschedulingDA($this->con);
 
-	$list = $rescheduleDA->getPendingList();
-	$this->returnObject($list);
+    	$list = $rescheduleDA->getPendingList();
+    	$this->returnObject($list);
     }
     /*
        public function changeVenue($id, $venue){

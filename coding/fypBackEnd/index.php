@@ -421,8 +421,8 @@ $klein->respond('GET', $root.'/state/student/', function() use ($student){
 
 //TODO: remove  this
 /*$klein->respond('GET', $root.'/test/student/update/', function() use ($student){
-    $student->updateSubjectList(['bit100', 'bit104']);
-});*/
+   $student->updateSubjectList(['bit100', 'bit104']);
+   });*/
 
 $klein->respond('POST', $root.'/student/schedule/[*:date]', function($r) use ($student){
     //$id = $student->getStudentID();
@@ -441,11 +441,17 @@ $klein->respond('GET', $root.'/subjects/', function() use ($student){
 
 $klein->respond('POST', $root.'/student/all/schedule/hash/', function($r) use ($student){
     $subjectList = json_decode($r->body())->subjectList;
+    if(gettype($subjectList)=="string"){ //bugfix for iphone
+	$subjectList = json_decode($subjectList);
+    }
     $student->fetchAllScheduleHash($subjectList);
 });
 
 $klein->respond('POST', $root.'/student/all/schedule/', function($r) use ($student){
     $subjectList = json_decode($r->body())->subjectList;
+    if(gettype($subjectList)=="string"){ //bugfix for iphone
+	$subjectList = json_decode($subjectList);
+    }
     $student->fetchAllSchedule($subjectList);
 });
 

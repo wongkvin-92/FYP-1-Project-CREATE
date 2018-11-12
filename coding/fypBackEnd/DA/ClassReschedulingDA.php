@@ -70,7 +70,8 @@ class ClassReschedulingDA extends DataAccessObject{
         lec.lecturerName as "lecturer",
         cr.newVenue	as "venue",
         cl.type as "type",
-        DAYNAME(CAST(cr.newDateTime as DATE)) as "reDate",
+        CAST(cr.oldDateTime as DATE) as "oDate",
+        CAST(cr.newDateTime as DATE) as "reDate",
         CAST(cr.newDateTime AS TIME) as "reTime",
         cl.duration as "duration"
         FROM `class_rescheduling` as cr
