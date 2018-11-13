@@ -89,11 +89,14 @@ class StudentController extends MasterController{
     }
 
     public function fetchAllSchedule($subjectList){
-	$this->storeSubjectList($subjectList); //store subject list in the session
-	$this->updateSubjectList($subjectList);
-	$lessonDA = new ClassLessonDA($this->con);
-	$allSchedule = $lessonDA->getEntireSchedule($subjectList);
-
+	if(count($subjectList) != 0){
+	    $this->storeSubjectList($subjectList); //store subject list in the session
+	    $this->updateSubjectList($subjectList);
+	    $lessonDA = new ClassLessonDA($this->con);
+	    $allSchedule = $lessonDA->getEntireSchedule($subjectList);
+	}else{
+	    $allSchedule=[];
+	}
 	print(json_encode($allSchedule));
     }
 
@@ -130,6 +133,11 @@ class StudentController extends MasterController{
     public function fetchAllScheduleHash($subjectList){
       	$this->storeSubjectList($subjectList); //store subject list in the session
         $this->updateSubjectList($subjectList);
+
+	if(count($subjectList) == 0){
+	    print(json_encode(["key" => NULL]));
+	    return;
+	}
 	
       	//$this->notificationService(
 	
