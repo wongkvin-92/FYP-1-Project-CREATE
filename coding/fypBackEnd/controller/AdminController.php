@@ -222,19 +222,22 @@ class AdminController extends MasterController{
 
 	    //3- call notification method.
 	    if($device){
-		      $msg = "Your request to approve {$subject->subjectID}/{$class_obj->type} at {$rqApprove->newVenue} was Approved! ";
+		      $msg = "Approved {$subject->subjectID}/{$class_obj->type} @ {$rqApprove->newDateTime} & {$rqApprove->newVenue}.";
 		        $this->notificationService->sendNotificationToLecturer($device->token, $msg);
 		          $this->sendMsg("Approved Successfully!");
 	    }else{
 		      $this->sendMsg("Successfully approved, but cannot send notification to the lecturer because lecturer has no registered device");
 	    }
-
+      $oldDate= $rqApprove->oldDateTime;
+      $rrr = new DateTime($oldDate);
+      $oldScheduleDate = $rrr->format('Y-m-d');
+      $newScheduleDateTime = $rqApprove->newDateTime;
       //4- Send notfication to $students
       $ssda = new SubjectStudentEnrolledDA($this->con);
       $deviceList = $ssda->fetchDeviceList($subject->subjectID);
       foreach($deviceList as $d){
         if($d){
-          $msg = "Your class {$id} has been replaced.";
+          $msg = "Scheduled {$class_obj->subjectID} {$oldScheduleDate} to {$newScheduleDateTime} @ {$rqApprove->$newVenue}.";
           $this->notificationService->dispatchNotification($d['device_id'], $msg);
         }
       }

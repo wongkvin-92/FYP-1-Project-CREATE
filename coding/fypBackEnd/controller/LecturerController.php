@@ -111,14 +111,25 @@ class LecturerController extends MasterController{
     public function createCancellationList($arr){
       $reschedulingDA = new ClassReschedulingDA($this->con);
       //$classDA = new ClassLessonDA($this->con);
-
+      $lessonDA = new ClassLessonDA($this->con);
+      $subjectDA = new SubjectDA($this->con);
+      $ssda = new SubjectStudentEnrolledDA($this->con);
       foreach($arr as  $item){
         $rescheduling = new ClassRescheduling();
         $rescheduling->classID = $item->classID;
         $rescheduling->status = "pending";
         $rescheduling->oldDateTime = $item->cancelDate;
-
         $reschedulingDA->save($rescheduling);
+        $class_obj =  $lessonDA->fetchClassById($item->classID);
+        $subject = $subjectDA->fetchSubjectById($class_obj->subjectID);
+        //4- Send notfication to $students
+        $deviceList = $ssda->fetchDeviceList($subject->subjectID);
+        foreach($deviceList as $d){
+          if($d){
+            $msg = "Cancelled {$subject->subjectID}/{$class_obj->type} {$oldScheduleDate}.";
+            $this->notificationService->dispatchNotification($d['device_id'], $msg);
+          }
+        }
       }
       $this->sendMsg("Successfully Cancelled!");
       //$this->sendMsg("Successfully Created!");

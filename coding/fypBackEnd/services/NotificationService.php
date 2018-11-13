@@ -13,9 +13,9 @@ class NotificationService{
     }
 
     function sendNotificationsToManyLecturers($dev_array, $msg){
-	$dev_str = "";
-	foreach($dev_array as $d){
-	    $dev_str .= $d;
+    	$dev_str = "";
+    	foreach($dev_array as $d){
+    	    $dev_str .= $d;
 	}
 	$this->dispatchNotification($dev_token, $msg);
     }
