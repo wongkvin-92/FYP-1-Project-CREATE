@@ -232,12 +232,14 @@ class AdminController extends MasterController{
       $rrr = new DateTime($oldDate);
       $oldScheduleDate = $rrr->format('Y-m-d');
       $newScheduleDateTime = $rqApprove->newDateTime;
+
       //4- Send notfication to $students
       $ssda = new SubjectStudentEnrolledDA($this->con);
       $deviceList = $ssda->fetchDeviceList($subject->subjectID);
       foreach($deviceList as $d){
         if($d){
-          $msg = "Scheduled {$class_obj->subjectID} {$oldScheduleDate} to {$newScheduleDateTime} @ {$rqApprove->$newVenue}.";
+          $msg = "Scheduled {$class_obj->subjectID} {$oldScheduleDate} to {$newScheduleDateTime} @ {$rqApprove->newVenue}.";
+          //$msg = "Your class was changed";
           $this->notificationService->dispatchNotification($d['device_id'], $msg);
         }
       }
