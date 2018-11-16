@@ -2,12 +2,11 @@
 class LecturerController extends MasterController{
     public function __construct($con){
 	     $this->con = $con;
-    }
+    }    
 
-    /*****************
+    /******************
      *  LOGIN SECTION *
      ******************/
-
     function login($email, $pass){
     	$lecturerda = new LecturerDA($this->con);
 
