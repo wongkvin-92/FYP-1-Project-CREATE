@@ -80,7 +80,7 @@ class MainControl extends MasterController{
 	    }
 	}else{
 	    throw new \Exception("User Not Found!");
-	}	
+	}
     }
 
 
@@ -89,7 +89,7 @@ class MainControl extends MasterController{
 	$sem = $semDA->fetchSemester();
 	if($sem->id == null)
 	    throw new \Exception("Semester not set by admin");
-	print(json_encode($sem));	
+	print(json_encode($sem));
     }
 
 }

@@ -54,6 +54,16 @@ $.ajax({
   }
 });
 
+$.ajax({
+  url:backEndUrl + "/semester/",
+  method: "GET",
+  dataType: "json",
+  success: function(a){
+    $('#start-sem-day').val(a.start_date);
+    $('#end-sem-day').val(a.end_date);
+  }
+});
+
 
 
 /*

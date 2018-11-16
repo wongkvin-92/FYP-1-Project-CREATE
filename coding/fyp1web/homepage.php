@@ -72,22 +72,41 @@
               </p>
             </li>
           </ul>
-          <ul id="set-semester">
-            <h2>Set Semester</h2>
+          <ul class="flex cards" id="set-semester">
             <li >
-              <h4>Set Start Date</h4>
-              <p>
-              <input type="date" id="start-sem-day" style="color:'black'; margin-left:10px;"/>
-            </p>
-            </li>
-            <h4>Set End Date</h4>
-            <p>
-            <input type="date" id="end-sem-day" style="color:'black'; margin-left:10px;"/>
-          </p>
+              <h2>Semester Dates</h2>
+              <div class="panel panel-table start_end_date table-responsive ">
+                <div class="panel-heading">
+                  <div  class="row table-responsive borderline-style1">
+                       <table>
+                            <tr>
+                              <td>
+                                <h4 style="margin-bottom: 5px; color: white;">SEM Start Date</h4>
+                                <input type="date" id="start-sem-day" />
+                              </td>
+
+                              <td>
+                                <div style="margin-left:20px;">
+                                  <h4 style="margin-bottom: 5px; color: white;">SEM End Date</h4>
+                                  <input type="date" id="end-sem-day" />
+                                </div>
+                              </td>
+
+                            </tr>
+                            <tr>
+                              <td>
+                              <div>
+                                <button class="btnSubmit" id="submitSemdate" > submit </button>
+                              </div>
+                            </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
           </ul>
-          <div class="submitSemdate">
-            <button class="btnSubmit" id="submitSemdate" > submit </button>
-          </div>
+
           </div>
         <div class="buttonLayout">
           <button class="btnSubmit" id="btnLogout"> logout </button>
@@ -186,7 +205,7 @@
                  <h3 class="panel-title">Lessons</h3>
                  <br/>
                  <div class="row table-responsive lesson-input_outline borderline-style">
-                   <table >
+                   <table>
                        <td class="venue">
                           <input type="text" id="venue-field" placeholder="Venue" />
                        </td>

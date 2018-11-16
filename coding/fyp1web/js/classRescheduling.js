@@ -40,11 +40,11 @@ $.ajax({
 
 //insert Data
 function newReCard(item){
-    return createReCard(item.subjectCode, item.subjectName, item.lecturer, item.type, item.reDate, item.reTime, item.duration, item.id, item.venue);
+    return createReCard(item.subjectCode, item.subjectName, item.oDate, item.type, item.reDate, item.reTime, item.duration, item.id, item.venue);
 }
 
 //create structure of the card
-function createReCard(subjectCode, subjectName, lecturer, type, rDate, rTime, duration, id, venue){
+function createReCard(subjectCode, subjectName, oDate, type, rDate, rTime, duration, id, venue){
   var replacementCard = `
     <div class="content-layout" id="approval-request-`+id+`">
       <div style="padding-bottom:10px; position:relative; z-index:9999">
@@ -57,12 +57,11 @@ function createReCard(subjectCode, subjectName, lecturer, type, rDate, rTime, du
         <h3><span class="left">Code:</span> <span class="right" id="subjectCode"></span></h3>
         <p class="class-reschedule_subject"><span class="left">Subject:</span> <span class="right" id="subjectName"></span></p>
         <p><span class="left">Type:</span> <span class="right" id="type"></span></p>
-        <p><span class="left">Lecturer:</span> <span class="right" id="lecturer"></span></p>
-        <p><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
-        <p><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
-
+        <p><span class="left">Ori-Date:</span> <span class="right" id="oDate"></span></p>
         <p><span class="left">Duration:</span><span class="right" id="duration"></span></p>
-        <p><span class="left">Venue:</span> <span class="right venueApprove" >`+venue+`</span></p>
+        <p  style="color: blue;"><span class="left">Re-Date:</span> <span class="right date" id="reDate"></span></p>
+        <p style="color: blue;"><span class="left">Re-Time:</span> <span class="right time" id="reTime"></span></p>
+        <p style="color: blue;"><span class="left">Venue:</span> <span class="right venueApprove" >`+venue+`</span></p>
         <!--
         <p><span class="left">Venue:</span>
           <span class="right">
@@ -83,7 +82,7 @@ function createReCard(subjectCode, subjectName, lecturer, type, rDate, rTime, du
   jqs.find("#subjectCode").html(subjectCode);
   jqs.find("#subjectName").html(subjectName);
   jqs.find("#type").html(type);
-  jqs.find("#lecturer").html(lecturer);
+  jqs.find("#oDate").html(oDate);
   jqs.find("#reDate").html(rDate);
   jqs.find("#reTime").html(rTime);
   jqs.find("#duration").html(duration +"hour(s)");
@@ -122,24 +121,24 @@ function approveClass(id){
         createErrAlert("Please enter a class venue!");
         return;
       }else{
-      if (confirm('Are you sure you approve this Class Reschedulement?')) {
-        $.ajax({
-            url : backEndUrl+"/classes/"+id+"/approve/",
-            method : "GET",
-            dataType : "json",
-            success : function(r) {
-              removeClass(id);
-              createSucAlert(r.msg);
+        if (confirm('Are you sure you approve this Class Reschedulement?')) {
+            $.ajax({
+                url : backEndUrl+"/classes/"+id+"/approve/",
+                method : "GET",
+                dataType : "json",
+                success : function(r) {
+                  removeClass(id);
+                  createSucAlert(r.msg);
 
-            },
-    	error: function(r){
-    	    r = r.responseJSON;
-    	    alert(r.msg);
-    	}
-        });
-    } else {
-        return;
-      }
+                },
+        	error: function(r){
+        	    r = r.responseJSON;
+        	    alert(r.msg);
+        	}
+            });
+        } else {
+            return;
+        }
     }
 }
 
@@ -163,11 +162,12 @@ var subjectBox = $('#approval-request-'+id);
       <div style="position:relative; z-index:1000; top:-15px;">
         <h3 ><span class="left">Code:</span> <span class="right" id="subjectCode">`+item.subjectCode+`</span></h3>
         <p ><span class="left">Subject:</span> <span class="right" id="subjectName">`+item.subjectName+`</span></h5>
-        <p ><span class="left">Lecturer:</span> <span class="right" id="lecturer">`+item.lecturer+`</span></h5>
+        <p ><span class="left">oDate:</span> <span class="right" id="oDate">`+item.oDate+`</span></h5>
+                  <p ><span class="left">Duration:</span> <span class="right" id="duration">`+item.duration+`</span></p>
         <div class="redateBox">
           <p ><span class="left redateBox">Re-Date:</span> <span class="right date" id="reDate"><input id="newDate" type="date" name="datechanged" value="`+item.reDate+`" /></span></p>
           <p ><span class="left">Re-Time:</span> <span class="right time" id="reTime"><input id="newTime" type="time" name="timechanged" value="`+item.reTime+`" /></span></p>
-          <p ><span class="left">Duration:</span> <span class="right" id="duration">2</span></p>
+
           <p><span class="left">Venue:</span> <span class="right"><input id="newVenue"  type="text" name="venuechanged"  value="`+item.venue+`" required style="width:52px;" /></span></p>
           <div class="btn-style">
             <p><a class="btn btn-primary btn-style2 approveBtn" role="button" onClick="saveBtn(`+id+`)">Save &raquo;</a></p>
@@ -303,25 +303,25 @@ var createSucAlert = function(msg){
   $('#general_msg').html(newSuccAlert(msg));
   setTimeout(function(){
     disapMsg();
-  }, 2000);
+  }, 5000);
 }
 var createWarAlert = function(msg){
   $('#general_msg').html(newWarnAlert(msg));
   setTimeout(function(){
     disapMsg();
-  }, 2000);
+  }, 5000);
 }
 
 var createErrAlert = function(msg){
   $('#general_msg').html(newErrAlert(msg));
   setTimeout(function(){
     disapMsg();
-  }, 2000);
+  }, 5000);
 }
 
 var createInfAlert = function(msg){
   $('#general_msg').html(newInfAlert(msg));
   setTimeout(function(){
     disapMsg();
-  }, 2000);
+  }, 5000);
 }

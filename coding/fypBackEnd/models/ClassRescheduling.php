@@ -9,7 +9,7 @@ class ClassRescheduling{
 
     private $lesson;
     private $subject;
-
+  public $newVenue;
 
 
   //serialize only accept default constructor
