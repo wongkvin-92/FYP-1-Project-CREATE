@@ -2,7 +2,7 @@
 class LecturerController extends MasterController{
     public function __construct($con){
 	     $this->con = $con;
-    }    
+    }
 
     /******************
      *  LOGIN SECTION *
@@ -48,6 +48,10 @@ class LecturerController extends MasterController{
 
     public function getLecturerID(){
     	return $_SESSION['credentials']['user']->getID();
+    }
+
+    public function getLecturer(){
+      return $_SESSION['credentials']['user'];
     }
 
 
@@ -164,11 +168,12 @@ class LecturerController extends MasterController{
 
     	$rescheduleDA = new ClassReschedulingDA($this->con);
     	$reschedule = $rescheduleDA->fetchClassById($id);
-      if ($lecturer != null){
+      //$lecturer = $this->getLecturer();
+      //if ($lecturer != null){
     	$reschedule->setNewDateTime($date, $time);
     	$rescheduleDA->save($reschedule);
     	print json_encode(['result'=> true, 'msg'  => "Successfully Requested Scheduling!"]);
-      }
+      //}
     }
     /*
     if ($date != "" || $time !=""){
