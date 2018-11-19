@@ -2,6 +2,7 @@
 class LecturerController extends MasterController{
     public function __construct($con){
 	     $this->con = $con;
+       	$this->notificationService = new NotificationService();
     }
 
     /******************
