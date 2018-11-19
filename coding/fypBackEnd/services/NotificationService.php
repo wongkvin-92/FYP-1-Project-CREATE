@@ -53,7 +53,7 @@ public function dispatchNotification($devstr, $msg){
   	} else {
   	    return true;
   	}
-      }
+  }
 
       function sendNotificationToStudents($studentList, $tmp){
 
