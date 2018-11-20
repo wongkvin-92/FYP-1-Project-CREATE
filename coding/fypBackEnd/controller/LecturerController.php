@@ -1,7 +1,7 @@
 <?php
 class LecturerController extends MasterController{
     public function __construct($con){
-	     $this->con = $con;
+	$this->con = $con;
     }
 
     /******************
@@ -13,18 +13,18 @@ class LecturerController extends MasterController{
       	$lecturer = $lecturerda->fetchLecturerByEmail($email);
       	if ($lecturer != null){
             if($lecturer->lecturerPassword == $pass){
-          		$obj = [
-                		    'type' => 'lecturer',
-                		    'user' => $lecturer
-                		];
+          	$obj = [
+                    'type' => 'lecturer',
+                    'user' => $lecturer
+                ];
 
-        		  $_SESSION['credentials'] = $obj;
-          		print json_encode(['result'=> true, 'msg' => 'Login Sucessfully!', 'id'=> $lecturer->lecturerID]);
+        	$_SESSION['credentials'] = $obj;
+          	print json_encode(['result'=> true, 'msg' => 'Login Sucessfully!', 'id'=> $lecturer->lecturerID]);
             }else{
-          		throw new Exception("Incorrect username/password!");
-                  }
+          	throw new Exception("Incorrect username/password!");
+            }
       	}else{
-                  throw new \Exception("User Not Found!");
+            throw new \Exception("User Not Found!");
       	}
       	return;
     }
@@ -32,12 +32,12 @@ class LecturerController extends MasterController{
 
     public function checkLoginState(){
     	if (isset($_SESSION['credentials'])
-                && $_SESSION['credentials']['type'] == 'lecturer'
+            && $_SESSION['credentials']['type'] == 'lecturer'
     	){
-                return true;
+            return true;
     	}
     	else{
-                return false;
+            return false;
     	}
     }
 
@@ -51,7 +51,7 @@ class LecturerController extends MasterController{
     }
 
     public function getLecturer(){
-      return $_SESSION['credentials']['user'];
+	return $_SESSION['credentials']['user'];
     }
 
 
@@ -112,30 +112,30 @@ class LecturerController extends MasterController{
     }
 
     public function createCancellationList($arr){
-      $reschedulingDA = new ClassReschedulingDA($this->con);
-      //$classDA = new ClassLessonDA($this->con);
-      $lessonDA = new ClassLessonDA($this->con);
-      $subjectDA = new SubjectDA($this->con);
-      $ssda = new SubjectStudentEnrolledDA($this->con);
-      foreach($arr as  $item){
-        $rescheduling = new ClassRescheduling();
-        $rescheduling->classID = $item->classID;
-        $rescheduling->status = "pending";
-        $rescheduling->oldDateTime = $item->cancelDate;
-        $reschedulingDA->save($rescheduling);
-        $class_obj =  $lessonDA->fetchClassById($item->classID);
-        $subject = $subjectDA->fetchSubjectById($class_obj->subjectID);
-        //4- Send notfication to $students
-        $deviceList = $ssda->fetchDeviceList($subject->subjectID);
-        foreach($deviceList as $d){
-          if($d){
-            $msg = "Cancelled {$subject->subjectID}/{$class_obj->type} {$oldScheduleDate}.";
-            $this->notificationService->dispatchNotification($d['device_id'], $msg);
-          }
-        }
-      }
-      $this->sendMsg("Successfully Cancelled!");
-      //$this->sendMsg("Successfully Created!");
+	$reschedulingDA = new ClassReschedulingDA($this->con);
+	//$classDA = new ClassLessonDA($this->con);
+	$lessonDA = new ClassLessonDA($this->con);
+	$subjectDA = new SubjectDA($this->con);
+	$ssda = new SubjectStudentEnrolledDA($this->con);
+	foreach($arr as  $item){
+            $rescheduling = new ClassRescheduling();
+            $rescheduling->classID = $item->classID;
+            $rescheduling->status = "pending";
+            $rescheduling->oldDateTime = $item->cancelDate;
+            $reschedulingDA->save($rescheduling);
+            $class_obj =  $lessonDA->fetchClassById($item->classID);
+            $subject = $subjectDA->fetchSubjectById($class_obj->subjectID);
+            //4- Send notfication to $students
+            $deviceList = $ssda->fetchDeviceList($subject->subjectID);
+            foreach($deviceList as $d){
+		if($d){
+		    $msg = "Cancelled {$subject->subjectID}/{$class_obj->type} {$oldScheduleDate}.";
+		    $this->notificationService->dispatchNotification($d['device_id'], $msg);
+		}
+            }
+	}
+	$this->sendMsg("Successfully Cancelled!");
+	//$this->sendMsg("Successfully Created!");
     }
 
     /**
@@ -148,48 +148,48 @@ class LecturerController extends MasterController{
      *  - Status must remain "pending"
      **/
     public function applyClassReplacement($id, $date, $time){
-      /*
-      $today = new DateTime();
-      $today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
-      $datetime = new DateTime($date . " " . $time, new DateTimeZone("Asia/Kuala_Lumpur"));
-      $validDayStart = new DateTime($date . " 08:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
-      $validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
+	/*
+	   $today = new DateTime();
+	   $today->setTimeZone(new DateTimeZone("Asia/Kuala_Lumpur"));
+	   $datetime = new DateTime($date . " " . $time, new DateTimeZone("Asia/Kuala_Lumpur"));
+	   $validDayStart = new DateTime($date . " 08:30:00", new DateTimeZone("Asia/Kuala_Lumpur"));
+	   $validDayEnd = new DateTime($date . " 18:00:00" , new DateTimeZone("Asia/Kuala_Lumpur"));
 
-      if($datetime < $today){
-         $systime = $today->format("d-m-Y H:i:s");
-         throw new \Exception("Cannot create a lesson for the passed date. \n Current system date is {$systime}");
-      }
+	   if($datetime < $today){
+           $systime = $today->format("d-m-Y H:i:s");
+           throw new \Exception("Cannot create a lesson for the passed date. \n Current system date is {$systime}");
+	   }
 
-      //validate the time is between 5.30 to 6
-      if($datetime < $validDayStart || $datetime > $validDayEnd){
-          throw new \Exception("Lesson can only take place between 8:30AM to 06:00PM");
-      }
-      */
+	   //validate the time is between 5.30 to 6
+	   if($datetime < $validDayStart || $datetime > $validDayEnd){
+           throw new \Exception("Lesson can only take place between 8:30AM to 06:00PM");
+	   }
+	 */
 
     	$rescheduleDA = new ClassReschedulingDA($this->con);
     	$reschedule = $rescheduleDA->fetchClassById($id);
-      //$lecturer = $this->getLecturer();
-      //if ($lecturer != null){
+	//$lecturer = $this->getLecturer();
+	//if ($lecturer != null){
     	$reschedule->setNewDateTime($date, $time);
     	$rescheduleDA->save($reschedule);
     	print json_encode(['result'=> true, 'msg'  => "Successfully Requested Scheduling!"]);
-      //}
+	//}
     }
     /*
-    if ($date != "" || $time !=""){
-      $reschedule->setNewDateTime($date, $time);
-      $rescheduleDA->save($reschedule);
-      print json_encode(['result'=> true, 'msg'  => "Successfully Requested Scheduling!"]);
-    }else{
-      throw new Exception("date or time is empty!");
-    }
-*/
+       if ($date != "" || $time !=""){
+       $reschedule->setNewDateTime($date, $time);
+       $rescheduleDA->save($reschedule);
+       print json_encode(['result'=> true, 'msg'  => "Successfully Requested Scheduling!"]);
+       }else{
+       throw new Exception("date or time is empty!");
+       }
+     */
     public function listOfCancellation($id, $filter){
     	$rescheduleDA = new ClassReschedulingDA($this->con);
     	//$list = $resschedulingDA->getListOfCancellation($id);
 
     	if($filter == "pending" || $filter == "approved"){
-          $list = $rescheduleDA->getCancellationByStatus($id, $filter);
+            $list = $rescheduleDA->getCancellationByStatus($id, $filter);
     	}else if($filter == "unscheduled"){
     	    $list = $rescheduleDA->getCancellationByScheduled($id);
     	}else{
@@ -198,10 +198,10 @@ class LecturerController extends MasterController{
     	print(json_encode($list));
     }
     /*
-    else if($filter == "scheduled" \\ $filter == "unscheduled" ){
-        $test = $filter == 'unscheduled';
-        $list = $rescheduleDA->getCancellationByScheduled($id, $test);
-    }*/
+       else if($filter == "scheduled" \\ $filter == "unscheduled" ){
+       $test = $filter == 'unscheduled';
+       $list = $rescheduleDA->getCancellationByScheduled($id, $test);
+       }*/
 
     public function deleteCancellation($classID){
 
@@ -209,13 +209,13 @@ class LecturerController extends MasterController{
 
     	$rescheduling = $reschedulingDA->fetchClassById($classID);
     	if($rescheduling->status == "approved")
-                throw new Exception("Only pending request can be removed");
+            throw new Exception("Only pending request can be removed");
 
     	if(  $reschedulingDA->remove($rescheduling)){
-                $this->sendMsg("Successfully removed!");
+            $this->sendMsg("Successfully removed!");
     	} else{
-                throw new Exception("Failed to remove!");
-      }
+            throw new Exception("Failed to remove!");
+	}
 
     }
 
@@ -263,7 +263,7 @@ class LecturerController extends MasterController{
         foreach($list as $class){
             $day = substr($class["day"],0,3);
             if(!array_key_exists($day, $scheduleMap))
-		          $scheduleMap[$day] = [];
+		$scheduleMap[$day] = [];
             $scheduleMap[$day] []= $class;
         }
 
@@ -277,7 +277,7 @@ class LecturerController extends MasterController{
             $dailySchedule[$day] = [];
 
             if(array_key_exists($day, $scheduleMap)){  //If lecturer have class for this day
-		            foreach($scheduleMap[$day] as $class){  //For every class on that day
+		foreach($scheduleMap[$day] as $class){  //For every class on that day
                     $time = new DateTime($class['dateTime']);
                     $startTime = $time->format("H:m:s");
 
@@ -287,17 +287,17 @@ class LecturerController extends MasterController{
 
                     $classDate = $scheduleDay->format("d-m-Y");
                     $dailySchedule [$day] []= [
-                			'subjectCode' => $class['title'],
-                			'date' => $classDate,
-                			'startTime' => $startTime,
-                			'endTime' => $endTime,
-                			'type' => $class['type'],
-                			'venue' => $class['venue'],
-                			'isCancelled' => "false",
-                			"uuid" => md5($classDate . $lecturerID . $class['title'])
+                	'subjectCode' => $class['title'],
+                	'date' => $classDate,
+                	'startTime' => $startTime,
+                	'endTime' => $endTime,
+                	'type' => $class['type'],
+                	'venue' => $class['venue'],
+                	'isCancelled' => "false",
+                	"uuid" => md5($classDate . $lecturerID . $class['title'])
                     ];
 
-		              }
+		}
             }
             $scheduleDay->add(new DateInterval("P1D"));
         }
@@ -316,6 +316,45 @@ class LecturerController extends MasterController{
            print("Schedule for next week");
            else
            print("Schedule for upcoming ".$weekNum);*/
+    }
+
+    public function getSubjectList($id){
+	$subjectDA = new SubjectDA($this->con);
+	print(json_encode(['id' => $subjectDA->fetchSubjectsByLecturer($id)]));
+    }
+
+    public function fetchAllSchedule($id){
+	/**
+	 * @todo Write a single SQL query that fetch the schedule
+	 **/
+	$subjectDA = new SubjectDA($this->con);
+	$subjectList = $subjectDA->fetchSubjectCodesByLecturer($id);
+	
+
+	if(count($subjectList) != 0) {
+	    $lessonDA = new ClassLessonDA($this->con);
+	    $allSchedule = $lessonDA->getEntireSchedule($subjectList);
+	}else{
+	    $allSchedule = [];
+	}
+	print(json_encode($allSchedule));
+    }
+
+    public function fetchScheduleHash($id){
+	/**
+	 * @todo Write a single SQL query that fetch the schedule hash
+	 **/
+	$lessonDA = new ClassLessonDA($this->con);
+	$subjectDA = new SubjectDA($this->con);
+	$subjectList = $subjectDA->fetchSubjectCodesByLecturer($id);
+
+	if(count($subjectList) == 0){
+	    print(json_encode(["key" => NULL]));
+	    return;
+	} 
+	
+	$hashSchedule = $lessonDA->getEntireScheduleHash($subjectList)[0];
+      	print(json_encode($hashSchedule));	
     }
 
 
