@@ -64,24 +64,24 @@ class ClassReschedulingDA extends DataAccessObject{
     public function getPendingList(){
       $query = <<<EOF
       SELECT
-        cr.id as "id",
-        cl.subjectID as "subjectCode",
-        subj.subjectName as "subjectName",
-        lec.lecturerName as "lecturer",
-        cr.newVenue	as "venue",
-        cl.type as "type",
-        CAST(cr.oldDateTime as DATE) as "oDate",
-        CAST(cr.newDateTime as DATE) as "reDate",
-        CAST(cr.newDateTime AS TIME) as "reTime",
-        cl.duration as "duration"
-        FROM `class_rescheduling` as cr
-        INNER JOIN `class_lesson` as cl
-        ON cr.classID = cl.classID
-        INNER JOIN `subject` as subj
-        ON cl.subjectID = subj.subjectID
-        INNER JOIN `lecturer` as lec
-        on subj.lecturerID = lec.lecturerID
-        WHERE cr.status = "pending"
+              cr.id as "id",
+              cl.subjectID as "subjectCode",
+              subj.subjectName as "subjectName",
+              lec.lecturerName as "lecturer",
+              cr.newVenue	as "venue",
+              cl.type as "type",
+              CAST(cr.oldDateTime as DATE) as "oDate",
+              CAST(cr.newDateTime as DATE) as "reDate",
+              CAST(cr.newDateTime AS TIME) as "reTime",
+              cl.duration as "duration"
+              FROM `class_rescheduling` as cr
+              INNER JOIN `class_lesson` as cl
+              ON cr.classID = cl.classID
+              INNER JOIN `subject` as subj
+              ON cl.subjectID = subj.subjectID
+              INNER JOIN `lecturer` as lec
+              on subj.lecturerID = lec.lecturerID
+              WHERE cr.newDateTime is not NULL
 EOF;
 return $this->con->query($query)
                   ->fetch_all(MYSQLI_ASSOC);
@@ -207,7 +207,7 @@ EOF;
       cl.subjectID as "subjCode",
       subj.subjectName as "subjName",
       cl.type as "type",
-      cr.Venue as "venue",
+      cr.newVenue as "venue",
       cr.newDateTime as "newDT",
       DAYNAME(CAST(cr.newDateTime as DATE)) as "day"
       FROM `class_rescheduling` as cr

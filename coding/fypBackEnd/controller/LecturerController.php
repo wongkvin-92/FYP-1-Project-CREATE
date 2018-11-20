@@ -171,6 +171,7 @@ class LecturerController extends MasterController{
     	$reschedule = $rescheduleDA->fetchClassById($id);
       //$lecturer = $this->getLecturer();
       //if ($lecturer != null){
+      
     	$reschedule->setNewDateTime($date, $time);
     	$rescheduleDA->save($reschedule);
     	print json_encode(['result'=> true, 'msg'  => "Successfully Requested Scheduling!"]);

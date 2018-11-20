@@ -41,7 +41,9 @@ class MainControl extends MasterController{
 
     public function logout(){
     	session_destroy();
-    	print(json_encode(['msg'=> 'You\'re successfully logged out!']));
+      if($_SESSION)
+        unset($_SESSION);
+    	print(json_encode(['msg'=> 'You\'re successfully logged out!' ]));
     }
 
     function login($email, $pass){

@@ -63,7 +63,7 @@ class StudentController extends MasterController{
         $list = $subjectDA->findAll();
         $arr = [];
         foreach($list as $k => $v){
-	    
+
             $lda = new LecturerDA($this->con);
             $lecturer = $lda->fetchLecturerById($v->lecturerID);
             $v->setLecturer($lecturer);
@@ -101,53 +101,52 @@ class StudentController extends MasterController{
     }
 
     public function storeSubjectList($list){
-	$_SESSION['credentials']['subject_list'] = $list;
+	     $_SESSION['credentials']['subject_list'] = $list;
     }
 
     public function getSubjectList(){
-	print(json_encode($_SESSION['credentials']['subject_list']));
+	     print(json_encode($_SESSION['credentials']['subject_list']));
     }
 
     public function updateSubjectList($subjList){
-	$enrolledDA = new SubjectStudentEnrolledDA($this->con);
-	$studentID = $this->getStudentID();
-	$studentSubjectHash = $enrolledDA->getStudententSubjectHash($studentID);
-	$triggerSubjectHash = $enrolledDA->calculateSubjectHash($subjList);
-	
-	if($studentSubjectHash == $triggerSubjectHash){
-            return false;
-	}else{
-            //Update subjects
-            $enrolledDA->deleteSubjectsOfStudent($studentID);
-            foreach($subjList as $sub){
-		$relation = new SubjectStudentEnrolled($this->con);
-		$relation->subjectID = $sub;
-		$relation->studentID = $studentID;
-		$enrolledDA->save($relation);
-	    }
+    	$enrolledDA = new SubjectStudentEnrolledDA($this->con);
+    	$studentID = $this->getStudentID();
+    	$studentSubjectHash = $enrolledDA->getStudententSubjectHash($studentID);
+    	$triggerSubjectHash = $enrolledDA->calculateSubjectHash($subjList);
+
+    	if($studentSubjectHash == $triggerSubjectHash){
+                return false;
+    	}else{
+          //Update subjects
+          $enrolledDA->deleteSubjectsOfStudent($studentID);
+          foreach($subjList as $sub){
+          		$relation = new SubjectStudentEnrolled($this->con);
+          		$relation->subjectID = $sub;
+          		$relation->studentID = $studentID;
+          		$enrolledDA->save($relation);
+	         }
 	    return true;
-	}
+	     }
 
     }
-    
+
     public function fetchAllScheduleHash($subjectList){
       	$this->storeSubjectList($subjectList); //store subject list in the session
         $this->updateSubjectList($subjectList);
 
-	if(count($subjectList) == 0){
-	    print(json_encode(["key" => NULL]));
-	    return;
-	}
-	
+      	if(count($subjectList) == 0){
+      	    print(json_encode(["key" => NULL]));
+      	    return;
+      	}
       	//$this->notificationService(
-	
+
       	//$deviceDA = new DeviceDA($this->con);
       	//$device =  $deviceDA->getFirstDevice('student', 'b1301744');
 
         //$msg = "Hello";
       	//$this->notificationService->dispatchNotification($device->token, $msg);
-	
-	$lessonDA = new ClassLessonDA($this->con);
+
+	      $lessonDA = new ClassLessonDA($this->con);
       	$hashSchedule = $lessonDA->getEntireScheduleHash($subjectList)[0];
 
       	print(json_encode($hashSchedule));

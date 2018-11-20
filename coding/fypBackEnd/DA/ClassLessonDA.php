@@ -212,10 +212,10 @@ SELECT MD5(GROUP_CONCAT(CONCAT(classID, subjectID, type, startTime, endTime, new
           CAST(cl.dateTime as Time ) as startTime,
       	CAST( date_add((cl.dateTime), INTERVAL cl.duration HOUR) AS TIME) as endTime,
           DAYNAME(cl.dateTime) as "day",
-          (NULL) as status,
-          (NULL) as newDateTime,
+          ('NULL') as status,
+          ('NULL') as newDateTime,
       	venue as newVenue,
-      	(NULL) as oldDateTime
+      	("NULL") as oldDateTime
       FROM class_lesson as cl
       INNER JOIN subject as subj
       	ON subj.subjectID = cl.subjectID
