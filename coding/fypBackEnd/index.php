@@ -347,6 +347,21 @@ if($lecturer->checkLoginState()){
     	$lecturer->listOfCancellation($id, 'all');
     });
 
+    $klein->respond('GET', $root.'/lecturer/all/subjects/', function($r) use ($lecturer){
+	$id = $lecturer->getLecturerID();
+	$lecturer->getSubjectList($id);
+    });
+
+    $klein->respond('GET', $root.'/lecturer/all/schedule/hash/', function($r) use ($lecturer){
+	$id = $lecturer->getLecturerID();
+	$lecturer->fetchScheduleHash($id);
+    });
+
+    $klein->respond('GET', $root.'/lecturer/all/schedule/', function($r) use ($lecturer){
+	$id = $lecturer->getLecturerID();
+	$lecturer->fetchAllSchedule($id);
+    });
+
     $klein->respond('GET', $root.'/cancel/lecturer/list/filter/[*:filter_mode]', function($r) use ($lecturer){
     	$filter = $r->filter_mode;
     	$id = $lecturer->getLecturerID();
