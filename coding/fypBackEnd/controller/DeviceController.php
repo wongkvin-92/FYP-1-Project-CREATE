@@ -10,27 +10,28 @@ class DeviceController extends MasterController{
     	print(json_encode($list));
     }
 
-    public function createDevice($type, $userID, $token){
+    public function createDevice($type, $userID, $token, $devid){
     	$deviceDA = new DeviceDA($this->con);
     	$device = new Device();
     	$device->type = $type;
     	$device->userID =$userID;
     	$device->token =$token;
+      $device->uuid = $devid;
 
     	$deviceDA->save($device);
-    	$this->sendMsg("Successfully saved!");
+    	$this->sendMsg("Successfully saved! ");
     }
 
-    public function fetchDevice($type, $userID){
+    public function fetchDevice($uid){
 	$deviceDA = new DeviceDA($this->con);
-	$device = $deviceDA->getFirstDevice($type, $userID);
-	return $device;
+	//$device = $deviceDA->getFirstDevice($type, $userID);
+	return $deviceDA->getDeviceByID($uid);
     }
 
 
-    public function updateDevice($token, $type, $userID){
+    public function updateDevice($token, $type, $userID, $devid){
 	     $deviceDA = new DeviceDA($this->con);
-	      $deviceDA->updateDevices($token, $type, $userID);
+	      $deviceDA->updateDevices($token, $type, $userID, $devid);
 	       $this->sendMsg("Successfully updated!");
     }
 

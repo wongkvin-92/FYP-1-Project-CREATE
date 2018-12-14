@@ -66,7 +66,7 @@ class MainControl extends MasterController{
         		];
         		unset($obj['user']->lecturerPassword);
         		$_SESSION['credentials'] = $obj;
-        		print(json_encode(['result'=> true, 'msg' => 'Login Sucessfully!', 'id'=> $lecturer->lecturerID, 'credentials' => $this->getCredentials()] ));
+        		print(json_encode(['result'=> true, 'msg' => 'Login Sucessfully!', 'id'=> $lecturer->lecturerID, 'credentials' => $this->getCredentials(), 'sem' => $sem ] ));
         	    }else{
     		      throw new Exception("Incorrect username/password!");
     	    }

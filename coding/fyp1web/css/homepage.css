@@ -596,8 +596,17 @@ table.dataTable tbody th, table.dataTable tbody td {
   padding-bottom: 1%;
   line-height: 1.42857143;
   vertical-align: middle;
-  text-align: center;
+
 }
+.table>tbody>tr>td{
+  padding-left: 20px;
+
+}
+#dayTimeCss{
+    margin-left: 100px;
+}
+
+
 @media screen and (min-width:1500px) and (max-width: 1599px){
   .inner-row-content{
     padding:5px;

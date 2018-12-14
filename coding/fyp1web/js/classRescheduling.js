@@ -133,7 +133,7 @@ function approveClass(id){
                 },
         	error: function(r){
         	    r = r.responseJSON;
-        	    alert(r.msg);
+        	    console.log(r);
         	}
             });
         } else {

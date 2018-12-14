@@ -203,7 +203,7 @@ class AdminController extends MasterController{
     	if(!$rqApprove->isApproved()){
             $rqApprove->approve();
             $da->save($rqApprove);
-
+            print json_encode(['msg'=> 'Successfully updated!']);
 	    /**
 	     * TODO: Refactor as follows, write an SQL query in
 	     * DeviceDA that fetch the lecturerID using the class rescheduling table.
@@ -218,16 +218,21 @@ class AdminController extends MasterController{
 	    $lecturerID = $subject->lecturerID;
 	    //2- Fetch the device id belonging to the lecturer
 	    $deviceDA = new DeviceDA($this->con);
-	    $device =  $deviceDA->getFirstDevice('lecturer', $lecturerID);
-
+	    //$device =  $deviceDA->getFirstDevice('lecturer', $lecturerID);
+      $lecturerDevices = $deviceDA->getAllDevices('lecturer', $lecturerID);
 	    //3- call notification method.
-	    if($device){
-		      $msg = "Approved {$subject->subjectID}/{$class_obj->type} @ {$rqApprove->newDateTime} & {$rqApprove->newVenue}.";
-		        $this->notificationService->sendNotificationToLecturer($device->token, $msg);
-		          $this->sendMsg("Approved Successfully!");
-	    }else{
-		      $this->sendMsg("Successfully approved, but cannot send notification to the lecturer because lecturer has no registered device");
-	    }
+
+      foreach($lecturerDevices as $device){
+  	    //if($device){
+        $msg = "Approved {$subject->subjectID}/{$class_obj->type} @ {$rqApprove->newDateTime} & {$rqApprove->newVenue}.";
+        $this->notificationService->sendNotificationToLecturer($device->token, $msg);
+
+  		        //$this->sendMsg("Approved Successfully!");
+  	    //}else{
+  		      //$this->sendMsg("Successfully approved, but cannot send notification to the lecturer because lecturer has no registered device");
+  	    //}
+     }
+
       $oldDate= $rqApprove->oldDateTime;
       $rrr = new DateTime($oldDate);
       $oldScheduleDate = $rrr->format('Y-m-d');
@@ -243,9 +248,8 @@ class AdminController extends MasterController{
           $this->notificationService->dispatchNotification($d['device_id'], $msg);
         }
       }
-
     	}else{
-	    throw new \Exception("You've already approved!");
+      print json_encode(['msg'=> "You've already approved!"]);
     	}
     }
 

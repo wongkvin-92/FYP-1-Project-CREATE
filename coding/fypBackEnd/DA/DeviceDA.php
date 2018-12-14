@@ -17,7 +17,7 @@ class DeviceDA extends DataAccessObject {
        }*/
 
 
-    
+
     /**
      * Fetch the first device as a Model
      *
@@ -30,10 +30,36 @@ EOF;
 	return $this->con->query($query)->fetch_object('Device');
     }
 
+    public function getAllDevices($type, $userID){
+      $query = <<<EOF
+            SELECT * FROM `device_list` WHERE `type`='$type' AND `userID` ='$userID';
+EOF;
+      $result = $this->con->query($query);
+      $devices = [];
+      while($dev = $result->fetch_object("Device")){
+        $devices []= $dev;
+      }
+      return $devices;
+    }
+
+    /**
+     * Fetch the first device as a Model
+     *
+     * @return Device object on success.
+     **/
+    public function getDeviceByID($uid){
+	$query = <<<EOF
+        SELECT * FROM `device_list` WHERE `uuid` = '$uid';
+EOF;
+	return $this->con->query($query)->fetch_object('Device');
+    }
 
 
-    
-    
+
+
+
+
+
     public function getDevices($type, $userID){
         $query = <<<EOF
         SELECT * FROM `device_list` WHERE `type`='$type' AND `userID` ='$userID';
@@ -41,9 +67,9 @@ EOF;
 	return $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function updateDevices($token, $type, $userID){
+    public function updateDevices($token, $type, $userID, $uid){
         $query = <<<EOF
-        UPDATE `device_list` SET `token`='$token' WHERE `type` = '$type' AND userID='$userID';
+        UPDATE `device_list` SET `token`='$token', `type`='$type', `userID` = '$userID'  WHERE uuid='$uid';
 EOF;
 	return $this->con->query($query);
     }

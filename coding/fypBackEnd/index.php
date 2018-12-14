@@ -258,6 +258,10 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
     $klein->respond('PATCH', $root.'/subjects/[a:id]/', function($r) use ($admin){
 	print("Todo");
     });
+    $klein->respond('POST', $root.'/insert/csv/lesson/', function($r) use ($admin){
+      $csv_subject = getPost('import_subject');
+      $admin->importCsvSubject($csv_subject);
+    });
     /*
        $klein->respond('POST', $root.'/lessons/', function($r) use ($admin){
        $sid = getPost('subjectID');
@@ -489,9 +493,13 @@ $klein->respond('POST', $root.'/device/', function($r) use ($deviceController){
     	$c = $_SESSION['credentials'];
 
     	$token = $d->token;
+      $devID = $d->devid;
 
 	if($token == NULL)
             throw new \Exception("Empty token received.");
+
+      if ($devID == NULL)
+        throw new \Exception("No device ID received");
 
     	$type = $_SESSION['credentials']['type'];
 
@@ -508,13 +516,13 @@ $klein->respond('POST', $root.'/device/', function($r) use ($deviceController){
         }else{
             $userID = $c['user']->{$id_key};
 
-	    $dev = $deviceController->fetchDevice($type, $userID);
-	    if($dev == NULL){
-		//Create a new device
-        	$deviceController->createDevice($type,$userID,$token);
-	    }else{
-		$deviceController->updateDevice($token, $type, $userID);
-	    }
+      	    $dev = $deviceController->fetchDevice($devID);
+
+            if($dev == NULL){
+              $deviceController->createDevice($type, $userID, $token, $devID);
+      	    }else{
+      		      $deviceController->updateDevice($token, $type, $userID, $devID);
+      	    }
     	}
     }else{
     	print(json_encode(["result" => false, "msg" => "Request to add device without login session set."]));

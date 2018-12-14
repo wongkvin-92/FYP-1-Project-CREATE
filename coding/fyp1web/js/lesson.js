@@ -78,7 +78,7 @@ var lessonCreateViewModel = {
     }
 };
 
-var dateTimeFormat = "dddd HH:MM";
+var dateTimeFormat = "dddd HH:mm";
 var SQLDateTimeFormat = "YYYY-MM-DD HH:mm:ss";
 
 var lessonTableModel = {
@@ -120,13 +120,18 @@ var lessonTableModel = {
 		dateTime: celljqs.dateTime.children("input").val(),
 		duration: celljqs.duration.children("input").val()
 	    };
+
 	    dataToSend = `{
               "venue": "`+ inputVals.venue+`",
               "type": "`+ inputVals.type+`",
               "dateTime": "`+moment(inputVals.dateTime).format("YYYY-MM-DD HH:mm:ss")+`",
               "duration": "`+inputVals.duration+`"
              }`;
+
+  console.log(moment(inputVals.dateTime).format("YYYY-MM-DD HH:mm:ss"));
 	}
+
+
 
 	this.selectedRow = {
 	    row:  td,
@@ -155,7 +160,7 @@ var lessonTableModel = {
 	    inputFields.dateTimeInput.datetimepicker({
     		defaultDate: moment(this.selectedRow.tds.dateTime.children().data('date'))
 	    });
-
+    
 
 	    //2. Replace td with input fields.
 	    tds.venue.html(inputFields.venueInput);
@@ -494,6 +499,7 @@ $(document).ready(function(){
 	    {
                 "render": function ( data, type, row , meta) {
 		    var dateTimeStr = moment(data).format(dateTimeFormat);
+
 		    return `<td  class="datetime" >`+dateTimeStr+`<span data-date="`+data+`"></span></td>`;
                 },
                 "targets": 3

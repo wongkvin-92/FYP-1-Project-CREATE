@@ -1,6 +1,6 @@
 <?php
 class Device{
-  public $id, $token, $type, $userID, $createDate;
+  public $id, $token, $type, $userID, $createDate, $uuid;
 
   public function getId(){
     return $this->id;

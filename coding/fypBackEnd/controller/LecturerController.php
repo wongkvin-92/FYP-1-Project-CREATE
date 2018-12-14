@@ -132,7 +132,7 @@ class LecturerController extends MasterController{
             $deviceList = $ssda->fetchDeviceList($subject->subjectID);
             foreach($deviceList as $d){
 		if($d){
-		    $msg = "Cancelled {$subject->subjectID}/{$class_obj->type} {$oldScheduleDate}.";
+		    $msg = "Cancelled {$subject->subjectID}/{$class_obj->type} {$rescheduling->oldDateTime}.";
 		    $this->notificationService->dispatchNotification($d['device_id'], $msg);
 		}
             }

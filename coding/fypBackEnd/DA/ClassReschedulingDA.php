@@ -81,7 +81,7 @@ class ClassReschedulingDA extends DataAccessObject{
               ON cl.subjectID = subj.subjectID
               INNER JOIN `lecturer` as lec
               on subj.lecturerID = lec.lecturerID
-              WHERE cr.newDateTime is not NULL
+              WHERE cr.newDateTime is not NULL AND cr.status = "pending"
 EOF;
 return $this->con->query($query)
                   ->fetch_all(MYSQLI_ASSOC);

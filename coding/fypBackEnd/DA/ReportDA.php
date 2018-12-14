@@ -12,6 +12,7 @@
     public function getClassRescheduling(){
       $query = <<<EOF
       SELECT
+        cr.id as "id",
         lec.lecturerName as "lecturer",
         cl.subjectID as "subjectCode",
       CAST(cl.dateTime as TIME) as "subStartTime",
@@ -26,7 +27,7 @@
       INNER JOIN `class_lesson` as cl ON cl.classID = cr.classID
       INNER JOIN `subject` as subj ON subj.subjectID = cl.subjectID
       INNER JOIN `lecturer` as lec ON lec.lecturerID = subj.lecturerID
-      WHERE cr.status = "approved"
+
 EOF;
       return $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
               //->fetch_all(MYSQLI_ASSOC);

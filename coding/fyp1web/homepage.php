@@ -44,6 +44,7 @@
           <!-- Subject (Element)-->
           <li class="dashboard-nav__item"><a href="lesson"><i class="fa fa-tasks" aria-hidden="true"></i>Lesson</a></li>
           <li class="dashboard-nav__item"><a href="timetable"><i class="fa fa-tasks" aria-hidden="true"></i>Timetable</a></li>
+          <li class="dashboard-nav__item"><a href="semester"><i class="fa fa-tasks" aria-hidden="true"></i>Semester</a></li>
         </ul>
       </div>
     </div>
@@ -71,40 +72,6 @@
 
               </p>
             </li>
-          </ul>
-          <ul class="flex cards" id="set-semester">
-            <li >
-              <h2>Semester Dates</h2>
-              <div class="panel panel-table start_end_date table-responsive ">
-                <div class="panel-heading">
-                  <div  class="row table-responsive borderline-style1">
-                       <table>
-                            <tr>
-                              <td>
-                                <h4 style="margin-bottom: 5px; color: white;">SEM Start Date</h4>
-                                <input type="date" id="start-sem-day" />
-                              </td>
-
-                              <td>
-                                <div style="margin-left:20px;">
-                                  <h4 style="margin-bottom: 5px; color: white;">SEM End Date</h4>
-                                  <input type="date" id="end-sem-day" />
-                                </div>
-                              </td>
-
-                            </tr>
-                            <tr>
-                              <td>
-                              <div>
-                                <button class="btnSubmit" id="submitSemdate" > submit </button>
-                              </div>
-                            </td>
-                            </tr>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
           </ul>
 
           </div>
@@ -155,6 +122,7 @@
               <table class="table table-hover"  width="100%" id="report_datatable">
                 <thead>
                   <tr>
+                  <th>id</th>
                   <th>Lecturer</th>
                   <th>Subject Code</th>
                   <th>Subject Start Time (24h)</th>
@@ -198,10 +166,17 @@
                          <option value="">Lecturer Name</option>
                        </select>
                      </td>
+                     <td>
+                       <input
+                        type="file" name="file" id="file" accept=".csv">
+                        <button class="btn btn-default btn-sm" type="submit" id="import_subject" name="import_subject">Import</button>
+
+                     </td>
                    </tr>
                    </table>
                  </div>
                  <br/>
+
                  <h3 class="panel-title">Lessons</h3>
                  <br/>
                  <div class="row table-responsive lesson-input_outline borderline-style">
@@ -230,6 +205,11 @@
                        <td class="add" style="margin-left:10px;">
                          <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
                        </td>
+                       <td>
+                         <input
+                          type="file" name="file" id="file" accept=".csv">
+                          <button class="btn btn-default btn-sm" type="submit" id="import_lesson" name="import_lesson">Import</button>
+                       </td>
                    </table>
                  </div>
                </div>
@@ -238,11 +218,12 @@
                      <div id="lesson_table_msg"></div>
                   <table class="table  table-hover subjListTb "  width="100%" id="lesson_datatable">
                     <thead>
-                      <tr>
+                      <tr >
+
                         <th colspan="1">Venue</th>
                         <th colspan="1">Type</th>
                         <th colspan="1">Lecturer</th>
-                        <th colspan="1">Day Time</th>
+                        <th colspan="1" id="dayTimeCss">Day Time</th>
                         <th colspan="1">Duration</th>
                         <th colspan="1">Subject</th>
                         <th class="action-title" colspan="1" > Actions </th>
@@ -276,6 +257,49 @@
               </div>
            </div>
          </div>
+         <!-- Dashboard Content Panel (lesson)-->
+         <div class="dashboard-content__panel " data-panel-id="semester">
+          <div class="dashboard-list ">
+            <div class="cardsLayout">
+
+            <ul class="flex cards" id="set-semester">
+              <li >
+                <h2>Semester Dates</h2>
+                <div class="panel panel-table start_end_date table-responsive ">
+                  <div class="panel-heading">
+                    <div  class="row table-responsive borderline-style1">
+                         <table>
+                              <tr>
+                                <td>
+                                  <h4 style="margin-bottom: 5px; color: white;">SEM Start Date</h4>
+                                  <input type="date" id="start-sem-day" />
+                                </td>
+
+                                <td>
+                                  <div style="margin-left:20px;">
+                                    <h4 style="margin-bottom: 5px; color: white;">SEM End Date</h4>
+                                    <input type="date" id="end-sem-day" />
+                                  </div>
+                                </td>
+
+                              </tr>
+                              <tr>
+                                <td>
+                                <div>
+                                  <button class="btnSubmit" id="submitSemdate" > submit </button>
+                                </div>
+                              </td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+            </ul>
+
+            </div>
+          </div>
+         </div>
        </div>
      </div>
  </div>
@@ -283,14 +307,20 @@
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.16/b-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/kt-2.3.2/datatables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
 
 <!--
 <script type="text/javascript">
 $(document).ready(function() {
-  dbg = $('#report-table').DataTable( {
+  dbg = $('#report_datatable').DataTable( {
     "pagingType": "full_numbers",
    "paging": true,
    "lengthMenu": [10, 25, 50, 75, 100],
@@ -303,8 +333,8 @@ $(document).ready(function() {
     } );
 
   } );
-</script>
--->
+</script>-->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
