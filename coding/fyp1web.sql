@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 26, 2018 at 11:58 AM
+-- Generation Time: Nov 28, 2018 at 03:04 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -38,8 +38,10 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`adminID`, `adminName`, `adminEmail`, `adminPass`) VALUES
-(1, 'Sim', 'sim@gmail.com', '123456'),
-(2, 'wong', 'wong@gmail.com', '123456');
+(1, 'Sim', 'yeohhs@help.edu.my', '123456'),
+(2, 'wong', 'wong@gmail.com', '123456'),
+(3, 'shath', 'shath@gmail.com', '123456'),
+(4, 'Dr.Sien', 'sienvy@gmail.com', '123456');
 
 -- --------------------------------------------------------
 
@@ -52,17 +54,35 @@ CREATE TABLE `class_lesson` (
   `type` varchar(12) NOT NULL,
   `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `duration` varchar(12) NOT NULL,
-  `subjectID` varchar(12) NOT NULL,
-  `roomID` int(11) NOT NULL
+  `subjectID` varchar(40) NOT NULL,
+  `venue` varchar(14) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `class_lesson`
 --
 
-INSERT INTO `class_lesson` (`classID`, `type`, `dateTime`, `duration`, `subjectID`, `roomID`) VALUES
-(7, 'lecture', '2018-04-09 07:00:00', '10', 'bit200', 1),
-(8, 'tutorial', '2018-04-10 07:00:00', '10', 'bit200', 1);
+INSERT INTO `class_lesson` (`classID`, `type`, `dateTime`, `duration`, `subjectID`, `venue`) VALUES
+(1, 'lecture1', '2018-10-12 01:00:00', '3', 'bit205', 'tis'),
+(2, 'tutorial1', '2018-10-09 01:00:00', '2', 'bit205', 'sr2.1'),
+(3, 'lecture1', '2018-10-10 01:00:00', '3', 'bit216/bit302', 'sr2.1'),
+(4, 'tutorial1', '2018-10-11 01:00:00', '2', 'bit216/bit302', 'sr2.2'),
+(5, 'lecture1', '2018-10-11 01:00:00', '3', 'bit100', 'lh2.1'),
+(6, 'tutorial1', '2018-10-08 01:00:00', '2', 'bit108/dip201', 'lh2.1'),
+(7, 'tutorial2', '2018-10-08 03:00:00', '2', 'bit108/dip201', 'lh2.1'),
+(9, 'tutorial1', '2018-10-09 03:00:00', '2', 'bit203', 'sr2.1'),
+(10, 'lecture1', '2018-10-11 06:30:00', '3', 'bit203', 'sr2.2'),
+(11, 'tutorial1', '2018-10-12 06:00:00', '4', 'bit104', 'sr2.1'),
+(12, 'lecture1', '2018-10-12 06:30:00', '3', 'dip1prg11', 'ls2'),
+(13, 'tutorial1', '2018-10-10 16:00:00', '2', 'dip1prg11', 'ls2'),
+(14, 'tutorial2', '2018-10-11 03:00:00', '2', 'dip1prg11', 'ls2'),
+(15, 'lecture1', '2018-10-10 01:00:00', '3', 'bit108/dip201', 'lh2.1'),
+(16, 'tutorial1', '2018-10-08 06:00:00', '2', 'bit303/bmc306', 'tis'),
+(17, 'tutorial1', '2018-10-08 07:30:00', '2', 'bit310/bmc307', 'tis'),
+(18, 'lecture1', '2018-10-09 02:30:00', '2', 'bit304', 'tis'),
+(20, 'lecture1', '2018-10-10 06:00:00', '3', 'bit310/bmc307', 'tis'),
+(21, 'lecture1', '2018-10-08 05:00:00', '3', 'bit201', 'sr2.2'),
+(22, 'tutorial1', '2018-10-10 06:00:00', '2', 'bit201', 'sr2.1');
 
 -- --------------------------------------------------------
 
@@ -72,25 +92,47 @@ INSERT INTO `class_lesson` (`classID`, `type`, `dateTime`, `duration`, `subjectI
 
 CREATE TABLE `class_rescheduling` (
   `id` int(11) NOT NULL,
-  `newDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` varchar(30) NOT NULL,
-  `subjectID` varchar(30) NOT NULL
+  `classID` int(11) NOT NULL,
+  `newVenue` varchar(14) NOT NULL,
+  `oldDateTime` datetime NOT NULL,
+  `createCancellationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `newDateTime` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `class_rescheduling`
 --
 
-INSERT INTO `class_rescheduling` (`id`, `newDateTime`, `status`, `subjectID`) VALUES
-(1, '2018-04-10 04:12:00', 'pending', 'bit200'),
-(2, '2001-10-05 16:30:00', 'pending', 'bit306'),
-(3, '2018-03-20 11:00:48', 'pending', 'bit208'),
-(4, '2018-03-16 11:00:48', 'pending', 'bit301'),
-(5, '2018-03-16 11:00:48', 'pending', 'bit103'),
-(6, '2018-03-16 11:00:48', 'pending', 'bit216'),
-(7, '2018-03-21 11:00:48', 'pending', 'bit301'),
-(8, '2018-03-17 11:00:48', 'pending', 'bit203'),
-(9, '2018-03-18 11:00:48', 'pending', 'bit208');
+INSERT INTO `class_rescheduling` (`id`, `status`, `classID`, `newVenue`, `oldDateTime`, `createCancellationDate`, `newDateTime`) VALUES
+(1, 'pending', 2, 'sr2.1', '2018-11-27 00:00:00', '2018-11-22 08:52:10', '2018-11-30 14:30:00'),
+(2, 'pending', 1, '', '2018-11-30 00:00:00', '2018-11-22 09:06:54', NULL),
+(3, 'pending', 4, '', '2018-11-29 00:00:00', '2018-11-22 09:06:55', '2018-11-07 00:00:00'),
+(4, 'pending', 3, 'sr2.1', '2018-11-28 00:00:00', '2018-11-22 09:06:55', '2018-12-14 10:00:00'),
+(5, 'approved', 2, 'sr2.1', '2018-12-04 00:00:00', '2018-11-27 11:43:16', '2018-12-07 13:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `device_list`
+--
+
+CREATE TABLE `device_list` (
+  `id` int(11) NOT NULL,
+  `type` varchar(10) NOT NULL,
+  `userID` varchar(20) NOT NULL,
+  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` varchar(256) NOT NULL,
+  `uuid` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `device_list`
+--
+
+INSERT INTO `device_list` (`id`, `type`, `userID`, `createDate`, `token`, `uuid`) VALUES
+(1, 'student', 'b1301744', '2018-11-22 00:18:17', 'dSEsp-2mavM:APA91bExTCvqng18HXyS2S-m0awAjr8_tdaZMrTWA9ooTCGgBB8aFAhkk5PJU7EbP_STWO1cPgswx9JSt2mlCQyP8JKu5AE0-OskbEq7iyIeJ-2fbKxPNlMgQCmvrL6haIz7tfUElD7d', '368eb3297e671dcb'),
+(2, 'lecturer', '1', '2018-11-22 00:35:11', 'c62dVffq7jA:APA91bEUa9Mw4xqOLpHuVDsNPm1Zn8FR4KuWy5l5Tz1BmzcBn-dekkTmjgjmWCAKFw5mtvJ4TbyuHPG88iUi-dGBB5xoS2YlDXzvFaHq3pRXEAAIxkcUhFq7MbZ8IGCbUCC7TnU7Ku06', 'cf56d43dd2a4ae01');
 
 -- --------------------------------------------------------
 
@@ -99,7 +141,7 @@ INSERT INTO `class_rescheduling` (`id`, `newDateTime`, `status`, `subjectID`) VA
 --
 
 CREATE TABLE `lecturer` (
-  `lecturerID` varchar(30) NOT NULL,
+  `lecturerID` int(11) NOT NULL,
   `lecturerName` varchar(50) NOT NULL,
   `lecturerEmail` varchar(60) NOT NULL,
   `lecturerPassword` varchar(50) NOT NULL
@@ -110,50 +152,53 @@ CREATE TABLE `lecturer` (
 --
 
 INSERT INTO `lecturer` (`lecturerID`, `lecturerName`, `lecturerEmail`, `lecturerPassword`) VALUES
-('s0000001', 'Anita', '', ''),
-('s0000002', 'Fong', '', ''),
-('s0000003', 'Kok', '', ''),
-('s0000004', 'Koon', '', ''),
-('s0000005', 'Seetha', '', ''),
-('s0000006', 'Ng SM', '', ''),
-('s0000007', 'Sien', '', ''),
-('s0000008', 'Dewi', '', ''),
-('s0000009', 'Steven', '', '');
+(1, 'Seetha', 'seethal@help.edu.my', '123456'),
+(2, 'Kok', 'kokch@help.edu.my', '123456'),
+(3, 'Koon', 'koon@help.edu.my', '123456'),
+(4, 'Shu Min', 'ngsm@help.edu.my', '123456'),
+(5, 'Anita', 'anitav@help.edu.my', '123456'),
+(6, 'Naline', 'nalines@help.edu.my', '123456');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `report`
+-- Table structure for table `semester`
 --
 
-CREATE TABLE `report` (
-  `reportID` int(11) NOT NULL,
-  `lecturerID` varchar(30) NOT NULL,
-  `subjectID` varchar(30) NOT NULL,
-  `id` int(11) NOT NULL
+CREATE TABLE `semester` (
+  `id` int(11) NOT NULL,
+  `start_date` varchar(12) NOT NULL,
+  `end_date` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `semester`
+--
+
+INSERT INTO `semester` (`id`, `start_date`, `end_date`) VALUES
+(0, '2018-10-07', '2018-12-11');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `room`
+-- Table structure for table `student`
 --
 
-CREATE TABLE `room` (
-  `roomID` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `capacity` int(11) NOT NULL
+CREATE TABLE `student` (
+  `studentID` varchar(40) NOT NULL,
+  `studentName` varchar(50) NOT NULL,
+  `studentPassword` varchar(50) NOT NULL,
+  `studentEmail` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `room`
+-- Dumping data for table `student`
 --
 
-INSERT INTO `room` (`roomID`, `name`, `capacity`) VALUES
-(1, 'sr2.1', 30),
-(2, 'sr2.2', 30),
-(3, 'sr2.3', 20),
-(4, 'lh2.1', 40);
+INSERT INTO `student` (`studentID`, `studentName`, `studentPassword`, `studentEmail`) VALUES
+('b1301700', 'Yong', 'yong1744', 'b1301700@helplive.edu.my'),
+('b1301744', 'Wong Wai Kiat', 'waikiat1744', 'b1301744@helplive.edu.my'),
+('b1301746', 'Ibrahim Mohamed Shaatha', 'ibrahim1746', 'b1301746@helplive.edu.my');
 
 -- --------------------------------------------------------
 
@@ -162,9 +207,9 @@ INSERT INTO `room` (`roomID`, `name`, `capacity`) VALUES
 --
 
 CREATE TABLE `subject` (
-  `subjectID` varchar(30) NOT NULL,
+  `subjectID` varchar(40) NOT NULL,
   `subjectName` varchar(60) NOT NULL,
-  `lecturerID` varchar(30) NOT NULL
+  `lecturerID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -172,13 +217,36 @@ CREATE TABLE `subject` (
 --
 
 INSERT INTO `subject` (`subjectID`, `subjectName`, `lecturerID`) VALUES
-('bit103', 'Intro DB', 's0000006'),
-('bit200', 'IT & Entrepre', 's0000001'),
-('bit203', 'Java 2', 's0000003'),
-('bit208', 'Data Struct', 's0000002'),
-('bit216', 'Software Engrg', 's0000005'),
-('bit301', 'IT Proj Mgmt', 's0000006'),
-('bit306', 'Web Tech', 's0000002');
+('bit100', 'Intro Programming', 2),
+('bit104', 'Application Maths', 2),
+('bit108/dip201', 'Discrete Maths', 2),
+('bit201', 'OOAD', 4),
+('bit203', 'Java II', 2),
+('bit205', 'OOP in C++', 1),
+('bit216/bit302', 'Software Engr', 1),
+('bit303/bmc306', 'IT Ethics & Sec', 5),
+('bit304', 'Final Year Project I', 5),
+('bit310/bmc307', 'Biz Dev', 5),
+('dip1prg11', 'Intro Visual Prog', 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subject_student_enrolled`
+--
+
+CREATE TABLE `subject_student_enrolled` (
+  `id` int(11) NOT NULL,
+  `subjectID` varchar(40) NOT NULL,
+  `studentID` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `subject_student_enrolled`
+--
+
+INSERT INTO `subject_student_enrolled` (`id`, `subjectID`, `studentID`) VALUES
+(6, 'bit205', 'b1301744');
 
 --
 -- Indexes for dumped tables
@@ -194,36 +262,43 @@ ALTER TABLE `admin`
 -- Indexes for table `class_lesson`
 --
 ALTER TABLE `class_lesson`
-  ADD PRIMARY KEY (`classID`);
+  ADD PRIMARY KEY (`classID`),
+  ADD KEY `class_lesson_ibfk_1` (`subjectID`);
 
 --
 -- Indexes for table `class_rescheduling`
 --
 ALTER TABLE `class_rescheduling`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `class_rescheduling_ibfk_1` (`subjectID`);
+  ADD KEY `class_rescheduling_ibfk_1` (`classID`);
+
+--
+-- Indexes for table `device_list`
+--
+ALTER TABLE `device_list`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uuid` (`uuid`);
 
 --
 -- Indexes for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  ADD PRIMARY KEY (`lecturerID`);
+  ADD PRIMARY KEY (`lecturerID`),
+  ADD UNIQUE KEY `lecturerEmail` (`lecturerEmail`),
+  ADD UNIQUE KEY `lecturerName` (`lecturerName`);
 
 --
--- Indexes for table `report`
+-- Indexes for table `semester`
 --
-ALTER TABLE `report`
-  ADD PRIMARY KEY (`reportID`),
-  ADD KEY `report_ibfk_1` (`lecturerID`),
-  ADD KEY `report_ibfk_2` (`subjectID`),
-  ADD KEY `report_ibfk_3` (`id`);
+ALTER TABLE `semester`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `room`
+-- Indexes for table `student`
 --
-ALTER TABLE `room`
-  ADD PRIMARY KEY (`roomID`),
-  ADD UNIQUE KEY `name` (`name`);
+ALTER TABLE `student`
+  ADD PRIMARY KEY (`studentID`),
+  ADD UNIQUE KEY `studentEmail` (`studentEmail`);
 
 --
 -- Indexes for table `subject`
@@ -233,6 +308,14 @@ ALTER TABLE `subject`
   ADD KEY `subject_ibfk_1` (`lecturerID`);
 
 --
+-- Indexes for table `subject_student_enrolled`
+--
+ALTER TABLE `subject_student_enrolled`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `subject_student_enrolled_ibfk_1` (`subjectID`),
+  ADD KEY `subject_student_enrolled_ibfk_2` (`studentID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -240,50 +323,60 @@ ALTER TABLE `subject`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `adminID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `class_lesson`
 --
 ALTER TABLE `class_lesson`
-  MODIFY `classID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `classID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `class_rescheduling`
 --
 ALTER TABLE `class_rescheduling`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
--- AUTO_INCREMENT for table `report`
+-- AUTO_INCREMENT for table `device_list`
 --
-ALTER TABLE `report`
-  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `device_list`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT for table `room`
+-- AUTO_INCREMENT for table `lecturer`
 --
-ALTER TABLE `room`
-  MODIFY `roomID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `lecturer`
+  MODIFY `lecturerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `subject_student_enrolled`
+--
+ALTER TABLE `subject_student_enrolled`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `class_lesson`
+--
+ALTER TABLE `class_lesson`
+  ADD CONSTRAINT `class_lesson_ibfk_1` FOREIGN KEY (`subjectID`) REFERENCES `subject` (`subjectID`);
+
+--
 -- Constraints for table `class_rescheduling`
 --
 ALTER TABLE `class_rescheduling`
-  ADD CONSTRAINT `class_rescheduling_ibfk_1` FOREIGN KEY (`subjectID`) REFERENCES `subject` (`subjectID`);
-
---
--- Constraints for table `report`
---
-ALTER TABLE `report`
-  ADD CONSTRAINT `report_ibfk_1` FOREIGN KEY (`lecturerID`) REFERENCES `lecturer` (`lecturerID`),
-  ADD CONSTRAINT `report_ibfk_2` FOREIGN KEY (`subjectID`) REFERENCES `subject` (`subjectID`),
-  ADD CONSTRAINT `report_ibfk_3` FOREIGN KEY (`id`) REFERENCES `class_rescheduling` (`id`);
+  ADD CONSTRAINT `class_rescheduling_ibfk_1` FOREIGN KEY (`classID`) REFERENCES `class_lesson` (`classID`);
 
 --
 -- Constraints for table `subject`
 --
 ALTER TABLE `subject`
   ADD CONSTRAINT `subject_ibfk_1` FOREIGN KEY (`lecturerID`) REFERENCES `lecturer` (`lecturerID`);
+
+--
+-- Constraints for table `subject_student_enrolled`
+--
+ALTER TABLE `subject_student_enrolled`
+  ADD CONSTRAINT `subject_student_enrolled_ibfk_1` FOREIGN KEY (`subjectID`) REFERENCES `subject` (`subjectID`),
+  ADD CONSTRAINT `subject_student_enrolled_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
