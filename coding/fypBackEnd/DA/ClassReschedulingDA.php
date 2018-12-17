@@ -87,6 +87,54 @@ return $this->con->query($query)
                   ->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getCancellationToday(){
+      $query = <<<EOF
+      SELECT
+              cr.id as "id",
+              cl.subjectID as "subjectCode",
+              lec.lecturerName as "lecturer",
+              cl.type as "type",
+              CAST(cr.oldDateTime as DATE) as "oDate",
+              CAST(cl.dateTime AS TIME) as "oriStartTime",
+              CAST(date_add(cl.dateTime, INTERVAL cl.duration HOUR) AS TIME) as oriEndTime,
+              cl.venue
+              FROM `class_rescheduling` as cr
+              INNER JOIN `class_lesson` as cl
+              ON cr.classID = cl.classID
+              INNER JOIN `subject` as subj
+              ON cl.subjectID = subj.subjectID
+              INNER JOIN `lecturer` as lec
+              on subj.lecturerID = lec.lecturerID
+              WHERE CAST(cr.oldDateTime as DATE) = CURDATE() and cr.status ="pending"
+EOF;
+return $this->con->query($query)
+                  ->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getReplacementToday(){
+      $query = <<<EOF
+      SELECT
+              cr.id as "id",
+              cl.subjectID as "subjectCode",
+              lec.lecturerName as "lecturer",
+              cl.type as "type",
+              CAST(cr.newDateTime as DATE) as "nDate",
+              CAST(cr.newDateTime AS TIME) as "newStartTime",
+              CAST(date_add(cr.newDateTime, INTERVAL cl.duration HOUR) AS TIME) as newEndTime,
+              cr.newVenue
+              FROM `class_rescheduling` as cr
+              INNER JOIN `class_lesson` as cl
+              ON cr.classID = cl.classID
+              INNER JOIN `subject` as subj
+              ON cl.subjectID = subj.subjectID
+              INNER JOIN `lecturer` as lec
+              on subj.lecturerID = lec.lecturerID
+              WHERE CAST(cr.newDateTime as DATE) = CURDATE() and cr.status ="approved"
+EOF;
+return $this->con->query($query)
+                  ->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function fetchClassById($id){
         $result = $this->con->query("SELECT * FROM class_rescheduling WHERE id = '{$id}';");
         return $result->fetch_object('ClassRescheduling');

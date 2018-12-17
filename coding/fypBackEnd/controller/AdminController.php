@@ -675,6 +675,43 @@ class AdminController extends MasterController{
 	    throw new Exception("Error! Failed to delete subject!");
     }
 
+    public function importCsvSubject($csv){
+
+    //$fileName = $_FILES["file"]["tmp_name"];
+
+        $file = fopen($csv, "r");
+
+        while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
+            $sqlInsert = "INSERT into subject (subjectID,subjectName,lecturerID)
+                   values ('" . $column[0] . "','" . $column[1] . "','" . $column[2] . "')";
+            //$result = mysqli_query($this->con, $sqlInsert);
+            $result = $this->con->query($sqlInsert);
+
+        }
+
+        $this->sendMsg("Subject CSV file Imported into the Database!");
+
+  }
+
+  public function importCsvLesson($csv){
+
+  //$fileName = $_FILES["file"]["tmp_name"];
+
+      $file = fopen($csv, "r");
+
+      while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
+          $sqlInsert = "INSERT into class_lesson (classID,type,dateTime,duration,subjectID,venue)
+                 values ('" . $column[0] . "','" . $column[1] . "','" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "')";
+          //$result = mysqli_query($this->con, $sqlInsert);
+          $result = $this->con->query($sqlInsert);
+
+      }
+
+      $this->sendMsg("Lesson CSV Data Imported into the Database!");
+
+}
+
+
     /*************************
      * END OF SUBJECT SECTION *
      **************************/
@@ -685,9 +722,21 @@ class AdminController extends MasterController{
      ******************/
 
     public function viewReport(){
-	$reportDA = new ReportDA($this->con);
-	$result = $reportDA->getClassRescheduling();
-	print(json_encode($result));
+    	$reportDA = new ReportDA($this->con);
+    	$result = $reportDA->getClassRescheduling();
+    	print(json_encode($result));
+    }
+
+    public function viewTodayCancellation(){
+      $reschedulingDA = new ClassReschedulingDA($this->con);
+      $list = $reschedulingDA->getCancellationToday();
+      $this->returnObject($list);
+    }
+
+    public function viewTodayReplacement(){
+      $reschedulingDA = new ClassReschedulingDA($this->con);
+      $list = $reschedulingDA->getReplacementToday();
+      $this->returnObject($list);
     }
 
     /************************

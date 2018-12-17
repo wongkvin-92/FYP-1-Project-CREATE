@@ -258,10 +258,7 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
     $klein->respond('PATCH', $root.'/subjects/[a:id]/', function($r) use ($admin){
 	print("Todo");
     });
-    $klein->respond('POST', $root.'/insert/csv/lesson/', function($r) use ($admin){
-      $csv_subject = getPost('import_subject');
-      $admin->importCsvSubject($csv_subject);
-    });
+
     /*
        $klein->respond('POST', $root.'/lessons/', function($r) use ($admin){
        $sid = getPost('subjectID');
@@ -277,12 +274,37 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
      */
     $klein->respond('GET', $root."/reports/", function($r) use ($admin){
     	//print(json_encode(["msg" => "test123"]));
-	$admin->viewReport();
+	     $admin->viewReport();
+    });
+
+    $klein->respond('POST', $root.'/insert/csv/subject/', function() use ($admin){
+
+    $csv_subject = $_FILES['import_subject']['tmp_name'];
+
+    //$csv_subject = $_POST['import_subject'];
+    //var_dump($csv_subject);
+    $admin->importCsvSubject($csv_subject);
+    });
+
+    $klein->respond('POST', $root.'/insert/csv/lesson/', function() use ($admin){
+
+    $csv_lesson = $_FILES['import_lesson']['tmp_name'];
+
+    //$csv_subject = $_POST['import_subject'];
+    //var_dump($csv_subject);
+    $admin->importCsvLesson($csv_lesson);
     });
 
 
+    $klein->respond('GET', $root."/cancellation/today/", function($r) use ($admin){
+      //print(json_encode(["msg" => "test123"]));
+       $admin->viewTodayCancellation();
+    });
 
-
+    $klein->respond('GET', $root."/replacement/today/", function($r) use ($admin){
+      //print(json_encode(["msg" => "test123"]));
+       $admin->viewTodayReplacement();
+    });
 
 }
 

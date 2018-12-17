@@ -120,7 +120,7 @@ var lessonTableModel = {
 		dateTime: celljqs.dateTime.children("input").val(),
 		duration: celljqs.duration.children("input").val()
 	    };
-
+      console.log("inputvals", inputVals);
 	    dataToSend = `{
               "venue": "`+ inputVals.venue+`",
               "type": "`+ inputVals.type+`",
@@ -128,7 +128,7 @@ var lessonTableModel = {
               "duration": "`+inputVals.duration+`"
              }`;
 
-  console.log(moment(inputVals.dateTime).format("YYYY-MM-DD HH:mm:ss"));
+
 	}
 
 
@@ -156,12 +156,20 @@ var lessonTableModel = {
 	    //Change everything to input fields
 	    //1.Prepare input fields
 	    var inputFields = this.constructInputFields(tds);
-	    //console.log(this.selectedRow.tds.dateTime.children().data().date);
-	    inputFields.dateTimeInput.datetimepicker({
-    		defaultDate: moment(this.selectedRow.tds.dateTime.children().data('date'))
-	    });
-    
+      let defDate = this.selectedRow.tds.dateTime.children().data('date');
 
+      if(!defDate)
+        defDate = this.selectedRow.tds.dateTime.children().children().data('date');
+
+
+      defDate = moment(defDate);
+
+	    inputFields.dateTimeInput.datetimepicker({
+    		defaultDate: defDate
+	    });
+
+      console.log("state=edit_mode");
+      console.log("inputFields", inputFields);
 	    //2. Replace td with input fields.
 	    tds.venue.html(inputFields.venueInput);
 	    tds.type.html(inputFields.typeInput);
@@ -181,6 +189,12 @@ var lessonTableModel = {
 	    var inputFields = this.selectedRow.input;
 	    var dateTimeSQL = moment(inputFields.dateTime).format(SQLDateTimeFormat);
 	    var dateTime = moment(inputFields.dateTime).format(dateTimeFormat);
+
+
+
+      console.log("state=!edit_mode");
+      console.log("inputFields", inputFields);
+
 	    //Change back cells to the input values
 	    tds.venue.html(inputFields.venue);
 	    tds.type.html(inputFields.type);
@@ -711,6 +725,74 @@ $('.select2-container').on('keyup', function () { {
 /*
  * Add lessons
 */
+
+/*
+$.ajax({
+
+var data = $('#file_subject_csv')[0].files[0];
+
+ url: backEndUrl+'/admin/login/',
+ method: 'POST',
+ data: {
+  email: email,
+  password: pass,
+ },
+ dataType: 'json',
+ success: function(reply){
+    alert(reply.msg);
+    window.location = "/fyp1web/homepage.php";
+ },
+  error: function(a,b,c){
+  alert(a.responseJSON.msg);
+    $('#pass').css("border-bottom", "2px solid #ff0000");
+ }
+});
+*/
+
+$('#import_subject').click(function(){
+var import_subject = $('#file_subject_csv')[0].files[0];
+  var form = new FormData();
+  form.append("import_subject", $('#file_subject_csv')[0].files[0]);
+
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": backEndUrl+'/insert/csv/subject/',
+    "method": "POST",
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": form,
+     "dataType": 'json',
+    "success": function(reply){
+      alert(reply.msg);
+    }
+  }
+ $.ajax(settings);
+
+});
+
+$('#import_lesson').click(function(){
+  var form = new FormData();
+  form.append("import_lesson", $('#file_lesson_csv')[0].files[0]);
+
+  var settings ={
+    "async": true,
+    "crossDomain": true,
+    "url": backEndUrl+'/insert/csv/lesson/',
+    "method": "POST",
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": form,
+     "dataType": 'json',
+    "success": function(reply){
+      alert(reply.msg);
+    }
+  }
+  $.ajax(settings);
+});
+
 $('#add-btn').click(function(){
   /*var data = {
     venue : $('#venue-field').val(),

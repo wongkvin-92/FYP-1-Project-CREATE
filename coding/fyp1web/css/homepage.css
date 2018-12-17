@@ -50,10 +50,6 @@ body::after {
     animation-name: bounceInDown;
 }
 
-#timetable-input{
-  position:relative; margin-top:1em; color: "black";
-
-}
 
 /* Safari 6.1+ */
 .dashboard .dashboard-sidebar:nth-of-type(1) {-webkit-flex-grow: 1;}
@@ -122,25 +118,28 @@ body::after {
 }
 
 .cardsLayout{
-  padding:0 120px 0 120px;
+  padding:0 80px 0 80px;
 }
 
 .cards {
   list-style: none;
+
 }
 
 .cards li {
-  border: 2px solid #490A3D;
+  border: 2px solid #B2B9C2;
   border-radius:5px;
-  background-color: #BD1550;
-  color: #fff;
+  background-color: #ffffff;
+  color: black;
   flex: 1 1 200px;
 }
 
 .cards h2 {
-  background-color: #490A3D;
+  background-color: #B2B9C2;
   margin: 0;
-  padding: 20px;
+  padding: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   font-weight: bold;
   font-size: 20px;
 }
@@ -149,15 +148,39 @@ body::after {
   padding: 20px;
     font-size: 20px;
 }
+.horizontal_cards{
+   display: inline-flex;
+   width:50rem;
+}
+
 
 .flex {
-  display: flex;
+
   flex-wrap: wrap;
   margin: 0 -5px;
+
 }
 
 .flex li {
   margin: 10px;
+
+}
+
+#subjectCodeCancelled{
+  position:relative;
+  left:-10px;
+}
+#timeCancelled{
+  position:relative;
+  left:-20px;
+}
+#typeCancelled{
+  position:relative;
+  left:-20px;
+}
+#venueCancelled{
+  position:relative;
+  left:-6px;
 }
 
 #report_datatable th{
@@ -386,8 +409,6 @@ border-radius: 0 18px 18px 0;
 .start_end_date{
     color:black;
     font-size: 13px;
-    background-color: #BD1550;
-
 }
 .start_end_date input{
   color: black;

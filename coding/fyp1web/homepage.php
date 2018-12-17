@@ -57,21 +57,57 @@
           <div id="userTitle">
           </div>
           <div class="cardsLayout">
-          <ul class="flex cards">
-            <li>
+          <ul class="flex cards ">
+            <div class="horizontal_cards">
+            <li >
               <h2>Welcome to Create!</h2>
               <p class="cardsUser">
                 User Name: <span id="uName"></span>
               </p>
             </li>
-          </ul>
-          <ul class="flex cards">
-            <li>
-              <h2>No. of Class Rescheduling Request</h2>
+            <li >
+              <h2>No. of Rescheduling Request</h2>
               <p id="countRequest">
 
               </p>
             </li>
+          </div>
+            <div class="horizontal_cards" >
+            <li  >
+              <h2>Today's Class Cancellation</h2>
+              <table class="table table-hover table-responsive" >
+              <thead >
+                <tr>
+                  <th >Subject</th>
+                  <th>Lecturer</th>
+                  <th  >Time</th>
+                  <th>Type</th>
+                  <th>Venue</th>
+                </tr>
+              </thead>
+              <tbody  id="cancellation_class">
+              </tbody>
+            </table>
+            </li>
+            <li >
+              <h2>Today's Class Replacement</h2>
+
+                  <table class="table table-hover table-responsive" >
+                  <thead >
+                    <tr>
+                      <th>Subject</th>
+                      <th>Lecturer</th>
+                      <th>Time</th>
+                      <th>Type</th>
+                      <th>Venue</th>
+                    </tr>
+                  </thead>
+                  <tbody  id="replaced_class">
+                  </tbody>
+                </table>
+
+            </li>
+          </div>
           </ul>
 
           </div>
@@ -168,8 +204,8 @@
                      </td>
                      <td>
                        <input
-                        type="file" name="file" id="file" accept=".csv">
-                        <button class="btn btn-default btn-sm" type="submit" id="import_subject" name="import_subject">Import</button>
+                        type="file" name="file" id="file_subject_csv" accept=".csv">
+                        <button class="btn btn-default btn-sm" id="import_subject" name="import_subject">Import</button>
 
                      </td>
                    </tr>
@@ -207,7 +243,7 @@
                        </td>
                        <td>
                          <input
-                          type="file" name="file" id="file" accept=".csv">
+                          type="file" name="file" id="file_lesson_csv" accept=".csv">
                           <button class="btn btn-default btn-sm" type="submit" id="import_lesson" name="import_lesson">Import</button>
                        </td>
                    </table>
@@ -271,13 +307,13 @@
                          <table>
                               <tr>
                                 <td>
-                                  <h4 style="margin-bottom: 5px; color: white;">SEM Start Date</h4>
+                                  <h4 style="margin-bottom: 5px; color: black; font-weight: bold">SEM Start Date</h4>
                                   <input type="date" id="start-sem-day" />
                                 </td>
 
                                 <td>
                                   <div style="margin-left:20px;">
-                                    <h4 style="margin-bottom: 5px; color: white;">SEM End Date</h4>
+                                    <h4 style="margin-bottom: 5px; color: black; font-weight: bold">SEM End Date</h4>
                                     <input type="date" id="end-sem-day" />
                                   </div>
                                 </td>
