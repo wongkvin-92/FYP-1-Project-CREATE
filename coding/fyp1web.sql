@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 13, 2018 at 07:39 PM
+-- Generation Time: Dec 18, 2018 at 09:39 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -82,7 +82,8 @@ INSERT INTO `class_lesson` (`classID`, `type`, `dateTime`, `duration`, `subjectI
 (18, 'lecture1', '2018-10-09 02:30:00', '2', 'bit304', 'tis'),
 (20, 'lecture1', '2018-10-10 06:00:00', '3', 'bit310/bmc307', 'tis'),
 (21, 'lecture1', '2018-10-08 05:00:00', '3', 'bit201', 'sr2.2'),
-(22, 'tutorial1', '2018-10-10 06:00:00', '2', 'bit201', 'sr2.1');
+(22, 'tutorial1', '2018-10-10 06:00:00', '2', 'bit201', 'sr2.1'),
+(23, 'lecture1', '2018-10-13 01:00:00', '3', 'dip1prg11', 'tis');
 
 -- --------------------------------------------------------
 
@@ -105,11 +106,12 @@ CREATE TABLE `class_rescheduling` (
 --
 
 INSERT INTO `class_rescheduling` (`id`, `status`, `classID`, `newVenue`, `oldDateTime`, `createCancellationDate`, `newDateTime`) VALUES
-(1, 'approved', 2, 'sr2.1', '2018-11-27 00:00:00', '2018-11-22 08:52:10', '2018-11-30 14:30:00'),
-(2, 'pending', 1, '', '2018-11-30 00:00:00', '2018-11-22 09:06:54', NULL),
+(1, 'approved', 2, 'sr2.1', '2018-11-27 00:00:00', '2018-11-22 08:52:10', '2018-12-18 14:30:00'),
+(2, 'pending', 1, '', '2018-11-30 00:00:00', '2018-12-17 00:00:00', NULL),
 (3, 'approved', 4, 'sr2.1', '2018-11-29 00:00:00', '2018-11-22 09:06:55', '2018-12-28 12:00:00'),
 (4, 'pending', 3, 'sr2.1', '2018-11-28 00:00:00', '2018-11-22 09:06:55', '2018-12-14 10:00:00'),
-(5, 'approved', 2, 'sr2.1', '2018-12-04 00:00:00', '2018-11-27 11:43:16', '2018-12-07 13:00:00');
+(5, 'approved', 2, 'sr2.1', '2018-12-04 00:00:00', '2018-11-27 11:43:16', '2018-12-07 13:00:00'),
+(6, 'pending', 7, '', '2018-12-18 00:00:00', '2018-12-17 03:23:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -218,6 +220,7 @@ CREATE TABLE `subject` (
 
 INSERT INTO `subject` (`subjectID`, `subjectName`, `lecturerID`) VALUES
 ('bit100', 'Intro Programming', 2),
+('bit1011', 'Testing123', 2),
 ('bit104', 'Application Maths', 2),
 ('bit108/dip201', 'Discrete Maths', 2),
 ('bit201', 'OOAD', 4),
@@ -246,7 +249,8 @@ CREATE TABLE `subject_student_enrolled` (
 --
 
 INSERT INTO `subject_student_enrolled` (`id`, `subjectID`, `studentID`) VALUES
-(6, 'bit205', 'b1301744');
+(6, 'bit205', 'b1301744'),
+(10, 'bit100', 'b1301746');
 
 --
 -- Indexes for dumped tables
@@ -328,12 +332,12 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `class_lesson`
 --
 ALTER TABLE `class_lesson`
-  MODIFY `classID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `classID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 --
 -- AUTO_INCREMENT for table `class_rescheduling`
 --
 ALTER TABLE `class_rescheduling`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `device_list`
 --
@@ -348,7 +352,7 @@ ALTER TABLE `lecturer`
 -- AUTO_INCREMENT for table `subject_student_enrolled`
 --
 ALTER TABLE `subject_student_enrolled`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- Constraints for dumped tables
 --
