@@ -19,6 +19,66 @@
     <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="bower_components/timetable.js/dist/styles/plugin.css">
     <link rel="stylesheet" href="bower_components/jqueryui-datepicker/datepicker.css">
+
+    <style>
+
+      .timetable .time-label {
+	  font-size: 0.8em;
+	  font-weight: 500;
+      }
+
+      
+      .timetable .time-entry.permenantClassEvent {
+	  background-color: #4E80A0;
+	  transition: 200ms background-color;
+	  height: 45px;
+	  display: block;
+	  position: absolute;
+	  z-index: 2;
+	  padding: 0 10px;
+	  white-space: normal;
+	  overflow: hidden;
+	  color: #EEE;
+	  border: 1px solid #CEFFF0;
+	  -webkit-transform-style: preserve-3d;
+	  transform-style: preserve-3d
+      }
+      
+      .timetable .time-entry.replacementClassEvent {
+	  background-color: #1EffA0;
+	  transition: 200ms background-color;
+	  height: 45px;
+	  display: block;
+	  position: absolute;
+	  z-index: 2;
+	  padding: 0 10px;
+	  white-space: normal;
+	  overflow: hidden;
+	  color: #00A;
+	  border: 1px solid #1FEFA0;
+	  -webkit-transform-style: preserve-3d;
+	  transform-style: preserve-3d
+      }
+
+      
+      .timetable .time-entry.cancelledClassEvent {
+	  background-color: #fE2020;
+	  transition: 200ms background-color;
+	  height: 45px;
+	  display: block;
+	  position: absolute;
+	  z-index: 2;
+	  padding: 0 10px;
+	  white-space: normal;
+	  overflow: hidden;
+	  color: #fff;
+	  text-decoration: line-through;
+	  border: 1px solid #1FEFA0;
+	  -webkit-transform-style: preserve-3d;
+	  transform-style: preserve-3d
+      }
+    </style>
+
 </head>
 
 <body>
@@ -202,7 +262,7 @@
                          <option value="">Lecturer Name</option>
                        </select>
                      </td>
-                     <td>
+                     <td class="file_subject_csv">
                        <input
                         type="file" name="file" id="file_subject_csv" accept=".csv">
                         <button class="btn btn-default btn-sm" id="import_subject" name="import_subject">Import</button>
@@ -241,7 +301,7 @@
                        <td class="add" style="margin-left:10px;">
                          <button class="btn btn-default btn-sm" id="add-btn" style="margin-left:10px;">Add</button>
                        </td>
-                       <td>
+                       <td class="file_lesson_csv">
                          <input
                           type="file" name="file" id="file_lesson_csv" accept=".csv">
                           <button class="btn btn-default btn-sm" type="submit" id="import_lesson" name="import_lesson">Import</button>
@@ -280,18 +340,18 @@
               <div class="panel-heading">
                 <h3 class="panel-title">Daily Timetable</h3>
 
-          </div>
-          <div id="timetable-input" style="position:relative; margin-top:1em; color: "black";">
-          </div>
-          <div style="display:block; margin-top:2.5em; ">
-           <div id="timetable_alert"></div>
-         </div>
-            <div class="panel-body table-responsive">
-              <div class="timetable">
-              </div>
-             </div>
-              </div>
+            </div>
+            <div id="timetable-input" style="position:relative; margin-top:1em; color: "black";">
+            </div>
+            <div style="display:block; margin-top:2.5em; ">
+             <div id="timetable_alert"></div>
            </div>
+              <div class="panel-body table-responsive">
+                <div class="timetable">
+                </div>
+               </div>
+                </div>
+             </div>
          </div>
          <!-- Dashboard Content Panel (lesson)-->
          <div class="dashboard-content__panel " data-panel-id="semester">

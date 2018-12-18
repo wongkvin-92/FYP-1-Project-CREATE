@@ -620,6 +620,13 @@ class AdminController extends MasterController{
     	$this->returnObject($arr);
     }
 
+    public function fetchAllScheduleAdmin(){
+
+      $lessonDA = new ClassLessonDA($this->con);
+      $allScheduleByAdmin = $lessonDA->getEntireScheduleAdmin();
+
+  print(json_encode($allScheduleByAdmin));
+    }
     /******************************
      * END OF CLASS LESSON SECTION *
      *******************************/

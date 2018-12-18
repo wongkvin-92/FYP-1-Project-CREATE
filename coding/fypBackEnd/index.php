@@ -306,6 +306,12 @@ if($admin->checkLoginState()){ //Only perform if I am logged in
        $admin->viewTodayReplacement();
     });
 
+    $klein->respond('GET', $root.'/admin/all/schedule/', function($r) use ($admin){
+
+
+        $admin->fetchAllScheduleAdmin();
+    });
+
 }
 
 /*****************************

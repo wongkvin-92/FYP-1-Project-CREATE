@@ -465,7 +465,12 @@ border-radius: 0 18px 18px 0;
   width: 53%;
   border-radius: 3px;
 }
-
+.file_subject_csv{
+  padding-left: 15px;
+}
+.file_lesson_csv{
+  padding-left: 15px;
+}
 
 /*Custimized Animation*/
 @keyframes bounceInDown {
@@ -606,6 +611,8 @@ border-radius: 0 18px 18px 0;
     font-size: 30px;
   }
 }
+
+
 
 table.dataTable tbody th, table.dataTable tbody td {
     padding: 0px;

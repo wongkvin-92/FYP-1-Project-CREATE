@@ -281,6 +281,50 @@ EOF;
     	return $ret;
     }
 
+    public function getEntireScheduleAdmin(){
+
+    $query = <<<EOF
+      SELECT
+          cr.classID,
+          cl.type,
+          cl.subjectID,
+          subj.subjectName,
+          CAST( (case when cr.newDateTime is NULL then cl.dateTime else cr.newDateTime end) as TIME) as startTime,
+          CAST( date_add((case when cr.newDateTime is NULL then cl.dateTime else cr.newDateTime end), INTERVAL cl.duration HOUR) AS TIME) as endTime,
+          DAYNAME((case when cr.newDateTime is NULL then cl.dateTime else cr.newDateTime end)) as "day",
+          cr.status,
+          CAST(cr.newDateTime as DATE) as newDateTime,
+        cr.newVenue,
+        CAST(cr.oldDateTime as DATE) as oldDateTime
+      FROM `class_rescheduling` as cr
+      JOIN `class_lesson` as cl
+        ON	cr.classID = cl.classID
+      INNER JOIN `subject` as subj
+        ON subj.subjectID = cl.subjectID
+
+
+      UNION
+
+      SELECT
+        cl.classID,
+          cl.type,
+          cl.subjectID,
+          subj.subjectName,
+          CAST(cl.dateTime as Time ) as startTime,
+        CAST( date_add((cl.dateTime), INTERVAL cl.duration HOUR) AS TIME) as endTime,
+          DAYNAME(cl.dateTime) as "day",
+          (NULL) as status,
+          (NULL) as newDateTime,
+        venue as newVenue,
+        (NULL) as oldDateTime
+      FROM `class_lesson` as cl
+      INNER JOIN `subject` as subj
+        ON subj.subjectID = cl.subjectID
+
+EOF;
+    return $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
+    }
+
 }
 
 ?>
