@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Responsive Flexbox Login Modal</title>
+  <title>Admin Login</title>
 
       <link href="css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet" href="css/style.css">

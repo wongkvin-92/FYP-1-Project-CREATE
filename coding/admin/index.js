@@ -80,7 +80,7 @@ $('#btnLogin').on('click', function(e){
        dataType: 'json',
        success: function(reply){
           alert(reply.msg);
-    		  window.location = "/fyp1web/homepage.php";
+    		  window.location = "/admin/homepage.php";
        },
         error: function(a,b,c){
         alert(a.responseJSON.msg);
