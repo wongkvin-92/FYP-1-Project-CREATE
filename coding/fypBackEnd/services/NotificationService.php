@@ -3,7 +3,7 @@
 class NotificationService{
     function __construct(){
 	$this->url = 'https://fcm.googleapis.com/fcm/send';
-	$this->auth_key = "AAAAIYdyeIE:APA91bEJ358NfEDtozXWxw71kEQvBNBu5dt-0ZD-INfQuZP7FEG84O5hfyp9U_3F0YyO4ORhjxvo0aMgLlPJ-iAnSr3J7bVQlFCRoC5BCdPUn2mZxeaiWOc3_eLery2eOShk-5eWV02d";
+	$this->auth_key = "AAAAIYdyeIE:APA91bEJ358NfEDtozXWxw71kEQvBNBu5dt-0ZD-INfQuZP7FEG84O5hfyp9U_3F0YyO4ORhjxvo0aMgLlPJ-iAnSr3J7bVQlFCRoC5BCdPUn2mZxeaiWOc3_eLery2eOShk-5eWV02d"; //@FIXME: This key should not be here or pushed to the public repository!!
     }
 
 
