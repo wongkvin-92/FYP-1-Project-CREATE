@@ -14,7 +14,7 @@
               	SELECT subjectID FROM subject_student_enrolled as s where s.studentID = "{$studentID}"
               ) as t1
 EOF;
-          return $this->con->query($q)->fetch_all(MYSQL_ASSOC)[0]['key'];
+          return $this->con->query($q)->fetch_all(MYSQLI_ASSOC)[0]['key'];
 
         }
 
@@ -25,7 +25,7 @@ EOF;
           $q = <<<EOF
               SELECT MD5{$subjStr} as "key"
 EOF;
-          return $this->con->query($q)->fetch_all(MYSQL_ASSOC)[0]['key'];
+          return $this->con->query($q)->fetch_all(MYSQLI_ASSOC)[0]['key'];
         }
 
         public function deleteSubjectsOfStudent($studentID){
@@ -41,7 +41,7 @@ EOF;
   JOIN device_list as d on d.userID = s.studentID AND d.type = "student"
   WHERE subjectID = "{$subjectID}"
 EOF;
-                    return $this->con->query($q)->fetch_all(MYSQL_ASSOC);
+                    return $this->con->query($q)->fetch_all(MYSQLI_ASSOC);
         }
   }
  ?>
